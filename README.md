@@ -1,56 +1,107 @@
-# {{crew_name}} Crew
+# Book Writing CLI
 
-Welcome to the {{crew_name}} Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+This CLI tool provides a unified interface for the book writing flow application, allowing you to generate outlines and chapter content for your book. It uses the existing crews and scripts in the project.
 
 ## Installation
 
-Ensure you have Python >=3.10 <3.13 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
-
-First, if you haven't already, install uv:
+Ensure you have all the required dependencies installed:
 
 ```bash
-pip install uv
+pip install -r requirements.txt
 ```
 
-Next, navigate to your project directory and install the dependencies:
-
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
-```
-
-### Customizing
-
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/book_writing_flow/config/agents.yaml` to define your agents
-- Modify `src/book_writing_flow/config/tasks.yaml` to define your tasks
-- Modify `src/book_writing_flow/crew.py` to add your own logic, tools and specific args
-- Modify `src/book_writing_flow/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+Make the CLI script executable:
 
 ```bash
-crewai run
+chmod +x book_cli.py
 ```
 
-This command initializes the book_writing_flow Crew, assembling the agents and assigning them tasks as defined in your configuration.
+## Usage
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+The CLI provides three main commands:
 
-## Understanding Your Crew
+### 1. Generate Book Outline
 
-The book_writing_flow Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+To generate a complete book outline:
 
-## Support
+```bash
+python book_cli.py outline [--topic "Your Book Topic"]
+```
 
-For support, questions, or feedback regarding the {{crew_name}} Crew or crewAI.
+To generate an outline for a specific chapter (this will first generate a full book outline and then extract the specified chapter):
 
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+```bash
+python book_cli.py outline --chapter 1 [--topic "Your Book Topic"]
+```
 
-Let's create wonders together with the power and simplicity of crewAI.
+### 2. Generate Chapter Content
+
+To generate content for a specific chapter:
+
+```bash
+python book_cli.py write --chapter 1 [--force]
+```
+
+The `--force` flag will regenerate the chapter even if it already exists.
+
+### 3. Run Full Book Writing Flow
+
+To run the complete flow (generate outline and then chapters):
+
+```bash
+python book_cli.py flow [--chapters "1,2,3" | --chapters "all"] [--topic "Your Book Topic"]
+```
+
+## Output Files
+
+All generated files are saved in the following directories:
+
+- Outlines: `output/outlines/`
+- Chapters: `output/chapters/`
+
+## How It Works
+
+The CLI is a wrapper around the existing scripts in the project:
+
+1. For outline generation, it uses `src/book_writing_flow/main.py` which utilizes the OutlineCrew
+2. For chapter generation, it uses `simple_chapter_generator.py`
+3. For the full flow, it combines both of the above
+
+The CLI ensures that all output files are properly organized in the output directories.
+
+## Examples
+
+1. Generate a complete book outline:
+
+```bash
+python book_cli.py outline --topic "ChatGPT for Business"
+```
+
+2. Generate an outline for chapter 3:
+
+```bash
+python book_cli.py outline --chapter 3
+```
+
+3. Generate content for chapter 2:
+
+```bash
+python book_cli.py write --chapter 2
+```
+
+4. Force regeneration of chapter 2 even if it already exists:
+
+```bash
+python book_cli.py write --chapter 2 --force
+```
+
+5. Generate chapters 1, 3, and 5:
+
+```bash
+python book_cli.py flow --chapters "1,3,5"
+```
+
+6. Generate the entire book:
+
+```bash
+python book_cli.py flow --chapters "all"

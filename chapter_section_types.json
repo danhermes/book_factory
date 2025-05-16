@@ -1,0 +1,75 @@
+{
+  "section_types": [
+    {
+      "type": "introduction",
+      "fields": {
+        "content": "string"
+      },
+      "description": "Sets the stage for the chapter and introduces the core challenge or transformation."
+    },
+    {
+      "type": "story",
+      "fields": {
+        "title": "string",
+        "summary": "string"
+      },
+      "description": "A concrete business example illustrating the chapter’s theme in action."
+    },
+    {
+      "type": "topic_explanation",
+      "fields": {
+        "topic": "string",
+        "detail": "string"
+      },
+      "description": "Explains a major topic or concept in a standalone section, often paired with a story."
+    },
+    {
+      "type": "bonus_topic",
+      "fields": {
+        "topic": "string",
+        "detail": "string"
+      },
+      "description": "A smaller related topic that supplements the main chapter content."
+    },
+    {
+      "type": "big_box",
+      "fields": {
+        "title": "string",
+        "content": "string"
+      },
+      "description": "A featured insight, framework, or system-level concept that elevates the chapter."
+    },
+    {
+      "type": "callback_to_previous_chapter",
+      "fields": {
+        "chapter": "integer",
+        "concept": "string",
+        "connection": "string"
+      },
+      "description": "References a prior chapter to maintain narrative continuity."
+    },
+    {
+      "type": "chapter_bridge",
+      "fields": {
+        "chapter": "integer",
+        "concept": "string",
+        "hint": "string"
+      },
+      "description": "Transitions into the next chapter by previewing a concept to come."
+    },
+    {
+      "type": "chapter_summary",
+      "fields": {
+        "points": "array of strings"
+      },
+      "description": "Bullet-style recap of the chapter's core ideas or takeaways."
+    },
+    {
+      "type": "outro",
+      "fields": {
+        "content": "string"
+      },
+      "description": "Wraps up the chapter and reinforces its main takeaway."
+    }
+  ]
+}

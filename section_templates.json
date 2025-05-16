@@ -1,0 +1,91 @@
+{
+  "Introduction": {
+    "min_length": 600,
+    "structure": [
+      "Opening hook related to the chapter theme",
+      "Relevant statistics and research to establish context",
+      "Statement of the chapter's main premise and importance",
+      "Preview of key concepts to be covered",
+      "Setting the tone and context for the entire chapter",
+      "Expert quotes or industry perspectives"
+    ]
+  },
+  "Story": {
+    "min_length": 800,
+    "structure": [
+      "Company background (size, industry, location)",
+      "Specific business challenge or pain point",
+      "Previous approaches that failed or were insufficient",
+      "Decision to implement ChatGPT solution",
+      "Technical implementation details",
+      "Integration with existing systems",
+      "Training and adoption process",
+      "Results and metrics (before and after)",
+      "ROI and business impact",
+      "Lessons learned and future plans"
+    ]
+  },
+  "Topic Explanation": {
+    "min_length": 700,
+    "structure": [
+      "Clear definition of the concept or approach",
+      "Historical context or evolution of the approach",
+      "Key components or steps in the process",
+      "Technical considerations and requirements",
+      "Best practices and implementation guidance",
+      "Common pitfalls and how to avoid them",
+      "Integration with other systems or processes",
+      "Measurement and evaluation methods",
+      "Industry standards or benchmarks",
+      "Future trends or developments"
+    ]
+  },
+  "Bonus Topic": {
+    "min_length": 500,
+    "structure": [
+      "Introduction to the supplementary concept",
+      "Relevance to the main chapter topic",
+      "Practical applications and use cases",
+      "Implementation considerations",
+      "Benefits and potential challenges",
+      "Quick-start guidance or tips",
+      "Resources for further exploration"
+    ]
+  },
+  "Big Box": {
+    "min_length": 900,
+    "structure": [
+      "Technical overview of the concept",
+      "Underlying principles or mechanisms",
+      "Architectural considerations",
+      "Implementation frameworks or methodologies",
+      "Code examples or configuration snippets",
+      "Performance optimization techniques",
+      "Security and compliance considerations",
+      "Scaling and maintenance guidance",
+      "Advanced use cases or applications",
+      "Technical limitations and workarounds"
+    ]
+  },
+  "Outro": {
+    "min_length": 500,
+    "structure": [
+      "Summary of key chapter concepts",
+      "Synthesis of main takeaways",
+      "Business value and strategic implications",
+      "Practical next steps for implementation",
+      "Future outlook and emerging trends",
+      "Final thought or call to action"
+    ]
+  },
+  "Chapter Bridge": {
+    "min_length": 300,
+    "structure": [
+      "Recap of current chapter's main theme",
+      "Connection point between current and next chapter",
+      "Preview of upcoming concepts",
+      "Logical transition that maintains narrative flow",
+      "Question or thought that leads into the next topic"
+    ]
+  }
+}

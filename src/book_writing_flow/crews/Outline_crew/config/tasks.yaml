@@ -1,0 +1,85 @@
+research_task:
+  description: >
+    Research the topic {topic} and gather latest information about it.
+    Prepare insights and key points that will be used to create a outline for a book 
+    by the outline writer Agent.
+  expected_output: >
+    A list of insights and key points about the topic {topic}.
+  agent: research_agent
+
+write_outline:
+  description: >
+    Reorganize, reorder, and enhance the existing outline for a book about ChatGPT for Business.
+    Create a logical flow between chapters and ensure each chapter tells a cohesive story with properly paired sections.
+    Add descriptive subtitles to chapter titles and make section titles more engaging and specific.
+    
+    CRITICAL: You MUST use the Reader Tool to directly access these RAG content files:
+    1. Use "expanded_outline_chatgpt_for_business.txt" or "outline" to access the expanded outline
+    2. Use "full_content_chatgpt_for_business.txt" or "full_content" to access the full content
+    
+    These files contain the specific case studies, themes, and structure that MUST be incorporated into your outline.
+    For Chapter 1 (Customer Experience), extract all the stories (WelcomeWell, StackHaven, FlexTax, LeadFleet, BriteTeam)
+    and create detailed sections for each one, along with the topic explanations and bonus topics.
+    
+    Your outline MUST include at least 8-12 detailed sections per chapter that directly reference the content from the RAG files.
+  agent: outline_writer
+  expected_output: >
+    A beautifully crafted outline for a book about {topic} in the following format:
+    {
+      "total_chapters": number,
+      "chapters": [
+        {
+          "title": "Chapter Title: Descriptive Subtitle",
+          "content": "",
+          "sections": [
+            {
+              "title": "Engaging Section Title (Introduction)",
+              "content": ""
+            },
+            {
+              "title": "Company Name: Specific Business Application (Story)",
+              "content": ""
+            },
+            {
+              "title": "Descriptive Topic Title (Topic Explanation)",
+              "content": ""
+            },
+            {
+              "title": "Technical Concept Title (Big Box)",
+              "content": ""
+            },
+            {
+              "title": "Supplementary Topic Title (Bonus Topic)",
+              "content": ""
+            },
+            {
+              "title": "Key Takeaway Statement (Chapter Summary)",
+              "content": ""
+            },
+            {
+              "title": "Transition to Next Chapter (Chapter Bridge)",
+              "content": ""
+            }
+          ]
+        },
+        ...more chapters
+      ]
+    }
+
+    Abide these rules:
+    - NEVER change the order of chapters - the chapter sequence must remain exactly as in the original outline
+    - NEVER add or remove chapters - maintain the exact number and topics of chapters
+    - NEVER add stories to chapters that don't already have them in the original outline
+    - NEVER change the fundamental structure of the final chapter
+    - Each chapter should have 8-14 sections for comprehensive coverage
+    - Introductions always begin the chapter
+    - Each story should be immediately followed by its related topic explanation
+    - Distribute bonus topics throughout to break up the content flow
+    - Big box sections should provide technical depth on key AI concepts
+    - Chapter summary should be followed by either a chapter bridge or outro
+    - Chapter bridges should create logical transitions between chapters
+    - The final chapter should end with an outro instead of a chapter bridge
+    - All section titles should be specific and descriptive, not generic
+    - Chapter titles should include a subtitle that captures the essence of the chapter
+
+   

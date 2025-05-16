@@ -1,0 +1,193 @@
+research_topic:
+  description: >
+    Research the topic {title} and gather latest information about it.
+    Focus your research on the specific sections outlined in the book outline for this chapter.
+    For each section (Introduction, Story, Topic Explanation, Bonus Topic, Big Box, etc.), gather relevant information that will support writing that section exactly as described in the outline.
+    Tailor your research approach to each section type's specific requirements.
+  expected_output: >
+    A comprehensive set of insights and key points about the topic {title}, organized by each section in the outline.
+    For each section, provide:
+    1. The exact section title from the outline
+    2. The section type (Introduction, Story, Topic Explanation, etc.)
+    3. Relevant research findings, facts, examples, and insights specific to that section
+    4. For stories, include details about the fictional company and their specific use case
+  rules: >
+    - Research MUST be organized by the exact sections in the outline
+    - Each section's research should align with its specific type and purpose
+    
+    Section-specific research guidelines:
+    
+    Introduction sections:
+    - Find compelling statistics or trends that highlight the importance of the topic
+    - Research the broader business context and relevance
+    - Identify key challenges or pain points in this area
+    - Look for expert quotes that frame the topic effectively
+    
+    Story sections:
+    - Research real-world examples that can inspire fictional case studies
+    - Gather industry-specific details for the company (size, market, challenges)
+    - Find typical implementation approaches for the AI application
+    - Research realistic metrics and outcomes for similar implementations
+    - Look for common obstacles and how they're overcome
+    
+    Topic Explanation sections:
+    - Research technical details and methodologies
+    - Find step-by-step approaches and best practices
+    - Gather relevant statistics and research findings
+    - Identify tools, platforms, or frameworks commonly used
+    - Research practical implementation details
+    
+    Bonus Topic sections:
+    - Find specialized or niche applications related to the main topic
+    - Research emerging trends or alternative approaches
+    - Identify interesting edge cases or specialized use cases
+    - Look for complementary technologies or methodologies
+    
+    Big Box sections:
+    - Research technical depth on AI concepts
+    - Find frameworks, models, or methodologies
+    - Gather technical specifications and requirements
+    - Research integration points with other systems
+    - Identify limitations and considerations
+    
+    Chapter Summary sections:
+    - Identify key takeaways from similar topics
+    - Research actionable next steps or considerations
+    - Find expert recommendations for implementation
+    
+    Chapter Bridge sections:
+    - Research connections between the current topic and the next chapter's theme
+    - Identify overlapping concepts or natural progression points
+    
+    Outro sections (final chapter only):
+    - Research future trends and developments in the field
+    - Find expert predictions about where the technology is heading
+    - Identify broader implications for business and society
+  agent: topic_researcher
+
+write_chapter:
+  description: >
+    Write a comprehensive, in-depth chapter about the topic {title} based on the insights and key points gathered by the topic researcher agent.
+    CRITICAL: You MUST use EXACTLY the section titles from the book outline in the exact order specified. DO NOT create your own section titles or change the order.
+    Each section must adhere to its designated type (Introduction, Story, Topic Explanation, Bonus Topic, Big Box, Chapter Summary, etc.) and meet or exceed its minimum word count requirement.
+    Incorporate the RAG content provided to maintain consistency with existing materials and ensure high quality.
+    Ensure the chapter is engaging, well-researched, and provides substantial depth in each section.
+  expected_output: >
+    A beautifully crafted, thoroughly researched chapter about the topic {title} that follows the outline exactly, with each section properly developed according to its type and meeting or exceeding its minimum word count requirement.
+  rules: >
+    - CRITICAL: MUST use EXACTLY the section titles from the outline in the exact order specified
+    - DO NOT create your own section titles or change the order
+    - MUST include ALL sections from the outline in the exact order specified
+    - MUST maintain the exact section titles as they appear in the outline
+    - MUST adhere to the section type (Introduction, Story, Topic Explanation, etc.) in content and style
+    - Maintain consistent tone and style throughout the chapter
+    - Ensure all content directly supports the chapter's main theme
+    - Use concrete examples and practical applications
+    - Include SUBSTANTIAL research, data, statistics, and expert opinions to support all claims
+    - Cite specific research studies, surveys, and industry reports where appropriate
+    - Develop DETAILED case studies with specific metrics, challenges, and outcomes
+    - Include real-world implementation details, not just conceptual overviews
+    - Balance technical depth with accessibility
+    - Avoid repetition between sections
+    - Write approximately 4000-5000 words total with proper depth in each section
+  
+
+write_section:
+  description: >
+    Write a detailed section titled "{title}" for the chapter "{chapter_title}".
+    This section is of type {type} and should be at least {min_length} words.
+    CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
+    Follow the recommended structure for this section type: {structure}
+    Incorporate the RAG content provided to maintain consistency with existing materials.
+    Ensure the section is engaging, well-researched, and provides substantial depth.
+    Consider the surrounding sections for context: Previous section: {previous_section}, Next section: {next_section}
+  expected_output: >
+    A beautifully crafted, thoroughly researched section titled "{title}" that meets or exceeds the minimum length of {min_length} words.
+    The section should follow the structure provided and incorporate the RAG content while maintaining consistency with the chapter theme.
+  rules: >
+    - CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
+    - The section must meet or exceed the minimum word count of {min_length} words
+    - Follow the recommended structure for this section type: {structure}
+    - Incorporate the RAG content provided to maintain consistency with existing materials
+    - Include substantial research, data, statistics, and expert opinions to support claims
+    - For stories, provide detailed company information, implementation specifics, and concrete metrics
+    - Balance technical depth with accessibility
+    - Ensure the content flows well with surrounding sections
+    - MUST adhere to the section type (Introduction, Story, Topic Explanation, etc.) in content and style
+    
+    Section-specific rules:
+    
+    Introduction sections:
+    - Begin with a compelling hook related to the chapter theme
+    - Clearly state the chapter's main premise and why it matters
+    - Preview the key concepts that will be covered
+    - Set the tone and context for the entire chapter
+    - Include relevant statistics and research to establish context
+    - Include expert quotes or industry perspectives where appropriate
+    - Length: 600-800 words
+    
+    Story sections:
+    - Present a fictional but realistic business scenario with the named company
+    - Include specific details about the company size, industry, and challenge
+    - Describe the specific AI implementation and approach
+    - Show concrete results and outcomes
+    - Use narrative elements (characters, conflict, resolution)
+    - Include technical implementation details about how ChatGPT was integrated
+    - Present realistic metrics and outcomes with specific numbers
+    - Discuss challenges encountered and how they were overcome
+    - Include ROI calculations or business impact where possible
+    - Length: 800-1000 words
+    
+    Topic Explanation sections:
+    - Directly relate to the preceding or following story when applicable
+    - Provide clear, accessible explanations of technical concepts
+    - Include practical implementation details
+    - Use bullet points or numbered lists for key steps or components
+    - Include relevant statistics or research when appropriate
+    - Include step-by-step guidance where appropriate
+    - Discuss potential challenges and how to overcome them
+    - Include industry standards or benchmarks when relevant
+    - Length: 700-900 words
+    
+    Bonus Topic sections:
+    - Offer supplementary information that enhances the main content
+    - Present alternative approaches or specialized applications
+    - Can be more concise than main topic explanations
+    - Should still connect to the chapter's overall theme
+    - Include practical examples and use cases
+    - Provide actionable insights or tips
+    - Length: 500-700 words
+    
+    Big Box sections:
+    - Provide technical depth on AI concepts
+    - Include frameworks, models, or methodologies
+    - Can use more specialized terminology (with explanations)
+    - May include diagrams or structured information
+    - Include code examples or configuration snippets where appropriate
+    - Discuss security and compliance considerations
+    - Address scaling and maintenance guidance
+    - Length: 900-1200 words
+    
+    Chapter Summary sections:
+    - Recap key points from all previous sections
+    - Reinforce the main takeaway and business value
+    - Provide actionable next steps or considerations
+    - Provide actionable next steps for implementation
+    - Connect concepts to broader business implications
+    - Length: 500-700 words
+    
+    Chapter Bridge sections:
+    - Create a logical transition to the next chapter
+    - Connect the current chapter's concepts to upcoming themes
+    - Maintain narrative flow between chapters
+    - Include a question or thought that leads into the next topic
+    - Length: 300-400 words
+    
+    Outro sections (final chapter only):
+    - Provide closure to the book's overall narrative
+    - Reinforce the book's main thesis
+    - Offer forward-looking perspectives
+    - Include future outlook and emerging trends
+    - Length: 500-700 words
+    
+  agent: section_writer

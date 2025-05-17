@@ -9,8 +9,8 @@ import logging
 from typing import List, Dict, Any, Optional
 import yaml
 
-from book_writing_flow.tools.custom_tool import BrightDataWebSearchTool
-from book_writing_flow.tools.rag_utils import RagContentProvider
+from src.book_writing_flow.tools.custom_tool import BrightDataWebSearchTool
+from src.book_writing_flow.tools.rag_utils import RagContentProvider
 
 # Set up logger for this module
 logger = logging.getLogger(__name__)

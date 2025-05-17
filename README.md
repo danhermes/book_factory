@@ -7,7 +7,7 @@ This CLI tool provides a unified interface for the book writing flow application
 Ensure you have all the required dependencies installed:
 
 ```bash
-pip install -r requirements.txt
+pip install crewai crewai-tools
 ```
 
 Make the CLI script executable:

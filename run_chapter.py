@@ -5,7 +5,7 @@ import json
 import asyncio
 import argparse
 import logging
-from book_writing_flow.crews.Writer_crew.writer_crew import ChapterWriterCrew
+from src.book_writing_flow.crews.Writer_crew.writer_crew import ChapterWriterCrew
 
 # Configure basic logging
 logging.basicConfig(

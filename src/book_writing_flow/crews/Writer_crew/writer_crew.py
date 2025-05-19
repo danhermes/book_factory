@@ -139,15 +139,15 @@ class ChapterWriterCrew:
             "section_content": section_content
         }
         
-    @task
-    def write_section(self) -> Task:
-        """Task for writing a single section"""
-        logger.info("Creating write_section task")
-        return Task(
-            config=self.tasks_config["write_section"],
-            agent=self.agents["section_writer"],
-            output_pydantic=Section
-        )
+    # @task
+    # def write_section(self) -> Task:
+    #     """Task for writing a single section"""
+    #     logger.info("Creating write_section task")
+    #     return Task(
+    #         config=self.tasks_config["write_section"],
+    #         agent=self.agents["section_writer"],
+    #         output_pydantic=Section
+    #     )
 
     @task
     def research_topic(self) -> Task:
@@ -216,285 +216,369 @@ class ChapterWriterCrew:
         return Agent(config=self.agents_config["writer"],
                      llm=llm)
 
-    @task
-    def write_chapter(self) -> Task:
-        """
-        Override the write_chapter task to generate each section separately
-        and combine them into a complete chapter.
-        """
-        logger.info("Creating write_chapter task")
-        
-        async def execute(self, *args, **kwargs):
-            """Custom execution logic to generate each section separately"""
-            logger.info("Executing write_chapter task with section-by-section approach")
-            
-            # Get the chapter title from the inputs
-            chapter_title = kwargs.get("title", "")
-            chapter_number = 1  # Default to chapter 1
-            
-            # Try to extract chapter number from title
-            match = re.search(r"Chapter (\d+)", chapter_title)
-            if match:
-                chapter_number = int(match.group(1))
-            
-            # Load the outline
-            outline = None
-            try:
-                # First try to load from output/outlines directory
-                if os.path.exists("output/outlines/book_outline.json"):
-                    with open("output/outlines/book_outline.json", 'r') as f:
-                        outline = json.load(f)
-                # Fall back to root directory if not found in output/outlines
-                elif os.path.exists("book_outline.json"):
-                    with open("book_outline.json", 'r') as f:
-                        outline = json.load(f)
-                else:
-                    raise FileNotFoundError("book_outline.json not found in output/outlines or root directory")
-            except Exception as e:
-                logger.error(f"Error loading outline: {e}")
-                # Create a minimal outline with just the chapter title
-                outline = {
-                    "chapters": [
-                        {
-                            "title": chapter_title,
-                            "sections": []
-                        }
-                    ]
-                }
-            
-            # Find the matching chapter in the outline
-            chapter_data = None
-            for chapter in outline.get("chapters", []):
-                if chapter_title in chapter.get("title", ""):
-                    chapter_data = chapter
-                    break
-            
-            if not chapter_data:
-                logger.warning(f"Chapter '{chapter_title}' not found in outline")
-                return Chapter(title=chapter_title, content="", sections=[])
-            
-            # Extract section information
-            section_titles = []
-            
-            # Get the sections from the outline
-            outline_sections = []
-            for section in chapter_data.get("sections", []):
-                section_title = section.get("title", "")
-                outline_sections.append(section_title)
-            
-            # If no sections are found in the chapter data, try to parse them from the outline.md file
-            if not outline_sections:
-                try:
-                    # Try to load the outline.md file
-                    if os.path.exists("output/outlines/book_outline.md"):
-                        with open("output/outlines/book_outline.md", "r") as f:
-                            outline_md = f.read()
-                        
-                        # Find the chapter section
-                        chapter_pattern = f"## Chapter {chapter_title.split(':')[0].strip()}: .*?\\n\\n(.*?)\\n\\n##"
-                        chapter_match = re.search(chapter_pattern, outline_md, re.DOTALL)
-                        
-                        if chapter_match:
-                            chapter_content = chapter_match.group(1)
-                            # Extract section titles
-                            section_lines = [line.strip() for line in chapter_content.split("\n") if line.strip().startswith("- ")]
-                            outline_sections = [line[2:] for line in section_lines]
-                except Exception as e:
-                    logger.error(f"Error parsing outline.md: {e}")
-            
-            if not outline_sections:
-                logger.warning(f"No sections found for chapter '{chapter_title}'")
-                return Chapter(title=chapter_title, content="", sections=[])
-            
-            # Load section templates
-            section_templates = {}
-            try:
-                if os.path.exists("section_templates.json"):
-                    with open("section_templates.json", 'r') as f:
-                        section_templates = json.load(f)
-            except Exception as e:
-                logger.error(f"Error loading section templates: {e}")
-                # # Create default section templates
-                # section_templates = {
-                #     "Introduction": {
-                #         "min_length": 600,
-                #         "structure": ["Opening hook", "Context", "Preview of key concepts"]
-                #     },
-                #     "Story": {
-                #         "min_length": 800,
-                #         "structure": ["Company background", "Challenge", "Solution", "Results"]
-                #     },
-                #     "Topic Explanation": {
-                #         "min_length": 700,
-                #         "structure": ["Definition", "Key components", "Best practices"]
-                #     },
-                #     "Bonus Topic": {
-                #         "min_length": 500,
-                #         "structure": ["Introduction", "Key insights", "Applications"]
-                #     },
-                #     "Big Box": {
-                #         "min_length": 900,
-                #         "structure": ["Technical overview", "Implementation details", "Advanced concepts"]
-                #     },
-                #     "Outro": {
-                #         "min_length": 500,
-                #         "structure": ["Summary", "Key takeaways", "Future outlook"]
-                #     },
-                #     "Chapter Bridge": {
-                #         "min_length": 300,
-                #         "structure": ["Recap", "Connection to next chapter", "Preview"]
-                #     }
-                # }
-            
-            # Add debug logging
-            logger.info("About to call get_rag_content")
-            try:
-                # Get RAG content for the chapter and sections using the stored instance
-                rag_content = self._instance.get_rag_content(chapter_title, outline_sections)
-                logger.info("Successfully got RAG content")
-            except Exception as e:
-                logger.error(f"Error in get_rag_content: {e}")
-                raise
-            
-            # Generate a brief chapter introduction
-            chapter_intro = f"# {chapter_title}\n\nThis chapter explores {chapter_title.split(':')[-1].strip()}.\n\n"
-            
-            # Generate each section separately
-            sections = []
-            for i, section_title in enumerate(outline_sections):
-                logger.info(f"Generating section: {section_title}")
-                
-                # Determine section type
-                section_type = "Unknown"
-                if "(" in section_title and ")" in section_title:
-                    section_type = section_title.split("(")[-1].split(")")[0]
-                else:
-                    # Try to infer section type from title
-                    if "intro" in section_title.lower():
-                        section_type = "Introduction"
-                    elif any(company in section_title for company in ["WelcomeWell", "StackHaven", "FlexTax", "LeadFleet", "BriteTeam", "WestBridge", "BrightPath"]):
-                        section_type = "Story"
-                    elif "bonus" in section_title.lower():
-                        section_type = "Bonus Topic"
-                    elif "big box" in section_title.lower():
-                        section_type = "Big Box"
-                    elif "outro" in section_title.lower():
-                        section_type = "Outro"
-                    elif "transition" in section_title.lower() or "bridge" in section_title.lower():
-                        section_type = "Chapter Bridge"
-                    else:
-                        section_type = "Topic Explanation"
-                
-                logger.info(f"Templating: {section_title}")               
-                # Get section template
-                template = section_templates.get(section_type, {
-                    "min_length": 500,
-                    "structure": ["Introduction", "Main content", "Conclusion"]
-                })
-                logger.info(f"TDonr Templating: {section_title}")   
-                # Get section-specific RAG content
-                section_rag = ""
-                if section_title in rag_content["section_content"]:
-                    section_rag = "\n\n".join(rag_content["section_content"][section_title])
-                
-                # Get surrounding sections for context
-                prev_section = outline_sections[i-1] if i > 0 else None
-                next_section = outline_sections[i+1] if i < len(outline_sections) - 1 else None
-                
-                # # Create section input
-                # section_input = SectionInput(
-                #     title=section_title,
-                #     type=section_type,
-                #     chapter_title=chapter_title,
-                #     chapter_number=chapter_number,
-                #     min_length=template["min_length"],
-                #     structure=template["structure"],
-                #     rag_content=section_rag,
-                #     previous_section=prev_section,
-                #     next_section=next_section
-                # )
-                
-                # Generate the section using the section writer task
-                logger.info(f"Creating task for section: {section_title} (type: {section_type})")
-                try:
-                    logger.info("About to call write_section")
-                    #section_task = self._instance.write_section()
-                    #section_task = self._instance.tasks["write_section"]
-                    section_task = Task(
-                            config=self.tasks_config["write_section"],
-                            agent=self.agents["section_writer"],
-                            output_pydantic=Section
-                    )
-                    logger.info("Successfully got section_task")
-                except Exception as e:
-                    logger.error(f"Error in write_section: {e}")
-                    raise
-                logger.info("🚀 chapter_title = %s", chapter_title)
-        
-                # Create a context dictionary with all the section-specific information
-                section_context = {
-                    "title": section_title,
-                    "type": section_type,
-                    "chapter_title": chapter_title,
-                    "chapter_number": chapter_number,
-                    "min_length": template["min_length"],
-                    "structure": ", ".join(template["structure"]),  # Convert list to string for template
-                    "rag_content": section_rag,
-                    "previous_section": prev_section if prev_section else "None",
-                    "next_section": next_section if next_section else "None"
-                }
-                
-                # Execute the task with the context, which will apply the section-specific prompts
-                section_result = await section_task.execute(**section_context)
-                
-                # Add the section to the list
-                sections.append(Section(
-                    chapter_title=chapter_title,
-                    title=section_title,
-                    type=section_type,
-                    content=section_result.content
-                ))
-            
-            # Combine all sections into a complete chapter
-            logging.info("Cpmbine chapts")
-            chapter_content = chapter_intro
-            for section in sections:
-                chapter_content += f"## {section.title}\n\n{section.content}\n\n"
-            
-            # Create the chapter
-            chapter = Chapter(
-                title=chapter_title,
-                content=chapter_content,
-                sections=sections
-            )
-            
-            return chapter
-        
-        # Create the task with custom execution logic and use the configuration from tasks.yaml
-        logging.info("define task")
-        logger.warning("🚀 IN wriue chap: agents dict keys = %s", list(self.tasks_config.keys()))
-        #logger.warning("🚀 IN erotw chap: section_writer agent = %s", self.agents.get("writer", "MISSING"))
-
-        task = Task(
-            config=self.tasks_config["write_chapter"],
-            agent=self.agents["writer"],
-            output_pydantic=Chapter
-        )
-        logging.info("wxwcutw task")
-        # Set the custom execution method
-        task.async_execution = execute.__get__(task, Task)
-        
-        return task
-
     @crew
     def crew(self) -> Crew:
         """Creates the Writer Crew"""
         logger.warning("🔥 @crew method CALLED")
         #logger.warning("🚀 IN CREW: agents dict keys = %s", list(self.agents.keys()))
         #logger.warning("🚀 IN CREW: section_writer agent = %s", self.agents.get("section_writer", "MISSING"))
+                
+        instance = self
+
+
+        # Create a callback to store inputs
+        def on_kickoff(crew_instance, inputs=None):
+            # Store the inputs for access by tasks
+            if inputs:
+                logger.info(f"Storing inputs: {inputs}")
+                instance._inputs = inputs
+
 
         logger.info("Creating Writer Crew")
         return Crew(agents=self.agents,
                     tasks=self.tasks,
                     process=Process.sequential,
-                    verbose=True)
+                    verbose=True,
+                    callbacks={"on_kickoff": on_kickoff})
+
+#@task
+class write_chapter_task(Task):
+    """
+    Override the write_chapter task to generate each section separately
+    and combine them into a complete chapter.
+    """
+    def __init__(self, description, expected_output, **kwargs):
+        # Initialize the parent Task class with required parameters
+        super().__init__(description=description, expected_output=expected_output, **kwargs)
+        logger.info("Creating write_chapter task")
+    
+    async def execute(self):
+        """Custom execution logic to generate each section separately"""
+        
+        logger.info("Executing write_chapter task with section-by-section approach")
+        
+        # Get the chapter title from the task's attributes
+        # In crewAI, we need to access the title from the task creation in run_chapter.py
+        chapter_title = "Chapter 1: Customer Experience - AI-Driven Empathy and Personalization"
+        
+        # Log the chapter title for debugging
+        logger.info(f"Using chapter title: {chapter_title}")
+        
+        # Important: We must use the exact section titles from the book_outline.md file
+        # This ensures the generated chapter matches the outline exactly
+        logger.info("Using exact section titles from the book outline")
+        chapter_number = 1  # Default to chapter 1
+        
+        # Try to extract chapter number from title
+        match = re.search(r"Chapter (\d+)", chapter_title)
+        if match:
+            chapter_number = int(match.group(1))
+        
+        # Load the outline
+        outline = None
+        try:
+            # First try to load from output/outlines directory
+            if os.path.exists("output/outlines/book_outline.json"):
+                with open("output/outlines/book_outline.json", 'r') as f:
+                    outline = json.load(f)
+            # Fall back to root directory if not found in output/outlines
+            elif os.path.exists("book_outline.json"):
+                with open("book_outline.json", 'r') as f:
+                    outline = json.load(f)
+            else:
+                raise FileNotFoundError("book_outline.json not found in output/outlines or root directory")
+        except Exception as e:
+            logger.error(f"Error loading outline: {e}")
+            # Create a minimal outline with just the chapter title
+            outline = {
+                "chapters": [
+                    {
+                        "title": chapter_title,
+                        "sections": []
+                    }
+                ]
+            }
+        
+        # Find the matching chapter in the outline
+        chapter_data = None
+        for chapter in outline.get("chapters", []):
+            if chapter_title in chapter.get("title", ""):
+                chapter_data = chapter
+                break
+        
+        if not chapter_data:
+            logger.warning(f"Chapter '{chapter_title}' not found in outline")
+            return Chapter(title=chapter_title, content="", sections=[])
+        
+        # Extract section information
+        section_titles = []
+        
+        # Get the sections from the outline
+        outline_sections = []
+        for section in chapter_data.get("sections", []):
+            section_title = section.get("title", "")
+            outline_sections.append(section_title)
+        
+        # If no sections are found in the chapter data, try to parse them from the outline.md file
+        if not outline_sections:
+            try:
+                # Try to load the outline.md file
+                if os.path.exists("output/outlines/book_outline.md"):
+                    with open("output/outlines/book_outline.md", "r") as f:
+                        outline_md = f.read()
+                    
+                    # Find the chapter section
+                    logging.info
+                    chapter_pattern = f"## Chapter {chapter_title.split(':')[0].strip()}: .*?\\n\\n(.*?)\\n\\n##"
+                    chapter_match = re.search(chapter_pattern, outline_md, re.DOTALL)
+                    
+                    if chapter_match:
+                        chapter_content = chapter_match.group(1)
+                        # Extract section titles
+                        section_lines = [line.strip() for line in chapter_content.split("\n") if line.strip().startswith("- ")]
+                        outline_sections = [line[2:] for line in section_lines]
+            except Exception as e:
+                logger.error(f"Error parsing outline.md: {e}")
+        
+        if not outline_sections:
+            logger.warning(f"No sections found for chapter '{chapter_title}'")
+            return Chapter(title=chapter_title, content="", sections=[])
+        
+        # Load section templates
+        section_templates = {}
+        try:
+            if os.path.exists("section_templates.json"):
+                with open("section_templates.json", 'r') as f:
+                    section_templates = json.load(f)
+        except Exception as e:
+            logger.error(f"Error loading section templates: {e}")
+            # # Create default section templates
+            # section_templates = {
+            #     "Introduction": {
+            #         "min_length": 600,
+            #         "structure": ["Opening hook", "Context", "Preview of key concepts"]
+            #     },
+            #     "Story": {
+            #         "min_length": 800,
+            #         "structure": ["Company background", "Challenge", "Solution", "Results"]
+            #     },
+            #     "Topic Explanation": {
+            #         "min_length": 700,
+            #         "structure": ["Definition", "Key components", "Best practices"]
+            #     },
+            #     "Bonus Topic": {
+            #         "min_length": 500,
+            #         "structure": ["Introduction", "Key insights", "Applications"]
+            #     },
+            #     "Big Box": {
+            #         "min_length": 900,
+            #         "structure": ["Technical overview", "Implementation details", "Advanced concepts"]
+            #     },
+            #     "Outro": {
+            #         "min_length": 500,
+            #         "structure": ["Summary", "Key takeaways", "Future outlook"]
+            #     },
+            #     "Chapter Bridge": {
+            #         "min_length": 300,
+            #         "structure": ["Recap", "Connection to next chapter", "Preview"]
+            #     }
+            # }
+        
+        # Add debug logging
+        logger.info("About to call get_rag_content")
+        try:
+            # Get RAG content for the chapter and sections using the stored instance
+            rag_content =  ChapterWriterCrew.get_rag_content(chapter_title, outline_sections)
+            logger.info("Successfully got RAG content")
+        except Exception as e:
+            logger.error(f"Error in get_rag_content: {e}")
+            raise
+        
+        # Generate a brief chapter introduction
+        chapter_intro = f"# {chapter_title}\n\nThis chapter explores {chapter_title.split(':')[-1].strip()}.\n\n"
+        
+        # Generate each section separately
+        sections = []
+        for i, section_title in enumerate(outline_sections):
+            logger.info(f"Generating section: {section_title}")
+            
+            # Determine section type
+            section_type = "Unknown"
+            if "(" in section_title and ")" in section_title:
+                section_type = section_title.split("(")[-1].split(")")[0]
+            else:
+                # Try to infer section type from title
+                if "intro" in section_title.lower():
+                    section_type = "Introduction"
+                elif any(company in section_title for company in ["WelcomeWell", "StackHaven", "FlexTax", "LeadFleet", "BriteTeam", "WestBridge", "BrightPath"]):
+                    section_type = "Story"
+                elif "bonus" in section_title.lower():
+                    section_type = "Bonus Topic"
+                elif "big box" in section_title.lower():
+                    section_type = "Big Box"
+                elif "outro" in section_title.lower():
+                    section_type = "Outro"
+                elif "transition" in section_title.lower() or "bridge" in section_title.lower():
+                    section_type = "Chapter Bridge"
+                else:
+                    section_type = "Topic Explanation"
+            
+            logger.info(f"Templating: {section_title}")               
+            # Get section template
+            template = section_templates.get(section_type, {
+                "min_length": 500,
+                "structure": ["Introduction", "Main content", "Conclusion"]
+            })
+            logger.info(f"TDonr Templating: {section_title}")   
+            # Get section-specific RAG content
+            section_rag = ""
+            if section_title in rag_content["section_content"]:
+                section_rag = "\n\n".join(rag_content["section_content"][section_title])
+            
+            # Get surrounding sections for context
+            prev_section = outline_sections[i-1] if i > 0 else None
+            next_section = outline_sections[i+1] if i < len(outline_sections) - 1 else None
+            
+            # # Create section input
+            # section_input = SectionInput(
+            #     title=section_title,
+            #     type=section_type,
+            #     chapter_title=chapter_title,
+            #     chapter_number=chapter_number,
+            #     min_length=template["min_length"],
+            #     structure=template["structure"],
+            #     rag_content=section_rag,
+            #     previous_section=prev_section,
+            #     next_section=next_section
+            # )
+            
+            # Generate the section using the section writer task
+            logger.info(f"Creating task for section: {section_title} (type: {section_type})")
+            try:
+                logger.info("About to call write_section")
+                #section_task = self._instance.write_section()
+                #section_task = self._instance.tasks["write_section"]
+                # Get the section_writer agent from the agents.yaml file
+                with open("src/book_writing_flow/crews/Writer_crew/config/agents.yaml", "r") as f:
+                    agents_config = yaml.safe_load(f)
+                
+                # Create the section_writer agent
+                section_writer_agent = Agent(
+                    config=agents_config["section_writer"],
+                    llm=llm,
+                    verbose=True
+                )
+                
+                # Create the task with the agent
+                section_task = Task(
+                        description=f"Write the '{section_title}' section for the chapter",
+                        expected_output="A well-written section with appropriate content",
+                        agent=section_writer_agent,  # Assign the agent to the task
+                        output_pydantic=Section,
+                        inputs={
+                                "title": section_title,  # Use section_title instead of chapter_title
+                                "tasks_config": {},
+                                "chapter_title": chapter_title,
+                                "min_length": template["min_length"],
+                                "structure": ", ".join(template["structure"])  # Convert list to string for template
+                        }
+                )
+                logger.info("Successfully got section_task")
+            except Exception as e:
+                logger.error(f"Error in write_section: {e}")
+                raise
+            logger.info("🚀 chapter_title = %s", chapter_title)
+    
+            # Create a context dictionary with all the section-specific information
+            # section_context = {
+            #     "title": section_title,
+            #     "type": section_type,
+            #     "chapter_title": chapter_title,
+            #     "chapter_number": chapter_number,
+            #     "min_length": template["min_length"],
+            #     "structure": ", ".join(template["structure"]),  # Convert list to string for template
+            #     "rag_content": section_rag,
+            #     "previous_section": prev_section if prev_section else "None",
+            #     "next_section": next_section if next_section else "None"
+            # }
+            
+            # Execute the task with the context, which will apply the section-specific prompts
+            #section_result = await section_task.execute()
+            # Create a local crew instance for this section
+            from crewai import Crew, Process
+            # Create the section crew with the section_writer_agent
+            section_crew = Crew(
+                agents=[section_writer_agent],  # Use the agent we created above
+                tasks=[section_task],
+                process=Process.sequential,
+                verbose=True
+            )
+            # Execute the section crew and get the result
+            section_result = section_crew.kickoff()
+            
+            # Extract the section from the CrewOutput object
+            # The result is in the pydantic attribute
+            section_content = None
+            if hasattr(section_result, 'pydantic'):
+                section_content = section_result.pydantic
+            else:
+                # Create a default section if we couldn't extract it
+                section_content = Section(
+                    chapter_title=chapter_title,
+                    title=section_title,
+                    type=section_type,
+                    content=f"Content for {section_title} will be generated."
+                )
+                
+            # Log the section content for debugging
+            logger.info(f"Generated section: {section_title} with content length: {len(section_content.content) if hasattr(section_content, 'content') else 0}")
+            
+            # Use the section_content instead of the raw result
+            result = section_content
+
+            # Add the section to the list
+            sections.append(result)
+        
+        # Combine all sections into a complete chapter
+        logging.info("Combining chapter sections")
+        chapter_content = f"## {chapter_title}\n\n"
+        chapter_content += f"{chapter_intro}\n\n"
+        for section in sections:
+            chapter_content += f"## {section.title}\n\n{section.content}\n\n"
+        
+        # # Create the chapter
+        # chapter = Chapter(
+        #     title=chapter_title,
+        #     content=chapter_content,
+        #     sections=sections
+        # )
+        
+        # Create the chapter object
+        chapter = Chapter(
+            title=chapter_title,
+            content=chapter_content,
+            sections=sections
+        )
+        
+        return chapter
+    
+    # Create the task with custom execution logic and use the configuration from tasks.yaml
+    # logging.info("define task")
+    # logger.warning("🚀 IN wriue chap: agents dict keys = %s", list(self.tasks_config.keys()))
+    #logger.warning("🚀 IN erotw chap: section_writer agent = %s", self.agents.get("writer", "MISSING"))
+
+    # task = Task(
+    #     config=self.tasks_config["write_chapter"],
+    #     agent=self.agents["writer"],
+    #     output_pydantic=Chapter
+    # )
+    # logging.info("wxwcutw task")
+    # Bind the custom execute method to this task instance
+    #task.execute = execute.__get__(task, Task)
+
+    # Actually run it — and return the output
+    # chapter_result = await task.execute()
+
+    # return chapter_result
+
+   

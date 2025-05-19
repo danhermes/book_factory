@@ -5,7 +5,13 @@ import json
 import asyncio
 import argparse
 import logging
+import yaml
+from crewai import Agent, Crew, Process, Task, LLM
+from crewai.project import CrewBase, agent, crew, task
+from crewai_tools import SerperDevTool
+from pydantic import BaseModel
 from src.book_writing_flow.crews.Writer_crew.writer_crew import ChapterWriterCrew
+from src.book_writing_flow.crews.Writer_crew.writer_crew import write_chapter_task
 
 # Configure basic logging
 logging.basicConfig(
@@ -13,10 +19,24 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
+llm = LLM(model="gpt-4o")
+
 # Set the root logger level to INFO to capture all module logs
 logging.getLogger().setLevel(logging.INFO)
 logger = logging.getLogger("run_chapter")
 
+class Section(BaseModel):
+    """Section of a chapter"""
+    chapter_title : str
+    title: str
+    type: str  # Introduction, Story, Topic Explanation, Bonus Topic, Big Box, Chapter Summary, Chapter Bridge, Outro
+    content: str
+
+class Chapter(BaseModel):
+    """Chapter of the book"""
+    title: str
+    content: str
+    sections: list[Section] = []
 
 def run_single_chapter(chapter_index=0, force_regenerate=False):
     """Run just a single chapter generation with enhanced RAG content and section guidance"""
@@ -85,18 +105,67 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         logging.info("  Chapter title: %s", chapter_title)
         logging.info("  Chapters: %s", [chapter["title"] for chapter in chapters])
         logging.info("  Outline sections: %s", [section.get("title", "") for section in chapter_data.get("sections", [])])
+        
+        with open("src/book_writing_flow/crews/Writer_crew/config/agents.yaml", "r") as f:
+            agents_config = yaml.safe_load(f)
 
-        # Kickoff the crew with the chapter title and outline sections
-        result = crew.kickoff(inputs={
+        with open("src/book_writing_flow/crews/Writer_crew/config/tasks.yaml", "r") as f:
+            tasks_config = yaml.safe_load(f)
+
+        agents = {}
+        agents = {
+        "section_writer": Agent(
+            config=agents_config["section_writer"],
+            llm=llm,
+            verbose=True
+        ),
+        "writer": Agent(
+            config=agents_config["writer"],
+            llm=llm,
+            verbose=True
+        ),
+        "topic_researcher": Agent(
+            config=agents_config["topic_researcher"],
+            llm=llm,
+            verbose=True
+        )}
+
+        task = write_chapter_task(
+            description="Write chapter {chapter_title} using the outline",
+            expected_output="A completed chapter object with full sections",
+            output_pydantic=Chapter,
+            inputs={
+            "chapter_title": chapter_title,
             "title": chapter_title,
             "topic": "ChatGPT for Business",
+            "tasks_config":tasks_config,
+            "agents": agents,
             "chapters": [chapter["title"] for chapter in chapters],
             "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
-        })
+        }
+        )
         
+        # # Kickoff the crew with the chapter title and outline sections
+        # task = write_chapter_task(inputs={
+        #     "chapter_title": chapter_title,
+        #     "title": chapter_title,
+        #     "topic": "ChatGPT for Business",
+        #     "chapters": [chapter["title"] for chapter in chapters],
+        #     "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
+        # })
+        
+
+        logging.info("🚀 Crew finished successfully!")
+
         # Extract the chapter content
-        chapter = result.pydantic
-        
+        import asyncio
+        chapter_result = asyncio.run(task.execute())
+        chapter = chapter_result #result.pydantic
+        logging.info(f"Chapter ---------------------------------")
+        logging.info(f"Chapter content: {chapter.content}")
+        logging.info(f"Chapter sections: {len(chapter.sections)}")
+        logging.info(f"Chapter +++++++++++++++++++++++++++++++++")
+        # Print the chapter content for debugging
         # Save the chapter
         with open(chapter_file, "w") as f:
             f.write("# " + chapter.title + "\n\n")

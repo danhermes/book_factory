@@ -8,6 +8,7 @@ import re
 import logging
 from typing import List, Dict, Any, Optional
 import yaml
+import datetime
 
 from src.book_writing_flow.tools.custom_tool import BrightDataWebSearchTool
 from src.book_writing_flow.tools.rag_utils import RagContentProvider
@@ -174,6 +175,12 @@ class ChapterWriterCrew:
                 "value": True,
                 "description": "Whether to use the outline for enhanced content",
                 "expected_output": "A boolean value"
+            },
+            {
+                "key": "log_research",
+                "value": True,
+                "description": "Whether to log research findings to a file",
+                "expected_output": "A boolean value"
             }
         ]
         
@@ -241,7 +248,6 @@ class ChapterWriterCrew:
                     verbose=True,
                     callbacks={"on_kickoff": on_kickoff})
 
-#@task
 class write_chapter_task(Task):
     """
     Override the write_chapter task to generate each section separately
@@ -251,15 +257,31 @@ class write_chapter_task(Task):
         # Initialize the parent Task class with required parameters
         super().__init__(description=description, expected_output=expected_output, **kwargs)
         logger.info("Creating write_chapter task")
+        # Store inputs in the context
+        if 'inputs' in kwargs:
+            self.context = kwargs.get('context', [])
+            # Add inputs to context
+            for key, value in kwargs['inputs'].items():
+                self.context.append({
+                    "key": key,
+                    "value": value,
+                    "description": f"Input for {key}"
+                })
+            logger.info(f"Added inputs to context: {list(kwargs['inputs'].keys())}")
+        else:
+            logger.warning("No inputs provided to write_chapter_task")
     
     async def execute(self):
         """Custom execution logic to generate each section separately"""
         
         logger.info("Executing write_chapter task with section-by-section approach")
         
-        # Get the chapter title from the task's attributes
-        # In crewAI, we need to access the title from the task creation in run_chapter.py
-        chapter_title = "Chapter 1: Customer Experience - AI-Driven Empathy and Personalization"
+        # Get the chapter title from the task's context
+        chapter_title = "Unknown Chapter"
+        for item in self.context:
+            if item.get("key") == "chapter_title":
+                chapter_title = item.get("value")
+                break
         
         # Log the chapter title for debugging
         logger.info(f"Using chapter title: {chapter_title}")
@@ -273,6 +295,19 @@ class write_chapter_task(Task):
         match = re.search(r"Chapter (\d+)", chapter_title)
         if match:
             chapter_number = int(match.group(1))
+        
+        # Create research directory if it doesn't exist
+        os.makedirs("output/research", exist_ok=True)
+        
+        # Create a research log file for this chapter
+        safe_title = chapter_title.replace(' ', '_').replace(':', '_').replace('/', '_').replace('\\', '_')
+        research_log_file = f"output/research/{chapter_number:02d}_{safe_title}_research.md"
+        
+        # Initialize the research log file
+        with open(research_log_file, "w") as f:
+            f.write(f"# Research for {chapter_title}\n\n")
+            f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            f.write("## Research Findings\n\n")
         
         # Load the outline
         outline = None
@@ -480,7 +515,9 @@ class write_chapter_task(Task):
                                 "tasks_config": {},
                                 "chapter_title": chapter_title,
                                 "min_length": template["min_length"],
-                                "structure": ", ".join(template["structure"])  # Convert list to string for template
+                                "structure": ", ".join(template["structure"]),  # Convert list to string for template
+                                "research_log_file": research_log_file,  # Pass the research log file path
+                                "section_type": section_type  # Pass the section type
                         }
                 )
                 logger.info("Successfully got section_task")

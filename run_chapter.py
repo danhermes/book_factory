@@ -130,14 +130,30 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
             verbose=True
         )}
 
+        # Create context items from inputs
+        context_items = []
+        for key, value in {
+            "chapter_title": chapter_title,
+            "title": chapter_title,
+            "tasks_config": tasks_config,
+            "agents": agents,
+            "chapters": [chapter["title"] for chapter in chapters],
+            "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
+        }.items():
+            context_items.append({
+                "key": key,
+                "value": value,
+                "description": f"Input for {key}"
+            })
+
         task = write_chapter_task(
-            description="Write chapter {chapter_title} using the outline",
+            description=f"Write chapter {chapter_title} using the outline",
             expected_output="A completed chapter object with full sections",
             output_pydantic=Chapter,
             inputs={
             "chapter_title": chapter_title,
             "title": chapter_title,
-            "topic": "ChatGPT for Business",
+            #"topic": "ChatGPT for Business",
             "tasks_config":tasks_config,
             "agents": agents,
             "chapters": [chapter["title"] for chapter in chapters],
@@ -145,16 +161,6 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         }
         )
         
-        # # Kickoff the crew with the chapter title and outline sections
-        # task = write_chapter_task(inputs={
-        #     "chapter_title": chapter_title,
-        #     "title": chapter_title,
-        #     "topic": "ChatGPT for Business",
-        #     "chapters": [chapter["title"] for chapter in chapters],
-        #     "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
-        # })
-        
-
         logging.info("🚀 Crew finished successfully!")
 
         # Extract the chapter content

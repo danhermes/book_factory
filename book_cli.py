@@ -24,6 +24,7 @@ def ensure_output_dirs():
     """Ensure output directories exist"""
     os.makedirs("output/outlines", exist_ok=True)
     os.makedirs("output/chapters", exist_ok=True)
+    os.makedirs("output/research", exist_ok=True)
 
 def run_command(command):
     """Run a command and return its output"""
@@ -151,6 +152,9 @@ def main():
     parser = argparse.ArgumentParser(description="Book Writing Flow CLI")
     logging.info("✅ CLI CALLED")
     
+    # Get the Python executable path once
+    python_exe = sys.executable
+    
     # Command subparsers
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
     
@@ -226,7 +230,7 @@ def main():
         # Use the run_chapter.py script to generate the chapter with the enhanced writer crew
         logging.info("✅ run_chapter.py CALLED")
         
-        cmd = ["python", "run_chapter.py", str(args.chapter)]
+        cmd = [python_exe, "run_chapter.py", str(args.chapter)]
         if args.force:
             cmd.append("--force")
         
@@ -236,7 +240,7 @@ def main():
     elif args.command == "flow":
         # First generate the outline
         logging.info("Generating book outline...")
-        run_command(["python", "src/book_writing_flow/main.py"])
+        run_command([python_exe, "src/book_writing_flow/main.py"])
         
         # Check if the outline files were generated successfully
         if os.path.exists("output/outlines/book_outline.json"):
@@ -271,7 +275,7 @@ def main():
             # Generate each chapter
             for chapter_num in chapters_to_generate:
                 logging.info(f"Generating chapter {chapter_num}...")
-                run_command(["python", "run_chapter.py", str(chapter_num)])
+                run_command([python_exe, "run_chapter.py", str(chapter_num)])
                 
                 # The run_chapter.py script now handles copying to the output directory
         

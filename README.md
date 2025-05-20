@@ -69,6 +69,26 @@ The CLI is a wrapper around the existing scripts in the project:
 
 The CLI ensures that all output files are properly organized in the output directories.
 
+## Book Binding
+
+Once you have generated your chapters, you can compile them into a complete book PDF using the book binding script:
+
+```bash
+cd src/book_binding
+./build_book.sh
+```
+
+This script will:
+- Combine all chapter files from `output/chapters/clean/`
+- Add front and back covers (if available)
+- Include front and back matter (if available)
+- Generate a table of contents
+- Format everything into a professional PDF
+
+The final book will be saved as `output/chapters/clean/final_book.pdf`.
+
+For more details on the book binding process, see the [Book Binding README](src/book_binding/README.md).
+
 ## Examples
 
 1. Generate a complete book outline:

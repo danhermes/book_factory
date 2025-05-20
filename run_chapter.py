@@ -12,6 +12,7 @@ from crewai_tools import SerperDevTool
 from pydantic import BaseModel
 from src.book_writing_flow.crews.Writer_crew.writer_crew import ChapterWriterCrew
 from src.book_writing_flow.crews.Writer_crew.writer_crew import write_chapter_task
+from sanitize_markdown import sanitize_markdown
 
 # Configure basic logging
 logging.basicConfig(
@@ -182,10 +183,13 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
                 f.write(f"## {section.title}\n\n")
                 f.write(f"{section.content}\n\n")
         
+        # Sanitize the chapter content
+        chapter.content = sanitize_markdown(chapter.content)
+
         # Copy to output directory
         os.makedirs("output/chapters", exist_ok=True)
         output_file = f"output/chapters/{chapter_index+1:02d}_{safe_title}.md"
-        with open(output_file, "w") as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write("# " + chapter.title + "\n\n")
             f.write(chapter.content + "\n\n")
         

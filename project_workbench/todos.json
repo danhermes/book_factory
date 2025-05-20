@@ -1,0 +1,42 @@
+{
+  "tasks": [
+    {
+      "id": "TASK-1",
+      "title": "Refactor RAG file loading functions",
+      "description": "Refactor outline crew and file/PDF loading functions to remove specific RAG outline/prose file names and place those filenames into a configuration file /src/book_writing_flow/config/book_config.py for the chapter or book.",
+      "status": "TODO",
+      "priority": "MEDIUM",
+      "assignee": "dev",
+      "created": "2025-05-14",
+      "updated": "2025-05-14",
+      "due": "2025-05-28",
+      "tags": ["refactoring", "configuration"]
+    },
+    {
+      "id": "TASK-2",
+      "title": "Refactor section prompts configuration",
+      "description": "Refactor section prompts out of outline and writer crews (research?) prompt into section-type config file",
+      "status": "TODO",
+      "priority": "MEDIUM",
+      "assignee": "dev",
+      "created": "2025-05-14",
+      "updated": "2025-05-14",
+      "due": "2025-05-28",
+      "tags": ["refactoring", "prompts", "configuration"]
+    },
+    {
+      "id": "TASK-3",
+      "title": "Refactor section_writer into an agent class",
+      "description": "Convert the section_writer functionality into a proper agent class for better organization and maintainability",
+      "status": "TODO",
+      "priority": "MEDIUM",
+      "assignee": "dev",
+      "created": "2025-05-14",
+      "updated": "2025-05-14",
+      "due": "2025-05-28",
+      "tags": ["refactoring", "agent", "architecture"]
+    }
+  ],
+  "statuses": ["TODO", "IN_PROGRESS", "REVIEW", "DONE"],
+  "priorities": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+}

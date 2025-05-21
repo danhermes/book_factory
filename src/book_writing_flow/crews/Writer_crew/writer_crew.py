@@ -61,30 +61,9 @@ class ChapterWriterCrew:
 
         with open("src/book_writing_flow/crews/Writer_crew/config/tasks.yaml", "r") as f:
             self.tasks_config = yaml.safe_load(f)
-        
-        #set self.agents as the section_writer agent issue nukes it for crewai
-        self.agents = {}
-        self.agents = {
-        "section_writer": Agent(
-            config=self.agents_config["section_writer"],
-            llm=llm,
-            verbose=True
-        ),
-        "writer": Agent(
-            config=self.agents_config["writer"],
-            llm=llm,
-            verbose=True
-        ),
-        "topic_researcher": Agent(
-            config=self.agents_config["topic_researcher"],
-            llm=llm,
-            verbose=True
-        )}
 
         logger.info("🧠 self.agents keys before kickoff: %s", list(getattr(self, "agents", {}).keys()))
         logger.info("🧠 Does section_writer exist? %s", "section_writer" in getattr(self, "agents", {}))
-
-
         logger.info("ChapterWriterCrew initialized")
 
 
@@ -92,7 +71,7 @@ class ChapterWriterCrew:
     def topic_researcher(self) -> Agent:
         logger.info("Initializing topic_researcher agent")
         return Agent(config=self.agents_config["topic_researcher"],
-                     tools=[BrightDataWebSearchTool()],
+                     #tools=[BrightDataWebSearchTool()],
                      llm=llm)
     
     @agent
@@ -140,29 +119,20 @@ class ChapterWriterCrew:
             "section_content": section_content
         }
         
-    # @task
-    # def write_section(self) -> Task:
-    #     """Task for writing a single section"""
-    #     logger.info("Creating write_section task")
-    #     return Task(
-    #         config=self.tasks_config["write_section"],
-    #         agent=self.agents["section_writer"],
-    #         output_pydantic=Section
-    #     )
-
     @task
     def research_topic(self) -> Task:
         """
         Override the research_topic task to focus on the outline structure.
         """
         logger.info("Creating research_topic task")
-        # In the newer version of CrewAI, we can't modify the execute method
-        # Instead, we'll use the task's config and context to provide the necessary information
         
-        # Create a modified config with enhanced information if needed
-        task_config = dict(self.tasks_config["research_topic"])
+        # Get the chapter title from the stored inputs
+        chapter_title = None
+        if hasattr(self, '_inputs') and self._inputs:
+            chapter_title = self._inputs.get('title')
         
-        # Add additional context information
+        logger.info(f"Research task for chapter: {chapter_title}")
+        
         context_items = [
             {
                 "key": "outline_path",
@@ -181,36 +151,74 @@ class ChapterWriterCrew:
                 "value": True,
                 "description": "Whether to log research findings to a file",
                 "expected_output": "A boolean value"
+            },
+            {
+                "key": "research_output_path",
+                "value": "output/research/",
+                "description": "Path to save research findings",
+                "expected_output": "A directory path string"
             }
         ]
         
-        # Try to enhance the task with outline information
-        try:
-            # Read the outline file
-            import json
-            import os
-            
-            # First try to load from output/outlines directory
-            if os.path.exists("output/outlines/book_outline.json"):
-                with open("output/outlines/book_outline.json", 'r') as f:
-                    outline = json.load(f)
-            # Fall back to root directory if not found in output/outlines
-            elif os.path.exists("book_outline.json"):
-                with open("book_outline.json", 'r') as f:
-                    outline = json.load(f)
-            else:
-                raise FileNotFoundError("book_outline.json not found in output/outlines or root directory")
-            
-            # Add outline information to the task config
-            task_config["additional_info"] = f"Outline with {len(outline.get('chapters', []))} chapters"
-            
-            # Extract chapter titles for reference
-            chapter_titles = [chapter.get("title", "") for chapter in outline.get("chapters", [])]
-            if chapter_titles:
-                task_config["chapter_titles"] = ", ".join(chapter_titles)
-        except Exception as e:
-            logger.error(f"Error loading outline for research task: {e}")
+        # Read the outline file
+        import json
+        import os
+        task_config = dict(self.tasks_config["research_topic"])
+        # First try to load from output/outlines directory
+        if os.path.exists("output/outlines/book_outline.json"):
+            with open("output/outlines/book_outline.json", 'r') as f:
+                outline = json.load(f)
+        # Fall back to root directory if not found in output/outlines
+        elif os.path.exists("book_outline.json"):
+            with open("book_outline.json", 'r') as f:
+                outline = json.load(f)
+        else:
+            raise FileNotFoundError("book_outline.json not found in output/outlines or root directory")
         
+        # Add outline information to the task config
+        task_config["additional_info"] = f"Outline with {len(outline.get('chapters', []))} chapters"
+        
+        # Extract chapter titles for reference
+        chapter_titles = [chapter.get("title", "") for chapter in outline.get("chapters", [])]
+        if chapter_titles:
+            task_config["chapter_titles"] = ", ".join(chapter_titles)
+            
+        # Extract exact section titles and types from the current chapter only
+        if chapter_title:
+            current_chapter = None
+            for chapter in outline.get("chapters", []):
+                if chapter.get("title", "") == chapter_title:
+                    current_chapter = chapter
+                    break
+            
+            if current_chapter:
+                sections = []
+                for section in current_chapter.get("sections", []):
+                    section_title = section.get("title", "")
+                    section_type = "Unknown"
+                    
+                    # Try to extract section type from title if it's in parentheses
+                    if "(" in section_title and ")" in section_title:
+                        type_part = section_title.split("(")[-1].split(")")[0]
+                        if type_part in ["Introduction", "Topic Explanation", "Story", "Bonus Topic", "Big Box", "Outro", "Chapter Bridge"]:
+                            section_type = type_part
+                    
+                    sections.append({
+                        "title": section_title,
+                        "type": section_type
+                    })
+                
+                # Add to task config
+                task_config["sections"] = json.dumps(sections)
+                
+                # Add to context items
+                context_items.append({
+                    "key": "sections",
+                    "value": sections,
+                    "description": f"Exact section titles and types for chapter: {chapter_title}",
+                    "expected_output": "A list of section information"
+                })
+
         # Create the task with the enhanced config
         return Task(
             config=task_config,
@@ -257,6 +265,7 @@ class write_chapter_task(Task):
         # Initialize the parent Task class with required parameters
         super().__init__(description=description, expected_output=expected_output, **kwargs)
         logger.info("Creating write_chapter task")
+            
         # Store inputs in the context
         if 'inputs' in kwargs:
             self.context = kwargs.get('context', [])
@@ -270,7 +279,7 @@ class write_chapter_task(Task):
             logger.info(f"Added inputs to context: {list(kwargs['inputs'].keys())}")
         else:
             logger.warning("No inputs provided to write_chapter_task")
-    
+
     async def execute(self):
         """Custom execution logic to generate each section separately"""
         
@@ -289,25 +298,51 @@ class write_chapter_task(Task):
         # Important: We must use the exact section titles from the book_outline.md file
         # This ensures the generated chapter matches the outline exactly
         logger.info("Using exact section titles from the book outline")
-        chapter_number = 1  # Default to chapter 1
+        # chapter_number = 1  # Default to chapter 1
         
-        # Try to extract chapter number from title
-        match = re.search(r"Chapter (\d+)", chapter_title)
-        if match:
-            chapter_number = int(match.group(1))
+        # # Try to extract chapter number from title
+        # match = re.search(r"Chapter (\d+)", chapter_title)
+        # if match:
+        #     chapter_number = int(match.group(1))
         
-        # Create research directory if it doesn't exist
-        os.makedirs("output/research", exist_ok=True)
+        # # Create research directory if it doesn't exist
+        # os.makedirs("output/research", exist_ok=True)
         
-        # Create a research log file for this chapter
-        safe_title = chapter_title.replace(' ', '_').replace(':', '_').replace('/', '_').replace('\\', '_')
-        research_log_file = f"output/research/{chapter_number:02d}_{safe_title}_research.md"
+        # # Create a research log file for this chapter
+        # safe_title = chapter_title.replace(' ', '_').replace(':', '_').replace('/', '_').replace('\\', '_')
+        # research_log_file = f"output/research/{chapter_number:02d}_{safe_title}_research.md"
         
-        # Initialize the research log file
-        with open(research_log_file, "w") as f:
-            f.write(f"# Research for {chapter_title}\n\n")
-            f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-            f.write("## Research Findings\n\n")
+        # # Check if research file already exists and has content
+        # if os.path.exists(research_log_file) and os.path.getsize(research_log_file) > 0:
+        #     logger.info(f"Research file already exists: {research_log_file}")
+        # else:
+        #     # Initialize the research log file
+        #     with open(research_log_file, "w") as f:
+        #         f.write(f"# Research for {chapter_title}\n\n")
+        #         f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+        #         f.write("## Research Findings\n\n")
+                
+        #     # Execute research task to populate the file
+        #     try:
+        #         logger.info(f"Executing research_topic task for chapter: {chapter_title}")
+                
+        #         # Create a temporary task to execute research
+        #         research_task = Task(
+        #             description=f"Research the topic {chapter_title} and gather latest information about it.",
+        #             expected_output="Comprehensive research findings for the chapter",
+        #             agent=crew.agents.get("topic_researcher")
+        #         )
+                
+        #         # Execute the research task
+        #         research_result = await research_task.execute()
+                
+        #         # Save research results to file
+        #         with open(research_log_file, "a") as f:
+        #             f.write(research_result)
+                
+        #         logger.info(f"Research completed and saved to {research_log_file}")
+        #     except Exception as e:
+        #         logger.error(f"Error executing research task: {e}")
         
         # Load the outline
         outline = None
@@ -491,24 +526,58 @@ class write_chapter_task(Task):
             logger.info(f"Creating task for section: {section_title} (type: {section_type})")
             try:
                 logger.info("About to call write_section")
-                #section_task = self._instance.write_section()
-                #section_task = self._instance.tasks["write_section"]
+
                 # Get the section_writer agent from the agents.yaml file
-                with open("src/book_writing_flow/crews/Writer_crew/config/agents.yaml", "r") as f:
-                    agents_config = yaml.safe_load(f)
+                # with open("src/book_writing_flow/crews/Writer_crew/config/agents.yaml", "r") as f:
+                #     self.agents_config = yaml.safe_load(f)
+
+                # Load the research log file for this chapter
+                chapter_number = 1  # Default to chapter 1
+                # # Try to extract chapter number from title
+                match = re.search(r"Chapter (\d+)", chapter_title)
+                if match:
+                    chapter_number = int(match.group(1))
+                safe_title = chapter_title.replace(' ', '_').replace(':', '_').replace('/', '_').replace('\\', '_')
+                research_log_file = f"output/research/{chapter_number:02d}_{safe_title}_research.md"
+                # Load research data for this section if available
+                section_research = ""
+                try:
+                    if os.path.exists(research_log_file):
+                        with open(research_log_file, "r") as f:
+                            research_content = f.read()
+                            # Try to extract section-specific research
+                            section_pattern = re.escape(section_title)
+                            matches = re.findall(f"(?:^|\n).*{section_pattern}.*\n(.*?)(?:\n\n|$)", research_content, re.DOTALL | re.MULTILINE)
+                            if matches:
+                                section_research = matches[0]
+                            else:
+                                # If no exact match, use the whole research
+                                section_research = research_content
+                except Exception as e:
+                    logger.error(f"Error loading research for section {section_title}: {e}")
                 
-                # Create the section_writer agent
-                section_writer_agent = Agent(
-                    config=agents_config["section_writer"],
-                    llm=llm,
-                    verbose=True
-                )
+                # # Create the section_writer agent
+                # section_writer_agent = Agent(
+                #     config=agents_config["section_writer"],
+                #     llm=llm,
+                #     verbose=True
+                # )
+                logger.info("Create section Task")
+                # Get the agents from the task's inputs
+                agents = None
+                for item in self.context:
+                    if item.get("key") == "agents":
+                        agents = item.get("value")
+                        break
+                
+                if not agents:
+                    raise ValueError("No agents found in task inputs")
                 
                 # Create the task with the agent
                 section_task = Task(
                         description=f"Write the '{section_title}' section for the chapter",
                         expected_output="A well-written section with appropriate content",
-                        agent=section_writer_agent,  # Assign the agent to the task
+                        agent=agents["section_writer"],  # Use the section_writer agent from inputs
                         output_pydantic=Section,
                         inputs={
                                 "title": section_title,  # Use section_title instead of chapter_title
@@ -545,7 +614,7 @@ class write_chapter_task(Task):
             from crewai import Crew, Process
             # Create the section crew with the section_writer_agent
             section_crew = Crew(
-                agents=[section_writer_agent],  # Use the agent we created above
+                agents=[agents["section_writer"]],  # Use the agent from inputs
                 tasks=[section_task],
                 process=Process.sequential,
                 verbose=True
@@ -562,7 +631,7 @@ class write_chapter_task(Task):
                 # Create a default section if we couldn't extract it
                 section_content = Section(
                     chapter_title=chapter_title,
-                    title=section_title,
+                    title="ChatGPT for Business: How to Create Powerful AI Workflows",#section_title,
                     type=section_type,
                     content=f"Content for {section_title} will be generated."
                 )

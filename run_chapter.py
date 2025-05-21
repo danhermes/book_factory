@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 import os
+import re
 import sys
 import json
 import asyncio
 import argparse
 import logging
+import datetime
 import yaml
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
@@ -90,12 +92,80 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
     
     # Generate the chapter
     try:
-        # Generate the chapter
-        # Create the crew with our enhanced section-by-section approach
+        # Research the chapter topics
         crew = ChapterWriterCrew().crew()
-        
-        # Get the chapter data from the outline
+        logging.info(f"RUN_SINGLE_CHAPTER: Crew created")
+
         chapter_data = chapters[chapter_index]
+
+        result = crew.kickoff(inputs={
+            "title": chapter_title,
+            "topic": "ChatGPT for Business: How to Create Powerful AI Workflows",
+            "chapters": [chapter["title"] for chapter in chapters],
+            "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
+        })
+        
+        logging.info(f"Checking result.pydantic: {hasattr(result, 'pydantic')}")
+        if hasattr(result, 'pydantic'):
+            logging.info(f"Result.pydantic type: {type(result.pydantic)}")
+            logging.info(f"Result.pydantic value: {result.pydantic}")
+        else:
+            logging.info("Result has no pydantic attribute, checking raw")
+        if hasattr(result, 'raw'):
+            logging.info(f"Result.raw type: {type(result.raw)}")
+            logging.info(f"Result.raw value: {result.raw}")
+        else:
+            logging.info("Result has no raw attribute either")
+
+
+        # # Extract the research content
+        # if result.pydantic:
+        #     research_content = result.pydantic
+        # else:
+        #     research_content = ""
+        
+        # Extract the research content
+        if result.pydantic:
+            research_content = result.pydantic
+        elif hasattr(result, 'raw') and result.raw:
+            research_content = result.raw
+        else:
+            research_content = ""
+
+
+        # Ensure research directory exists
+        os.makedirs("output/research", exist_ok=True)
+        chapter_number = 1  # Default to chapter 1
+        
+        # Try to extract chapter number from title
+        match = re.search(r"Chapter (\d+)", chapter_title)
+        if match:
+            chapter_number = int(match.group(1))
+                
+        # Create a research log file for this chapter
+        safe_title = chapter_title.replace(' ', '_').replace(':', '_').replace('/', '_').replace('\\', '_')
+        research_log_file = f"output/research/{chapter_number:02d}_{safe_title}_research.md"
+        
+        logging.info(f"Research content type: {type(research_content)}")
+        logging.info(f"Research content length: {len(str(research_content))}")
+        logging.info(f"First 100 chars of research content: {str(research_content)[:100]}")
+
+
+        # Check if research file already exists and has content
+        if os.path.exists(research_log_file) and os.path.getsize(research_log_file) > 0:
+            logger.info(f"Research file already exists: {research_log_file}")
+        else:
+            # Initialize the research log file
+            with open(research_log_file, "w") as f:
+                f.write(f"# Research for {chapter_title}\n\n")
+                f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                f.write("## Research Findings\n\n")
+
+        # Save research results to file
+        with open(research_log_file, "a") as f:
+            f.write(research_content)
+            
+        logger.info(f"Research completed and saved to {research_log_file}")
         
         # Print the outline sections for debugging
         logging.info(f"Generating chapter with these sections:")

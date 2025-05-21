@@ -35,6 +35,30 @@
       "updated": "2025-05-14",
       "due": "2025-05-28",
       "tags": ["refactoring", "agent", "architecture"]
+    },
+    {
+      "id": "TASK-4",
+      "title": "Expand outline_writer agent with case studies for all chapters",
+      "description": "Expand the outline_writer method in outline_crew.py to include case study lists for chapters 2-7, similar to how chapter1_stories is currently implemented. Each chapter should have its own key with relevant case studies that align with the chapter's theme.",
+      "status": "TODO",
+      "priority": "MEDIUM",
+      "assignee": "dev",
+      "created": "2025-05-20",
+      "updated": "2025-05-20",
+      "due": "2025-06-03",
+      "tags": ["enhancement", "content", "agent"]
+    },
+    {
+      "id": "TASK-5",
+      "title": "Implement file-based research data flow for topic_researcher",
+      "description": "Implement a file-based approach to make the topic_researcher work for both outline and chapters. The researcher should execute the research_topic task, save research data to standardized files in the output/research/ directory, and the section_writer should read from these files when generating content. This approach maintains the existing architecture while ensuring research data is properly generated, stored, and utilized.",
+      "status": "TODO",
+      "priority": "HIGH",
+      "assignee": "dev",
+      "created": "2025-05-20",
+      "updated": "2025-05-20",
+      "due": "2025-06-03",
+      "tags": ["enhancement", "research", "functionality"]
     }
   ],
   "statuses": ["TODO", "IN_PROGRESS", "REVIEW", "DONE"],

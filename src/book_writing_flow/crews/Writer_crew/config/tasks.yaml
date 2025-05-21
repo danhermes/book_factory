@@ -33,7 +33,15 @@ research_topic:
     - Look for expert quotes that frame the topic effectively
     
     Story sections:
+    - For story sections, you MUST include 1-3 ChatGPT prompts that would be used to implement the solution described in the story.
+    - These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
+    - Format the prompts as distinct blocks with quotes and show how they would be used in the story.
+    
     - Research real-world examples that can inspire fictional case studies
+    - The purpose of the story is to bring the concepts into clear focus using one or more ChatGPT prompts.
+    - Increase the story ChatGPT prompt number as you proceed through the book. Begin with one prompt per story, then one to two, then one to three, then up to four prompts per story.
+    - Relate multiple ChatGPT prompts either cumulatively, building upon one another, or separately to address the topic.
+    - Use the ChatGPT prompt scenarios and solutions to build towards larger solutions in AI transformation.
     - Gather industry-specific details for the company (size, market, challenges)
     - Find typical implementation approaches for the AI application
     - Research realistic metrics and outcomes for similar implementations
@@ -118,6 +126,11 @@ write_section:
     This section is of type {type} and should be at least {min_length} words.
     CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
     Follow the recommended structure for this section type: {structure}
+    
+    For story sections, you MUST include 1-4 ChatGPT prompts that would be used to implement the solution described in the story.
+    These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
+    Format the prompts as distinct blocks with "PROMPT:" prefix and show how they would be used in the story.
+        
     Incorporate the RAG content provided to maintain consistency with existing materials.
     Ensure the section is engaging, well-researched, and provides substantial depth.
     Consider the surrounding sections for context: Previous section: {previous_section}, Next section: {next_section}
@@ -146,7 +159,7 @@ write_section:
     Section-specific rules:
     
     Introduction sections:
-    - Begin with a compelling hook related to the chapter theme
+    - Begin with a compelling hook related to the chapter theme and upcoming stories and their ChatGPT prompts.
     - Clearly state the chapter's main premise and why it matters
     - Preview the key concepts that will be covered
     - Set the tone and context for the entire chapter
@@ -155,6 +168,14 @@ write_section:
     - Length: 600-800 words
     
     Story sections:
+    - The purpose of the story is to bring the concept into clear focus using one or more ChatGPT prompts.
+    - For story sections, you MUST include 1-4 ChatGPT prompts that would be used to implement the solution described in the story.
+    - These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
+    - Format the prompts as distinct blocks with quotes and show how they would be used in the story.
+    - Increase the story ChatGPT prompt number as you proceed through the book. Begin with one prompt per story, then one to two, then one to three, then up to four prompts per story.
+    - Relate multiple ChatGPT prompts either cumulatively, building upon one another, or separately to address the topic.
+    - Use the ChatGPT prompt scenarios and solutions to build towards larger solutions in AI transformation.
+    - Familiarize the reader with the concepts and the benefits USING THE PROMPTS. 
     - Make the concepts into a play that makes them come alive.
     - Present a fictional but realistic business scenario with the named company
     - Include specific details about the company size, industry, and challenge
@@ -163,7 +184,7 @@ write_section:
     - Use narrative elements (characters, conflict, resolution)
     - Real experiences. Authoritative and specific observations. Poetry and humor.
     - Don't allude, hand-wave, or make vague references to progress or benefits. THIS IS CRITICAL.
-    - Stpry Templates. Here are examples of story templates. Use these and come up with your own like these:
+    - Stpry Templates. Here are examples of story templates. Use scenarioslike these:
       1. Fix the Problem - Begin the story with a challenge or problem that is compelling and specific. Spin an arc where the AI improves and resolves this challenge or problem. Land conclusively on a resolution.
       2. Create New Possibilities - Begin with a dearth of ideas and solutions. Spin an arc where the AI provides create new ideas and punches through the block. Resolve soundly using the AI direction.
       3. Connect the Dots - Begin with too much data and systems ouit of alignment. Spin an arc where the AI solution draws together data and systems into a useable, compelling solution. Land on a successful resolution.
@@ -180,7 +201,8 @@ write_section:
     
     Topic Explanation sections:
     - Dicuss topics in the context of associated story or stories(preceding or following) in this section where applicable.
-    - Allude to higher level relevance but KEEP THIS EXPLANATION GROUNDED and HANDS-ON with the specific types of problems solved and the specific types of solutions offered.
+    - Allude to higher level relevance KEEP THIS EXPLANATION GROUNDED and HANDS-ON by referencing the ChatGPT prompts.
+    - Work from the ChatGPT prompt towards specific types of problems solved and the specific types of solutions offered.
     - Discuss practical implementation details
     - Provide clear, accessible explanations of technical concepts
     - Include practical implementation details
@@ -196,6 +218,7 @@ write_section:
     - Discuss topics related to the Topic Explanation sections to broaden the reader's understanding.
     - Look for complementary concepts, technologies or methodologies
     - Refer to the Stories when relevant.
+    - Utilize new ChatGPT prompts if needed.
     - Explain the business value of the topic.
     - Give some practical examples and use cases.
     - Offer some technical depth.
@@ -207,6 +230,7 @@ write_section:
     
     Big Box sections:
     - Overarching AI concepts to the chapter and section topic.
+    - Reference the story prompts to keep the concepts bound to the stories.
     - Employ technical depth on AI concepts
     - Use frameworks, models, or methodologies
     - Use technical specifications and requirements
@@ -215,7 +239,7 @@ write_section:
     - Length: 900-1200 words
     
     Chapter Summary sections:
-    - Reinforce the main Chapter takeaway and business value
+    - Reinforce the main Chapter takeaway and business value - use the prompts.
     - Identify key takeaways from the chapter and all previous section in it, summarizing into key points and concepts: NOT bullet points.
     - Tie stories together casually and naturally into summary points
     - Use expert recommendations for implementation of this chapter's topic 
@@ -224,7 +248,7 @@ write_section:
     - Length: 800-1200 words
     
     Chapter Bridge sections:
-    - Create a logical transition to the next chapter
+    - Create a logical transition to the next chapter and its prompts.
     - Connect the current chapter's concepts to upcoming themes
     - Maintain narrative flow between chapters
     - Include a question or thought that leads into the next topic

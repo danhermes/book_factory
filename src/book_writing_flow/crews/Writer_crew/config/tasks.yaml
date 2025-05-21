@@ -1,6 +1,10 @@
 research_topic:
   description: >
     Research the topic {title} and gather latest information about it.
+    CRITICAL: You MUST use EXACTLY the section titles from the outline in your research.
+    DO NOT create your own section titles or modify the existing ones in any way.
+    The exact section titles and types are provided in the sections context.
+    DO NOT provide guidance about how to RESEARCH the topic. DO YOUR OWN RESEARCH and share it.
     Focus your research on the specific sections outlined in the book outline for this chapter.
     For each section (Introduction, Story, Topic Explanation, Bonus Topic, Big Box, etc.), gather relevant information that will support writing that section exactly as described in the outline.
     Tailor your research approach to each section type's specific requirements.

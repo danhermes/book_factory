@@ -24,7 +24,7 @@ write_outline:
     Your outline MUST include at least 8-12 detailed sections per chapter that directly reference the content from the RAG files.
   agent: outline_writer
   expected_output: >
-    A beautifully crafted outline for a book about {topic} in the following format:
+    A beautifully crafted outline for a book about {topic} in a format like this:
     {
       "total_chapters": number,
       "chapters": [

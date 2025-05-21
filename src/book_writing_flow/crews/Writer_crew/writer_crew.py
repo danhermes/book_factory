@@ -210,7 +210,7 @@ class ChapterWriterCrew:
                 
                 # Add to task config
                 task_config["sections"] = json.dumps(sections)
-                
+                logging.info(f"Sections: {sections}")
                 # Add to context items
                 context_items.append({
                     "key": "sections",

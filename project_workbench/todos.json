@@ -59,6 +59,18 @@
       "updated": "2025-05-20",
       "due": "2025-06-03",
       "tags": ["enhancement", "research", "functionality"]
+    },
+    {
+      "id": "TASK-6",
+      "title": "Learn Roomodes and rules",
+      "description": "Study and understand how to create and configure Roo modes and rules for customizing AI assistant behavior. See Roo's roo_rules_guide.md for comprehensive information.",
+      "status": "TODO",
+      "priority": "MEDIUM",
+      "assignee": "dev",
+      "created": "2025-05-21",
+      "updated": "2025-05-21",
+      "due": "2025-06-04",
+      "tags": ["learning", "configuration", "roo"]
     }
   ],
   "statuses": ["TODO", "IN_PROGRESS", "REVIEW", "DONE"],

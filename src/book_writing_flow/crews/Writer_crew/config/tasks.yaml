@@ -1,9 +1,10 @@
 research_topic:
   description: >
-    Research the topic {title} and gather latest information about it.
+    Research the chapter title "{title}" topics in the context of the book title "{topic}"  and gather latest information about it.
     CRITICAL: You MUST use EXACTLY the section titles from the outline in your research.
-    DO NOT create your own section titles or modify the existing ones in any way.
-    The exact section titles and types are provided in the sections context.
+    DO NOT create your own chapter or section titles or modify the existing ones in any way. Use these from the outline:
+    - Chapters in the book are: {chapters}.
+    - Section titles and types are provided in the sections context: {outline_sections}.
     DO NOT provide guidance about how to RESEARCH the topic. DO YOUR OWN RESEARCH and share it.
     Focus your research on the specific sections outlined in the book outline for this chapter.
     For each section (Introduction, Story, Topic Explanation, Bonus Topic, Big Box, etc.), gather relevant information that will support writing that section exactly as described in the outline.
@@ -13,16 +14,28 @@ research_topic:
     Continuously bridge the higher level concepts with tangible demonstrative details, scenarios, and examples.
   expected_output: >
     A comprehensive set of insights and key points about the topic {title}, organized by each section in the outline.
-    For each section, provide:
-    1. The exact section title from the outline
+    For each section, provide 500-1000 words:
+    1. The exact section title from the outline.
     2. The section type (Introduction, Story, Topic Explanation, etc.)
     3. Relevant research findings, facts, examples, and insights specific to that section
-    4. For stories, include details about the fictional company and their specific use case
+    4. For stories, include ChatGPT prompts, details about the fictional company and their specific use case
   rules: >
-    - Research MUST be organized by the exact sections in the outline
+    - Research MUST be organized by the exact sections in the outline: {outline_sections}
     - Each section's research should align with its specific type and purpose
+    Writing Style:
+      - Use the style of Dan Hermes: lean, slightly casual, matter-of-fact, to-the-point, slightly poetic and humorous, with a touch of technical depth.
+      - Interweave realistic anecdotes with facts and relevant ChatGPT prompts.
+    Keep It Real:
+      - Balance generalizations like:
+        - "Employ AI automation to..." with specific details like "placed the teams daily repetitive tasks on cruise control."
+        - "implementing AI in their onboarding" with "personalizing intake using helpful chatbot to determine their expectations"
+        - "reduced administrative overheads with AI" with "anticipating workloads, summarizing team communications, and prioritizing tasks and issues"
+      - Include SUBSTANTIAL research, data, statistics, and expert opinions to support all claims
+      - Cite specific research studies, surveys, and industry reports where appropriate
+      - Develop DETAILED case studies with specific metrics, challenges, and outcomes
+      - Include real-world implementation details, not just conceptual overviews
     
-    Section-specific research guidelines:
+    Section type research guidelines:
     
     Introduction sections:
     - Find simple themes, concepts, and ideas that can be used to bridge the higher level concepts with tangible demonstrative details, scenarios, and examples.
@@ -33,12 +46,17 @@ research_topic:
     - Look for expert quotes that frame the topic effectively
     
     Story sections:
-    - For story sections, you MUST include 1-3 ChatGPT prompts that would be used to implement the solution described in the story.
-    - These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
-    - Format the prompts as distinct blocks with quotes and show how they would be used in the story.
-    
+    - For story sections, you MUST include 1-3 ChatGPT prompts (this does not refer to prompt results or ChatGPT quotes) that would be used to implement the solution described in the story.
+    - ChatGPT Prompts:
+      - DO NOT EXAGGERATE OR ASCRIBE FALSE ABILITIES TO CHATGPT! Clearly state when features are the result of ChatGPT, and when they require a larger implementation
+      - Explain when ChatGPT will require additional uploaded documentation or data to achieve the desired result.
+      - No magic buttons or hyperbolic prompts or promises that ChatGPT could not deliver on or more appropriate for OpenAI.
+      - Larger implementations to move beyond ChatGPT prompting might include task automation using GPTs, OpenAI, RAG models, consulting, or other AI tools and solutions.
+      - These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
+      - Format the prompts as distinct blocks with quotes SET APART WITH A LINE BREAK above and below each prompt and show how they would be used in the story.
+    Also:
     - Research real-world examples that can inspire fictional case studies
-    - The purpose of the story is to bring the concepts into clear focus using one or more ChatGPT prompts.
+    - The purpose of the story is to bring the concepts into clear focus using one or more ChatGPT prompts (not prompt results or ChatGPT quotes).
     - Increase the story ChatGPT prompt number as you proceed through the book. Begin with one prompt per story, then one to two, then one to three, then up to four prompts per story.
     - Relate multiple ChatGPT prompts either cumulatively, building upon one another, or separately to address the topic.
     - Use the ChatGPT prompt scenarios and solutions to build towards larger solutions in AI transformation.
@@ -111,15 +129,9 @@ write_chapter:
     - MUST adhere to the section type (Introduction, Story, Topic Explanation, etc.) in content and style
     - Maintain consistent tone and style throughout the chapter
     - Ensure all content directly supports the chapter's main theme
-    - Use concrete examples and practical applications
-    - Include SUBSTANTIAL research, data, statistics, and expert opinions to support all claims
-    - Cite specific research studies, surveys, and industry reports where appropriate
-    - Develop DETAILED case studies with specific metrics, challenges, and outcomes
-    - Include real-world implementation details, not just conceptual overviews
-    - Balance technical depth with accessibility
     - Avoid repetition between sections
     - Write approximately 4000-5000 words total with proper depth in each section
-  
+
 write_section:
   description: >
     Write a detailed section titled "{title}" for the chapter "{chapter_title}".
@@ -155,7 +167,28 @@ write_section:
     - Ensure the content flows well with surrounding sections
     - MUST adhere to the section type (Introduction, Story, Topic Explanation, etc.) in content and style
     - MUST log all research findings used in the section to the specified research log file
-    
+    Writing Style:
+      - Use the style of Dan Hermes: lean, slightly casual, matter-of-fact, to-the-point, slightly poetic and humorous, with a touch of technical depth.
+      - Interweave realistic anecdotes with facts and relevant ChatGPT prompts.
+    Keep It Real:
+      - Balance high level concepts with very specific details.
+      - Balance generalizations like:
+        - "Employ AI automation with specific details like "placed the teams daily repetitive tasks on cruise control."
+        - "implementing AI in their onboarding" with "personalizing intake using helpful chatbot to determine their expectations"
+        - "reduced administrative overheads with AI" with "anticipating workloads, summarizing team communications, and prioritizing tasks and issues"
+      - Include SUBSTANTIAL research, data, statistics, and expert opinions to support all claims
+      - Cite specific research studies, surveys, and industry reports where appropriate
+      - Develop DETAILED case studies with specific metrics, challenges, and outcomes
+      - Include real-world implementation details, not just conceptual overviews
+    ChatGPT Prompts:
+      - DO NOT TOUT CHATGPT AS AN ORGANIZATIONAL SOLUTION OF ANY KIND. IT IS A TEACHING TOOL AND A PERSONAL ASSISTANT.
+      - DO NOT EXAGGERATE OR ASCRIBE FALSE ABILITIES TO CHATGPT! Clearly state when features are the result of ChatGPT, and when they require a larger implementation
+      - Explain when ChatGPT will require additional uploaded documentation or data to achieve the desired result.
+      - No magic buttons or hyperbolic prompts or promises that ChatGPT could not deliver on or more appropriate for OpenAI.
+      - Larger implementations to move beyond ChatGPT prompting might include task automation using GPTs, OpenAI, RAG models, consulting, or other AI tools and solutions.
+      - These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
+      - Format the prompts as distinct blocks with quotes SET APART WITH A LINE BREAK above and below each prompt and show how they would be used in the story.
+
     Section-specific rules:
     
     Introduction sections:

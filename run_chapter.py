@@ -157,8 +157,12 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         else:
             # Initialize the research log file
             with open(research_log_file, "w") as f:
-                f.write(f"# Research for {chapter_title}\n\n")
-                f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                f.write(f"# Research for Chapter {chapter_index+1}: {chapter_title}\n\n")
+                #f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+                from datetime import datetime
+                from zoneinfo import ZoneInfo
+                local_time = datetime.now(ZoneInfo("America/New_York"))
+                f.write(f"Generated on: {local_time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
                 f.write("## Research Findings\n\n")
 
         # Save research results to file
@@ -244,23 +248,23 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         logging.info(f"Chapter +++++++++++++++++++++++++++++++++")
         # Print the chapter content for debugging
         # Save the chapter
-        with open(chapter_file, "w") as f:
-            f.write("# " + chapter.title + "\n\n")
-            f.write(chapter.content + "\n\n")
+        # with open(chapter_file, "w") as f:
+        #     f.write("# Chapter " + chapter.chapter_number + ": " + chapter.title + "\n\n")
+        #     f.write(chapter.content + "\n\n")
             
-            # Write each section
-            for section in chapter.sections:
-                f.write(f"## {section.title}\n\n")
-                f.write(f"{section.content}\n\n")
+        # # Write each section
+        # for section in chapter.sections:
+        #     f.write(f"## {section.title}\n\n")
+        #     f.write(f"{section.content}\n\n")
         
+        logging.info(f"Sanitize chapter")
         # Sanitize the chapter content
         chapter.content = sanitize_markdown(chapter.content)
-
         # Copy to output directory
         os.makedirs("output/chapters", exist_ok=True)
         output_file = f"output/chapters/{chapter_index+1:02d}_{safe_title}.md"
+        logging.info(f"Save chapter to {output_file}")
         with open(output_file, "w", encoding="utf-8") as f:
-            f.write("# " + chapter.title + "\n\n")
             f.write(chapter.content + "\n\n")
         
         logging.info(f"Successfully generated and saved chapter {chapter_index+1} to {chapter_file}")

@@ -1,8 +1,14 @@
 research_topic:
   description: >
-    Research the chapter title "{title}" topics in the context of the book title "{topic}"  and gather latest information about it.
-    CRITICAL: You MUST use EXACTLY the section titles from the outline in your research.
-    DO NOT create your own chapter or section titles or modify the existing ones in any way. Use these from the outline:
+    Research the chapter title "{title}" topics in the context of the book title "{topic}" and gather latest information about it.
+    Material must hinge on two things:
+    - The section titles from the outline
+    - The ChatGPT prompts you create for the stories
+    Weave your narrative around section topics and ChatGPT prompts.
+    If this section is a story, then produce the ChatGPT prompts FIRST, before writing the story.
+    CRITICAL: 
+    - You MUST use EXACTLY the section titles from the outline in your research.
+    - DO NOT create your own chapter or section titles or modify the existing ones in any way. Use these from the outline:
     - Chapters in the book are: {chapters}.
     - Section titles and types are provided in the sections context: {outline_sections}.
     DO NOT provide guidance about how to RESEARCH the topic. DO YOUR OWN RESEARCH and share it.
@@ -14,6 +20,7 @@ research_topic:
     Continuously bridge the higher level concepts with tangible demonstrative details, scenarios, and examples.
   expected_output: >
     A comprehensive set of insights and key points about the topic {title}, organized by each section in the outline.
+    Each section title MUST be prefixed with "###". This is critical.
     For each section, provide 500-1000 words:
     1. The exact section title from the outline.
     2. The section type (Introduction, Story, Topic Explanation, etc.)
@@ -47,7 +54,12 @@ research_topic:
     
     Story sections:
     - For story sections, you MUST include 1-3 ChatGPT prompts (this does not refer to prompt results or ChatGPT quotes) that would be used to implement the solution described in the story.
+    - Produce the ChatGPT prompts FIRST, before writing the story. Make these ChatGPT prompts REAL GPT INSTRUCTIONS: not ChatGPT exclamations or quotes or anything else that might loosely be called a prompt.
     - ChatGPT Prompts:
+      - Prompts should help an employee with their work if they worked at the fictional company.
+      - Prompts must be usable by the employee to assist them in doing their everyday work.
+      - Prompts should demonstrate to the reader how to use AI to achieve results in their own work.
+      - Prompts are NOT for listing cool AI features or capabilities!
       - DO NOT EXAGGERATE OR ASCRIBE FALSE ABILITIES TO CHATGPT! Clearly state when features are the result of ChatGPT, and when they require a larger implementation
       - Explain when ChatGPT will require additional uploaded documentation or data to achieve the desired result.
       - No magic buttons or hyperbolic prompts or promises that ChatGPT could not deliver on or more appropriate for OpenAI.
@@ -123,7 +135,9 @@ write_chapter:
     A beautifully crafted, thoroughly researched chapter about the topic {title} that follows the outline exactly, with each section properly developed according to its type and meeting or exceeding its minimum word count requirement.
   rules: >
     - CRITICAL: MUST use EXACTLY the section titles from the outline in the exact order specified
+    - CRITICAL: You MUST use EXACTLY the ChatGPT prompts from the outline in your research.
     - DO NOT create your own section titles or change the order
+    - DO NOT create your own ChatGPT prompts or change the order
     - MUST include ALL sections from the outline in the exact order specified
     - MUST maintain the exact section titles as they appear in the outline
     - MUST adhere to the section type (Introduction, Story, Topic Explanation, etc.) in content and style
@@ -135,7 +149,7 @@ write_chapter:
 write_section:
   description: >
     Write a detailed section titled "{title}" for the chapter "{chapter_title}".
-    This section is of type {type} and should be at least {min_length} words.
+    This section is of type {section_type} and should be at least {min_length} words.
     CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
     Follow the recommended structure for this section type: {structure}
     
@@ -145,19 +159,22 @@ write_section:
         
     Incorporate the RAG content provided to maintain consistency with existing materials.
     Ensure the section is engaging, well-researched, and provides substantial depth.
+
     Consider the surrounding sections for context: Previous section: {previous_section}, Next section: {next_section}
-    
-    IMPORTANT: You MUST log all research findings used in this section to the research log file at {research_log_file}.
-    For each research finding, include:
-    1. The source of the research (e.g., "Web search", "RAG content")
-    2. The specific information or insight
-    3. How you used this research in your writing
+
+    IMPORTANT:
+    - You must use the section research and ChatGPT prompts provided here:
+    *{section_research}*
+    You must faithfully use the RAG content provided here(if any):
+    *{rag_content}*
+
   expected_output: >
     A beautifully crafted, thoroughly researched section titled "{title}" that meets or exceeds the minimum length of {min_length} words.
     The section should follow the structure provided and incorporate the RAG content while maintaining consistency with the chapter theme.
     A log of all research findings used in the section, saved to the specified research log file.
   rules: >
     - CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
+    - CRITICAL: You MUST use EXACTLY the ChatGPT prompts from the research provided. DO NOT modify or change the prompts in any way.
     - The section must meet or exceed the minimum word count of {min_length} words
     - Follow the recommended structure for this section type: {structure}
     - Incorporate the RAG content provided to maintain consistency with existing materials
@@ -202,7 +219,8 @@ write_section:
     
     Story sections:
     - The purpose of the story is to bring the concept into clear focus using one or more ChatGPT prompts.
-    - For story sections, you MUST include 1-4 ChatGPT prompts that would be used to implement the solution described in the story.
+    - For story sections, you MUST include the ChatGPT prompts in the provided research.
+    - DO NOT create your own ChatGPT prompts or change the order.
     - These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
     - Format the prompts as distinct blocks with quotes and show how they would be used in the story.
     - Increase the story ChatGPT prompt number as you proceed through the book. Begin with one prompt per story, then one to two, then one to three, then up to four prompts per story.

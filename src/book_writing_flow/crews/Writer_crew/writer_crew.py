@@ -1,3 +1,4 @@
+import sys
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
@@ -17,6 +18,22 @@ from src.book_writing_flow.tools.rag_utils import RagContentProvider
 logger = logging.getLogger(__name__)
 # Set the level to INFO to ensure messages are logged
 logger.setLevel(logging.INFO)
+
+# Add file handler for logging to a file
+import os
+from logging.handlers import RotatingFileHandler
+# Create logs directory if it doesn't exist
+os.makedirs("logs", exist_ok=True)
+# Create a file handler for this module
+file_handler = RotatingFileHandler(
+    "logs/writer_crew.log",
+    maxBytes=10485760,  # 10MB
+    backupCount=5,      # Keep 5 backup logs
+    encoding="utf-8"
+)
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
 # Don't add handlers here, let the root logger handle output
 
 llm = LLM(model="gpt-4o")
@@ -298,52 +315,7 @@ class write_chapter_task(Task):
         # Important: We must use the exact section titles from the book_outline.md file
         # This ensures the generated chapter matches the outline exactly
         logger.info("Using exact section titles from the book outline")
-        # chapter_number = 1  # Default to chapter 1
-        
-        # # Try to extract chapter number from title
-        # match = re.search(r"Chapter (\d+)", chapter_title)
-        # if match:
-        #     chapter_number = int(match.group(1))
-        
-        # # Create research directory if it doesn't exist
-        # os.makedirs("output/research", exist_ok=True)
-        
-        # # Create a research log file for this chapter
-        # safe_title = chapter_title.replace(' ', '_').replace(':', '_').replace('/', '_').replace('\\', '_')
-        # research_log_file = f"output/research/{chapter_number:02d}_{safe_title}_research.md"
-        
-        # # Check if research file already exists and has content
-        # if os.path.exists(research_log_file) and os.path.getsize(research_log_file) > 0:
-        #     logger.info(f"Research file already exists: {research_log_file}")
-        # else:
-        #     # Initialize the research log file
-        #     with open(research_log_file, "w") as f:
-        #         f.write(f"# Research for {chapter_title}\n\n")
-        #         f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-        #         f.write("## Research Findings\n\n")
-                
-        #     # Execute research task to populate the file
-        #     try:
-        #         logger.info(f"Executing research_topic task for chapter: {chapter_title}")
-                
-        #         # Create a temporary task to execute research
-        #         research_task = Task(
-        #             description=f"Research the topic {chapter_title} and gather latest information about it.",
-        #             expected_output="Comprehensive research findings for the chapter",
-        #             agent=crew.agents.get("topic_researcher")
-        #         )
-                
-        #         # Execute the research task
-        #         research_result = await research_task.execute()
-                
-        #         # Save research results to file
-        #         with open(research_log_file, "a") as f:
-        #             f.write(research_result)
-                
-        #         logger.info(f"Research completed and saved to {research_log_file}")
-        #     except Exception as e:
-        #         logger.error(f"Error executing research task: {e}")
-        
+         
         # Load the outline
         outline = None
         try:
@@ -422,38 +394,7 @@ class write_chapter_task(Task):
                     section_templates = json.load(f)
         except Exception as e:
             logger.error(f"Error loading section templates: {e}")
-            # # Create default section templates
-            # section_templates = {
-            #     "Introduction": {
-            #         "min_length": 600,
-            #         "structure": ["Opening hook", "Context", "Preview of key concepts"]
-            #     },
-            #     "Story": {
-            #         "min_length": 800,
-            #         "structure": ["Company background", "Challenge", "Solution", "Results"]
-            #     },
-            #     "Topic Explanation": {
-            #         "min_length": 700,
-            #         "structure": ["Definition", "Key components", "Best practices"]
-            #     },
-            #     "Bonus Topic": {
-            #         "min_length": 500,
-            #         "structure": ["Introduction", "Key insights", "Applications"]
-            #     },
-            #     "Big Box": {
-            #         "min_length": 900,
-            #         "structure": ["Technical overview", "Implementation details", "Advanced concepts"]
-            #     },
-            #     "Outro": {
-            #         "min_length": 500,
-            #         "structure": ["Summary", "Key takeaways", "Future outlook"]
-            #     },
-            #     "Chapter Bridge": {
-            #         "min_length": 300,
-            #         "structure": ["Recap", "Connection to next chapter", "Preview"]
-            #     }
-            # }
-        
+ 
         # Add debug logging
         logger.info("About to call get_rag_content")
         try:
@@ -499,7 +440,7 @@ class write_chapter_task(Task):
                 "min_length": 500,
                 "structure": ["Introduction", "Main content", "Conclusion"]
             })
-            logger.info(f"TDonr Templating: {section_title}")   
+            logger.info(f"Templating: {section_title}")   
             # Get section-specific RAG content
             section_rag = ""
             if section_title in rag_content["section_content"]:
@@ -508,19 +449,6 @@ class write_chapter_task(Task):
             # Get surrounding sections for context
             prev_section = outline_sections[i-1] if i > 0 else None
             next_section = outline_sections[i+1] if i < len(outline_sections) - 1 else None
-            
-            # # Create section input
-            # section_input = SectionInput(
-            #     title=section_title,
-            #     type=section_type,
-            #     chapter_title=chapter_title,
-            #     chapter_number=chapter_number,
-            #     min_length=template["min_length"],
-            #     structure=template["structure"],
-            #     rag_content=section_rag,
-            #     previous_section=prev_section,
-            #     next_section=next_section
-            # )
             
             # Generate the section using the section writer task
             logger.info(f"Creating task for section: {section_title} (type: {section_type})")
@@ -543,25 +471,45 @@ class write_chapter_task(Task):
                 section_research = ""
                 try:
                     if os.path.exists(research_log_file):
+                        logger.info(f"Loading research from file: {research_log_file}")
                         with open(research_log_file, "r") as f:
                             research_content = f.read()
+                            logger.info(f"Research file loaded: {len(research_content)} characters")
                             # Try to extract section-specific research
-                            section_pattern = re.escape(section_title)
-                            matches = re.findall(f"(?:^|\n).*{section_pattern}.*\n(.*?)(?:\n\n|$)", research_content, re.DOTALL | re.MULTILINE)
-                            if matches:
-                                section_research = matches[0]
+                            #section_pattern = re.escape(section_title)
+                            #matches = re.findall(f"(?:^|\n).*{section_pattern}.*\n(.*?)(?:\n\n|$)", research_content, re.DOTALL | re.MULTILINE)
+                            logger.info(f"Processing section title: '{section_title}'")
+                            #section_base_title = section_title.split(" (")[0] if " (" in section_title else section_title
+                            #logger.info(f"Base section title: '{section_base_title}'")
+                            logger.info(f"Research content 100 chars: '{research_content[:100]}'")
+                            #logger.info(f"Escaped section pattern: '{section_pattern}'")
+                            # Match from this section header to the next section header or end of file
+                            #pattern = f"\*\*Section:\s*{section_pattern}\*\*\s*\n(.*?)(?=\n\n\*\*Section:|$)"
+                            #logger.info(f"Full regex pattern: '{pattern}'")
+                            #matches = re.findall(f"\*\*Section:\s*{section_pattern}\*\*\s*\n(.*?)(?=\n\n\*\*Section:|$)", research_content, re.DOTALL)
+                            escaped_title = re.escape(section_title.strip())
+                            logger.info(f"Escaped section title: '{escaped_title}'")
+                            pattern = rf"^###\ {escaped_title}\n(.*?)(?=^### |\Z)"
+                            logger.info(f"Full regex pattern: '{pattern}'")
+                            match = []
+                            match = re.search(pattern, research_content, re.DOTALL | re.MULTILINE)
+                            logger.info(f"Match: {match}")
+                            #logger.info(f"Found {len(match)} match")
+                            if match:
+                                section_research = match.group(0).strip()
+                                logger.info(f"Match found! Section research length: {len(section_research)}")
+                                #logger.info(f"**** Section research: {section_research}")
                             else:
                                 # If no exact match, use the whole research
                                 section_research = research_content
+                                logger.info("No match found, using entire research content")
+                    else:
+                        logger.info(f"Research file does not exist: {research_log_file}")
+                    #logging.info(f"***** section_research: {section_research}")
+                    #logger.info(f"***** section_research length: {len(section_research)}")
                 except Exception as e:
                     logger.error(f"Error loading research for section {section_title}: {e}")
-                
-                # # Create the section_writer agent
-                # section_writer_agent = Agent(
-                #     config=agents_config["section_writer"],
-                #     llm=llm,
-                #     verbose=True
-                # )
+
                 logger.info("Create section Task")
                 # Get the agents from the task's inputs
                 agents = None
@@ -569,10 +517,21 @@ class write_chapter_task(Task):
                     if item.get("key") == "agents":
                         agents = item.get("value")
                         break
-                
                 if not agents:
                     raise ValueError("No agents found in task inputs")
                 
+                logger.info(f"***+++ Research file exists: {os.path.exists(research_log_file)}")
+                if os.path.exists(research_log_file):
+                    logger.info(f"Research file size: {os.path.getsize(research_log_file)} bytes")
+                    #logger.info(f"First 200 chars of research content: {research_content}")
+                    logger.info(f"Section-specific research found: {bool(match)}")
+                    logger.info(f"Section base title: {section_title}")
+                    logger.info(f"Section research length: {len(section_research)}")
+                    logger.info(f"****** Section research: {section_research}")
+                    logger.info(f"***---")
+
+                #sys.exit()
+
                 # Create the task with the agent
                 section_task = Task(
                         description=f"Write the '{section_title}' section for the chapter",
@@ -581,12 +540,14 @@ class write_chapter_task(Task):
                         output_pydantic=Section,
                         inputs={
                                 "title": section_title,  # Use section_title instead of chapter_title
-                                "tasks_config": {},
+                                "section_type": section_type,
                                 "chapter_title": chapter_title,
                                 "min_length": template["min_length"],
                                 "structure": ", ".join(template["structure"]),  # Convert list to string for template
-                                "research_log_file": research_log_file,  # Pass the research log file path
-                                "section_type": section_type  # Pass the section type
+                                "section_research": section_research,
+                                "rag_content": section_rag,
+                                "previous_section": prev_section if prev_section else "None",
+                                "next_section": next_section if next_section else "None"
                         }
                 )
                 logger.info("Successfully got section_task")
@@ -641,24 +602,17 @@ class write_chapter_task(Task):
             
             # Use the section_content instead of the raw result
             result = section_content
-
+            logger.info(f"******_-----------------_------ Section content:\n\n {result.content}")
             # Add the section to the list
             sections.append(result)
         
         # Combine all sections into a complete chapter
         logging.info("Combining chapter sections")
-        chapter_content = f"## {chapter_title}\n\n"
+        chapter_content = f"## Chapter {chapter_number}: {chapter_title}\n\n"
         chapter_content += f"{chapter_intro}\n\n"
         for section in sections:
             chapter_content += f"## {section.title}\n\n{section.content}\n\n"
-        
-        # # Create the chapter
-        # chapter = Chapter(
-        #     title=chapter_title,
-        #     content=chapter_content,
-        #     sections=sections
-        # )
-        
+               
         # Create the chapter object
         chapter = Chapter(
             title=chapter_title,

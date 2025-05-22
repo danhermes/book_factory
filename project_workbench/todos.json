@@ -1,6 +1,30 @@
 {
   "tasks": [
     {
+      "id": "TASK-8",
+      "title": "Implement SPARC for Section Research Extraction",
+      "description": "Implement SPARC (Section Pattern And Research Content) methodology to improve the extraction of section-specific research content. This should enhance the accuracy of matching research content to the appropriate sections by using a more sophisticated pattern matching approach that considers section headers, content boundaries, and hierarchical structure.",
+      "status": "TODO",
+      "priority": "HIGH",
+      "assignee": "dev",
+      "created": "2025-05-22",
+      "updated": "2025-05-22",
+      "due": "2025-06-05",
+      "tags": ["enhancement", "research", "pattern-matching", "content-extraction"]
+    },
+    {
+      "id": "TASK-7",
+      "title": "Implement Book Details Module for Title and Subtitle",
+      "description": "Create a centralized book details module that loads the book title and subtitle from the outline JSON file once and makes them available throughout the application. This will ensure consistent display of book metadata in all generated content. See project_workbench/book_details_implementation_plan.md for detailed implementation instructions.",
+      "status": "TODO",
+      "priority": "MEDIUM",
+      "assignee": "dev",
+      "created": "2025-05-21",
+      "updated": "2025-05-21",
+      "due": "2025-06-04",
+      "tags": ["enhancement", "architecture", "book-metadata"]
+    },
+    {
       "id": "TASK-1",
       "title": "Refactor RAG file loading functions",
       "description": "Refactor outline crew and file/PDF loading functions to remove specific RAG outline/prose file names and place those filenames into a configuration file /src/book_writing_flow/config/book_config.py for the chapter or book.",

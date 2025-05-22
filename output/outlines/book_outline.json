@@ -1,8 +1,11 @@
 {
+  "title": "ChatGPT for Business",
+  "subtitle": "How to Create Powerful AI Workflows",
   "total_chapters": 7,
   "chapters": [
     {
-      "title": "Chapter 1: Customer Experience - AI-Driven Empathy and Personalization",
+      "chapter_number": 1,
+      "title": "Customer Experience - AI-Driven Empathy and Personalization",
       "sections": [
         {
           "title": "Exploring AI-Enhanced Customer Interactions (Introduction)"
@@ -35,7 +38,7 @@
           "title": "Reporting Simplified: Harnessing Data for Insights (Topic Explanation)"
         },
         {
-          "title": "Outro: GPT Enhances Human Focus by Automating Repetition"
+          "title": "Outro: GPT nhances Human Focus by Automating Repetition"
         },
         {
           "title": "Transition to Next Chapter: Bridging the Customer Service-Process Gap (Chapter Bridge)"
@@ -43,7 +46,8 @@
       ]
     },
     {
-      "title": "Chapter 2: Process Automation - Streamlining Workflows at Scale",
+      "chapter_number": 2,  
+      "title": "Process Automation - Streamlining Workflows at Scale",
       "sections": [
         {
           "title": "The Hidden Mechanics of Process Efficiency (Introduction)"
@@ -75,7 +79,8 @@
       ]
     },
     {
-      "title": "Chapter 3: Data-Driven Decision Making - From Data Overload to Clarity",
+      "chapter_number": 3,
+      "title": "Data-Driven Decision Making - From Data Overload to Clarity",
       "sections": [
         {
           "title": "Transforming Data into Decisions (Introduction)"
@@ -107,7 +112,8 @@
       ]
     },
     {
-      "title": "Chapter 4: Innovation and Product Development - Fueling Creativity and Iteration",
+      "chapter_number": 4,
+      "title": "Innovation and Product Development - Fueling Creativity and Iteration",
       "sections": [
         {
           "title": "Elevating Product Development Practice (Introduction)"
@@ -139,7 +145,8 @@
       ]
     },
     {
-      "title": "Chapter 5: Workforce Transformation - Elevating Human Potential",
+      "chapter_number": 5,
+      "title": "Workforce Transformation - Elevating Human Potential",
       "sections": [
         {
           "title": "The Collaborative Future of Work (Introduction)"
@@ -171,7 +178,8 @@
       ]
     },
     {
-      "title": "Chapter 6: Risk Management and Compliance - Building Trust Through Transparency",
+      "chapter_number": 6,
+      "title": "Risk Management and Compliance - Building Trust Through Transparency",
       "sections": [
         {
           "title": "Decoding Compliance - Making Rules Work (Introduction)"
@@ -203,7 +211,8 @@
       ]
     },
     {
-      "title": "Chapter 7: Prompting AI Transformation - Beyond Tasks to Capabilities",
+      "chapter_number": 7,
+      "title": "Prompting AI Transformation - Beyond Tasks to Capabilities",
       "sections": [
         {
           "title": "From Prompting to Platform Building (Introduction)"

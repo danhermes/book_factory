@@ -56,3 +56,10 @@ coverage.xml
 
 # Logs
 *.log
+
+# Output
+output/
+output/chapters
+output/sections
+output/research
+output/logs

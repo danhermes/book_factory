@@ -8,6 +8,8 @@ import argparse
 import logging
 import datetime
 import yaml
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
@@ -117,13 +119,6 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         else:
             logging.info("Result has no raw attribute either")
 
-
-        # # Extract the research content
-        # if result.pydantic:
-        #     research_content = result.pydantic
-        # else:
-        #     research_content = ""
-        
         # Extract the research content
         if result.pydantic:
             research_content = result.pydantic
@@ -152,22 +147,16 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
 
 
         # Check if research file already exists and has content
-        if os.path.exists(research_log_file) and os.path.getsize(research_log_file) > 0:
-            logger.info(f"Research file already exists: {research_log_file}")
-        else:
-            # Initialize the research log file
-            with open(research_log_file, "w") as f:
+        # if os.path.exists(research_log_file) and os.path.getsize(research_log_file) > 0:
+        #     logger.info(f"Research file already exists: {research_log_file}")
+
+        # Save research results to file
+        with open(research_log_file, "w") as f:
                 f.write(f"# Research for Chapter {chapter_index+1}: {chapter_title}\n\n")
-                #f.write(f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-                from datetime import datetime
-                from zoneinfo import ZoneInfo
                 local_time = datetime.now(ZoneInfo("America/New_York"))
                 f.write(f"Generated on: {local_time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
                 f.write("## Research Findings\n\n")
-
-        # Save research results to file
-        with open(research_log_file, "a") as f:
-            f.write(research_content)
+                f.write(research_content)
             
         logger.info(f"Research completed and saved to {research_log_file}")
         
@@ -205,35 +194,35 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
             verbose=True
         )}
 
-        # Create context items from inputs
-        context_items = []
-        for key, value in {
-            "chapter_title": chapter_title,
-            "title": chapter_title,
-            "tasks_config": tasks_config,
-            "agents": agents,
-            "chapters": [chapter["title"] for chapter in chapters],
-            "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
-        }.items():
-            context_items.append({
-                "key": key,
-                "value": value,
-                "description": f"Input for {key}"
-            })
+        # # Create context items from inputs
+        # context_items = []
+        # for key, value in {
+        #     "chapter_title": chapter_title,
+        #     "title": chapter_title,
+        #     "tasks_config": tasks_config,
+        #     "agents": agents,
+        #     "chapters": [chapter["title"] for chapter in chapters],
+        #     "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
+        # }.items():
+        #     context_items.append({
+        #         "key": key,
+        #         "value": value,
+        #         "description": f"Input for {key}"
+        #     })
 
         task = write_chapter_task(
             description=f"Write chapter {chapter_title} using the outline",
             expected_output="A completed chapter object with full sections",
+            config=tasks_config["write_section"],
             output_pydantic=Chapter,
             inputs={
             "chapter_title": chapter_title,
             "title": chapter_title,
-            #"topic": "ChatGPT for Business",
-            "tasks_config":tasks_config,
+            "topic": "ChatGPT for Business",
             "agents": agents,
             "chapters": [chapter["title"] for chapter in chapters],
             "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
-        }
+            }
         )
         
         logging.info("🚀 Crew finished successfully!")
@@ -246,17 +235,6 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         logging.info(f"Chapter content: {chapter.content}")
         logging.info(f"Chapter sections: {len(chapter.sections)}")
         logging.info(f"Chapter +++++++++++++++++++++++++++++++++")
-        # Print the chapter content for debugging
-        # Save the chapter
-        # with open(chapter_file, "w") as f:
-        #     f.write("# Chapter " + chapter.chapter_number + ": " + chapter.title + "\n\n")
-        #     f.write(chapter.content + "\n\n")
-            
-        # # Write each section
-        # for section in chapter.sections:
-        #     f.write(f"## {section.title}\n\n")
-        #     f.write(f"{section.content}\n\n")
-        
         logging.info(f"Sanitize chapter")
         # Sanitize the chapter content
         chapter.content = sanitize_markdown(chapter.content)
@@ -272,44 +250,7 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         logging.info(f"Error generating chapter: {e}")
         try:
             k = 1
-            # Get the chapter data from the outline
-            # chapter_data = chapters[chapter_index]
-            # logging.info(f"Error: Retrying with chapter data: {chapter_data}")
-            # crew = ChapterWriterCrew().crew()
-            # result = crew.kickoff(inputs={
-            #     "title": chapter_title,
-            #     "topic": "ChatGPT for Business",
-            #     "chapters": [chapter["title"] for chapter in chapters],
-            #     "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
-            # })
-            
-            # # Extract the chapter content
-            # chapter = result.pydantic
-            
-            # # Save the chapter
-            # with open(chapter_file, "w") as f:
-            #     f.write("# " + chapter.title + "\n\n")
-            #     f.write(chapter.content + "\n\n")
-                
-            #     # Write each section
-            #     for section in chapter.sections:
-            #         f.write(f"## {section.title}\n\n")
-            #         f.write(f"{section.content}\n\n")
-            
-            # # Copy to output directory
-            # os.makedirs("output/chapters", exist_ok=True)
-            # output_file = f"output/chapters/{chapter_index+1:02d}_{safe_title}.md"
-            # with open(output_file, "w") as f:
-            #     f.write("# " + chapter.title + "\n\n")
-            #     f.write(chapter.content + "\n\n")
-                
-            #     # Write each section
-            #     for section in chapter.sections:
-            #         f.write(f"## {section.title}\n\n")
-            #         f.write(f"{section.content}\n\n")
-            
-            # logging.info(f"Successfully generated and saved chapter {chapter_index+1} to {chapter_file}")
-            # logging.info(f"Also copied to {output_file}")
+    
         except Exception as e2:
             print(f"Error in retry attempt: {e2}")
             return None

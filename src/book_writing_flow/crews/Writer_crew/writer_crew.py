@@ -1,3 +1,4 @@
+from pydantic import Field
 import sys
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
@@ -27,6 +28,7 @@ os.makedirs("logs", exist_ok=True)
 # Create a file handler for this module
 file_handler = RotatingFileHandler(
     "logs/writer_crew.log",
+    mode="w",
     maxBytes=10485760,  # 10MB
     backupCount=5,      # Keep 5 backup logs
     encoding="utf-8"
@@ -278,24 +280,36 @@ class write_chapter_task(Task):
     Override the write_chapter task to generate each section separately
     and combine them into a complete chapter.
     """
-    def __init__(self, description, expected_output, **kwargs):
-        # Initialize the parent Task class with required parameters
+    tasks_config: dict = Field(default_factory=dict)
+    context: List[Dict] = Field(default_factory=list)
+    
+    def __init__(self, description, expected_output, config, **kwargs):
+        # Extract tasks_config before it's passed to super or potentially used by other logic in kwargs
+        kwargs["tasks_config"] = config
+        logger.info("Starting write_chapter_task __init__")
+        # Initialize the parent Task class with remaining kwargs
         super().__init__(description=description, expected_output=expected_output, **kwargs)
         logger.info("Creating write_chapter task")
-            
-        # Store inputs in the context
-        if 'inputs' in kwargs:
-            self.context = kwargs.get('context', [])
-            # Add inputs to context
-            for key, value in kwargs['inputs'].items():
+
+        if self.tasks_config is None:
+            logger.error("CRITICAL - write_chapter_task __init__: 'tasks_config' was not provided during instantiation. "
+                         "self.tasks_config will be an empty dictionary. "
+                         "This will likely lead to errors when trying to access specific task configurations like 'write_section' in the execute() method.")
+            self.tasks_config = {} # Initialize to empty dict to prevent immediate NoneType error later.
+
+        self.context = []     # Initialize self.context as an empty list before appending
+        logger.info("isinstance")
+        inputs = kwargs.get('inputs', {})
+        if isinstance(inputs, dict):
+            for key, value in inputs.items():
                 self.context.append({
                     "key": key,
                     "value": value,
                     "description": f"Input for {key}"
                 })
-            logger.info(f"Added inputs to context: {list(kwargs['inputs'].keys())}")
         else:
-            logger.warning("No inputs provided to write_chapter_task")
+            logger.error(f"Expected 'inputs' to be a dict, got {type(inputs).__name__}: {inputs}")
+        logger.info(f"Added inputs to context: {list(kwargs.get('inputs', {}).keys())}")
 
     async def execute(self):
         """Custom execution logic to generate each section separately"""
@@ -475,18 +489,10 @@ class write_chapter_task(Task):
                         with open(research_log_file, "r") as f:
                             research_content = f.read()
                             logger.info(f"Research file loaded: {len(research_content)} characters")
+
                             # Try to extract section-specific research
-                            #section_pattern = re.escape(section_title)
-                            #matches = re.findall(f"(?:^|\n).*{section_pattern}.*\n(.*?)(?:\n\n|$)", research_content, re.DOTALL | re.MULTILINE)
                             logger.info(f"Processing section title: '{section_title}'")
-                            #section_base_title = section_title.split(" (")[0] if " (" in section_title else section_title
-                            #logger.info(f"Base section title: '{section_base_title}'")
                             logger.info(f"Research content 100 chars: '{research_content[:100]}'")
-                            #logger.info(f"Escaped section pattern: '{section_pattern}'")
-                            # Match from this section header to the next section header or end of file
-                            #pattern = f"\*\*Section:\s*{section_pattern}\*\*\s*\n(.*?)(?=\n\n\*\*Section:|$)"
-                            #logger.info(f"Full regex pattern: '{pattern}'")
-                            #matches = re.findall(f"\*\*Section:\s*{section_pattern}\*\*\s*\n(.*?)(?=\n\n\*\*Section:|$)", research_content, re.DOTALL)
                             escaped_title = re.escape(section_title.strip())
                             logger.info(f"Escaped section title: '{escaped_title}'")
                             pattern = rf"^###\ {escaped_title}\n(.*?)(?=^### |\Z)"
@@ -494,11 +500,10 @@ class write_chapter_task(Task):
                             match = []
                             match = re.search(pattern, research_content, re.DOTALL | re.MULTILINE)
                             logger.info(f"Match: {match}")
-                            #logger.info(f"Found {len(match)} match")
+
                             if match:
                                 section_research = match.group(0).strip()
                                 logger.info(f"Match found! Section research length: {len(section_research)}")
-                                #logger.info(f"**** Section research: {section_research}")
                             else:
                                 # If no exact match, use the whole research
                                 section_research = research_content
@@ -529,8 +534,7 @@ class write_chapter_task(Task):
                     logger.info(f"Section research length: {len(section_research)}")
                     logger.info(f"****** Section research: {section_research}")
                     logger.info(f"***---")
-
-                #sys.exit()
+                    logger.info(f"📦 tasks_config keys: {list(self.tasks_config.keys())}")
 
                 # Create the task with the agent
                 section_task = Task(
@@ -538,7 +542,43 @@ class write_chapter_task(Task):
                         expected_output="A well-written section with appropriate content",
                         agent=agents["section_writer"],  # Use the section_writer agent from inputs
                         output_pydantic=Section,
-                        inputs={
+                        config=self.tasks_config
+                )
+                logger.info("Successfully got section_task")
+            except Exception as e:
+                logger.error(f"Error in write_section: {e}")
+                raise
+            logger.info("🚀 chapter_title = %s", chapter_title)
+    
+            # Create a local crew instance for this section
+            from crewai import Crew, Process
+            # Create the section crew with the section_writer_agent
+            section_crew = Crew(
+                agents=[agents["section_writer"]],  # Use the agent from inputs
+                tasks=[section_task],
+                process=Process.sequential,
+                verbose=True
+            )
+
+            # x=Crew(agents=self.agents,
+            #             tasks=self.tasks,
+            #             process=Process.sequential,
+            #             verbose=True)
+            # context_items.append({
+            #         "key": "sections",
+            #         "value": sections,
+            #         "description": f"Exact section titles and types for chapter: {chapter_title}",
+            #         "expected_output": "A list of section information"
+            #     })
+            # # Create the task with the enhanced config
+            # return Task(
+            #   config=task_config,
+            #   context=context_items
+            # )
+
+            # Execute the section crew and get the result
+            section_result = section_crew.kickoff(
+                                        inputs={
                                 "title": section_title,  # Use section_title instead of chapter_title
                                 "section_type": section_type,
                                 "chapter_title": chapter_title,
@@ -549,39 +589,7 @@ class write_chapter_task(Task):
                                 "previous_section": prev_section if prev_section else "None",
                                 "next_section": next_section if next_section else "None"
                         }
-                )
-                logger.info("Successfully got section_task")
-            except Exception as e:
-                logger.error(f"Error in write_section: {e}")
-                raise
-            logger.info("🚀 chapter_title = %s", chapter_title)
-    
-            # Create a context dictionary with all the section-specific information
-            # section_context = {
-            #     "title": section_title,
-            #     "type": section_type,
-            #     "chapter_title": chapter_title,
-            #     "chapter_number": chapter_number,
-            #     "min_length": template["min_length"],
-            #     "structure": ", ".join(template["structure"]),  # Convert list to string for template
-            #     "rag_content": section_rag,
-            #     "previous_section": prev_section if prev_section else "None",
-            #     "next_section": next_section if next_section else "None"
-            # }
-            
-            # Execute the task with the context, which will apply the section-specific prompts
-            #section_result = await section_task.execute()
-            # Create a local crew instance for this section
-            from crewai import Crew, Process
-            # Create the section crew with the section_writer_agent
-            section_crew = Crew(
-                agents=[agents["section_writer"]],  # Use the agent from inputs
-                tasks=[section_task],
-                process=Process.sequential,
-                verbose=True
             )
-            # Execute the section crew and get the result
-            section_result = section_crew.kickoff()
             
             # Extract the section from the CrewOutput object
             # The result is in the pydantic attribute

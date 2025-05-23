@@ -538,11 +538,11 @@ class write_chapter_task(Task):
 
                 # Create the task with the agent
                 section_task = Task(
-                        description=f"Write the '{section_title}' section for the chapter",
-                        expected_output="A well-written section with appropriate content",
+                        description=self.tasks_config["write_section"]["description"], #"Write the {title} section for the chapter.", # using the section research *{section_research}* and the ChatGPT prompts verbatim found in the researched stories.",
+                        expected_output=self.tasks_config["write_section"]["expected_output"], #"A well-written section with appropriate content",
                         agent=agents["section_writer"],  # Use the section_writer agent from inputs
                         output_pydantic=Section,
-                        config=self.tasks_config
+                        config=self.tasks_config["write_section"]
                 )
                 logger.info("Successfully got section_task")
             except Exception as e:
@@ -575,7 +575,11 @@ class write_chapter_task(Task):
             #   config=task_config,
             #   context=context_items
             # )
-
+            #crew.kickoff(inputs={'topic': 'AI Agents'})
+            #https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
+            #CrewAI inserting input fields into prompts. Use input in Kickoff and format-like curlybraces in prompts.
+            #https://www.google.com/search?q=crewai+insert+input+fields+into+task+prompt&sca_esv=3c74e91ebde8004a&biw=1955&bih=897&sxsrf=AHTn8zoOMnHBkWTdEOk99XHadsIUsycyUg%3A1747996452160&ei=JE8waMrFCYf9ptQPsaWFqAM&oq=crewai+insert+input+fields&gs_lp=Egxnd3Mtd2l6LXNlcnAiGmNyZXdhaSBpbnNlcnQgaW5wdXQgZmllbGRzKgIIADIFECEYoAEyBRAhGKABMgUQIRirAjIFECEYqwIyBRAhGKsCSIj6AlDUzQJYh-MCcAJ4AZABAJgBcaABlgiqAQQxMC4yuAEDyAEA-AEBmAIOoALFCMICChAAGLADGNYEGEfCAgQQIxgnwgIFEAAY7wXCAggQABiiBBiJBcICCBAAGIAEGKIEmAMAiAYBkAYIkgcEMTIuMqAH-zqyBwQxMC4yuAe8CMIHBjAuMTEuM8gHIA&sclient=gws-wiz-serp
+            #Task(context=[research_task]  # This task will wait for research_task to complete
             # Execute the section crew and get the result
             section_result = section_crew.kickoff(
                                         inputs={

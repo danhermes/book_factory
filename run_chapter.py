@@ -211,9 +211,9 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         #     })
 
         task = write_chapter_task(
-            description=f"Write chapter {chapter_title} using the outline",
-            expected_output="A completed chapter object with full sections",
-            config=tasks_config["write_section"],
+            description=tasks_config["write_chapter"]["description"], #f"Write chapter {chapter_title} using the outline",
+            expected_output=tasks_config["write_chapter"]["expected_output"], #"A completed chapter object with full sections",
+            config=tasks_config,#["write_section"],
             output_pydantic=Chapter,
             inputs={
             "chapter_title": chapter_title,

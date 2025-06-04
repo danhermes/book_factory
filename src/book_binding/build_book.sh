@@ -2,7 +2,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-CHAPTER_DIR="$SCRIPT_DIR/../../output/chapters/clean"
+CHAPTER_DIR="$SCRIPT_DIR/../../output/chapters"
 
 OUTPUT="$CHAPTER_DIR/final_book.pdf"
 LOGFILE="$SCRIPT_DIR/build_book.log"
@@ -18,7 +18,7 @@ PAGEBREAK="$SCRIPT_DIR/pagebreak.md"
 FRONT_COVER_PDF="$SCRIPT_DIR/front_cover.pdf"
 BACK_COVER_PDF="$SCRIPT_DIR/back_cover.pdf"
 
-echo "📘 Starting full book build from clean/..."
+echo "📘 Starting full book build from output/chapters/..."
 
 # Create header-includes.tex if missing
 if [ ! -f "$HEADER_TEX" ]; then
@@ -53,7 +53,7 @@ else
   BACK_COVER_PDF=""
 fi
 
-echo "📦 Gathering chapters from clean/"
+echo "📦 Gathering chapters"
 CHAPTERS=($(ls "$CHAPTER_DIR"/*.md | grep -vE 'front_matter.md|back_matter.md|pagebreak.md' | sort -V))
 INPUTS=()
 

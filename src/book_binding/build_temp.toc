@@ -1,69 +1,193 @@
-\contentsline {section}{Chapter 1: Customer Experience - AI-Driven Empathy and Personalization}{1}{section*.2}%
-\contentsline {subsection}{Exploring AI-Enhanced Customer Interactions (Introduction)}{1}{section*.3}%
-\contentsline {subsection}{WelcomeWell: Turning Client Onboarding into a Smooth Landing}{1}{section*.4}%
-\contentsline {subsection}{Onboarding Revolution: Automating Transitions}{1}{section*.5}%
-\contentsline {subsection}{StackHaven: Making Construction Workflows Less Manual}{2}{section*.6}%
-\contentsline {subsection}{Optimizing Operations: Streamlining Construction Checklists}{2}{section*.7}%
-\contentsline {subsection}{FlexTax Advisors: Inbox Zero, Every Morning}{3}{section*.8}%
-\contentsline {subsection}{Email Triage Mastery: Managing Communication Waves}{3}{section*.9}%
-\contentsline {subsection}{Bonus Topic: Voice of Customer - Capturing Real-time Feedback}{4}{section*.10}%
-\contentsline {subsection}{LeadFleet: One Button Reports}{4}{section*.11}%
-\contentsline {subsection}{Reporting Simplified: Harnessing Data for Insights}{5}{section*.12}%
-\contentsline {subsection}{Outro: GPT Enhances Human Focus by Automating Repetition}{5}{section*.13}%
-\contentsline {subsection}{Transition to Next Chapter: Bridging the Customer Service-Process Gap}{6}{section*.14}%
-\contentsline {section}{Chapter 2: Process Automation - Streamlining Workflows at Scale}{7}{section*.15}%
-\contentsline {subsection}{The Hidden Mechanics of Process Efficiency (Introduction)}{7}{section*.16}%
-\contentsline {subsection}{WestBridge Accounting: Time Won Back}{7}{section*.17}%
-\contentsline {subsection}{Automation Mapping: The Blueprint for Efficiency}{7}{section*.18}%
-\contentsline {subsection}{BrightPath Schools: The 5-Hour Email Chain, Collapsed}{8}{section*.19}%
-\contentsline {subsection}{Exposing Redundancies: From Email Chains to Decision Trees}{8}{section*.20}%
-\contentsline {subsection}{Bonus Topic: Document Cleanup - Refreshing Templates for Speed}{9}{section*.21}%
-\contentsline {subsection}{Big Box: SOP Visualization and Process Clarification}{9}{section*.22}%
-\contentsline {subsection}{Outro: GPT Restores Clarity to Broken Processes}{10}{section*.23}%
-\contentsline {subsection}{Chapter Bridge}{10}{section*.24}%
-\contentsline {section}{Chapter 3: Data-Driven Decision Making - From Data Overload to Clarity}{11}{section*.25}%
-\contentsline {subsection}{Transforming Data into Decisions}{11}{section*.26}%
-\contentsline {subsection}{AetherMetrics: No More Mystery Metrics}{11}{section*.27}%
-\contentsline {subsection}{Simplifying Dashboards: Synthesizing Data Points}{11}{section*.28}%
-\contentsline {subsection}{LumaHealth: From Overwhelm to Insight}{12}{section*.29}%
-\contentsline {subsection}{Breaking Down Barriers: Making Analytics Accessible}{12}{section*.30}%
-\contentsline {subsection}{Bonus Topic: Executive Summaries - Fast Tracking Leadership Insights}{13}{section*.31}%
-\contentsline {subsection}{Big Box: Natural Language to Insight Pipelines}{13}{section*.32}%
-\contentsline {subsection}{Outro: Data Becomes Action When It Becomes Shared Language}{14}{section*.33}%
-\contentsline {subsection}{Transition to Next Chapter: Driving Innovation with Seamless Data Integration}{14}{section*.34}%
-\contentsline {section}{Chapter 4: Innovation and Product Development - Fueling Creativity and Iteration}{15}{section*.35}%
-\contentsline {subsection}{Introduction}{15}{section*.36}%
-\contentsline {subsection}{CartFluent: From Complaints to Concepts}{15}{section*.37}%
-\contentsline {subsection}{Feature Generation: From Critique to Creation}{16}{section*.38}%
-\contentsline {subsection}{Onboardly: Building Empathy at Scale}{16}{section*.39}%
-\contentsline {subsection}{UX Simulation: Enhancing User Experiences Before They Go Live}{17}{section*.40}%
-\contentsline {subsection}{Bonus Topic: Competitor Analysis - Anticipating Market Movements}{17}{section*.41}%
-\contentsline {subsection}{Big Box: GPT for Design and Ideation}{18}{section*.42}%
-\contentsline {subsection}{Outro: Your Lab is Right Here - You Just Need a Loop}{18}{section*.43}%
-\contentsline {subsection}{Transition to Next Chapter: Preparing People for Tomorrow's Roles (Chapter Bridge)}{18}{section*.44}%
-\contentsline {section}{Chapter 5: Workforce Transformation - Elevating Human Potential}{20}{section*.45}%
-\contentsline {subsection}{Introduction}{20}{section*.46}%
-\contentsline {subsection}{CareCore: Getting Nurses Up to Speed Faster}{20}{section*.47}%
-\contentsline {subsection}{Training Transformation: Structured Learning Paths for New Hires}{21}{section*.48}%
-\contentsline {subsection}{CollabCentric: Async Alignment Without the Agony}{21}{section*.49}%
-\contentsline {subsection}{Async Clarity: Reducing Meeting Time Through Precise Minutes}{22}{section*.50}%
-\contentsline {subsection}{Bonus Topic: Internal Newsletters - Keeping Teams Informed}{22}{section*.51}%
-\contentsline {subsection}{Big Box: Human-in-the-Loop AI Collaboration}{23}{section*.52}%
-\contentsline {subsection}{Outro: The Best AI Works With You, Not For You}{23}{section*.53}%
-\contentsline {subsection}{Transition to Next Chapter: Navigating Aspects of Compliance (Chapter Bridge)}{23}{section*.54}%
-\contentsline {section}{Chapter 6: Risk Management and Compliance - Building Trust Through Transparency}{25}{section*.55}%
-\contentsline {subsection}{Introduction}{25}{section*.56}%
-\contentsline {subsection}{CredSecure: From Legalese to Action}{25}{section*.57}%
-\contentsline {subsection}{Policy Simplification: Ensuring Accountability and Understanding}{25}{section*.58}%
-\contentsline {subsection}{PageCraft: Privacy at the Design Table}{26}{section*.59}%
-\contentsline {subsection}{Design with Privacy: Integrating Regulations into User Experience}{26}{section*.60}%
-\contentsline {subsection}{Bonus Topic: Regulation Digests - Keeping up With Legal Changes}{27}{section*.61}%
-\contentsline {subsection}{Big Box: Structured Prompting for Regulated Contexts}{28}{section*.62}%
-\contentsline {subsection}{Outro: GPT Makes the Legal More Livable}{28}{section*.63}%
-\contentsline {subsection}{Transition to Final Chapter: Setting the Stage for Future Transformation (Chapter Bridge)}{28}{section*.64}%
-\contentsline {section}{Chapter 7: Prompting AI Transformation - Beyond Tasks to Capabilities}{30}{section*.65}%
-\contentsline {subsection}{Introduction}{30}{section*.66}%
-\contentsline {subsection}{Evolving Prompts into Process Optimization}{30}{section*.67}%
-\contentsline {subsection}{Integrated Systems: Building for Adaptability}{31}{section*.68}%
-\contentsline {subsection}{Big Box: Prompt Architecture and Capability Design}{31}{section*.69}%
-\contentsline {subsection}{Outro: You're Not Just Using GPT--You're Building with It}{32}{section*.70}%
+\contentsline {section}{Prompt Power:}{2}{section*.2}%
+\contentsline {subsection}{Learn to Create ChatGPT Prompts}{2}{section*.3}%
+\contentsline {paragraph}{by Dan Hermes}{2}{section*.4}%
+\contentsline {section}{Table of Contents}{2}{section*.5}%
+\contentsline {section}{About the Author}{3}{section*.6}%
+\contentsline {section}{Acknowledgments}{3}{section*.7}%
+\contentsline {section}{Introduction}{3}{section*.8}%
+\contentsline {subsection}{\textbf {Model Capabilities (or Features)}}{4}{section*.9}%
+\contentsline {subsection}{\textbf {This Book Is Focused on the Request}}{4}{section*.10}%
+\contentsline {subsection}{How to Use This Book}{4}{section*.11}%
+\contentsline {section}{Chapter 1: The Request}{5}{section*.12}%
+\contentsline {subsection}{\textbf {The Anatomy of a Prompt}}{5}{section*.13}%
+\contentsline {subsection}{\textbf {Why We Start with the Request}}{6}{section*.14}%
+\contentsline {subsection}{\textbf {What a Request Can Be}}{7}{section*.15}%
+\contentsline {subsection}{\textbf {Why We Prompt: Five Human Needs}}{7}{section*.16}%
+\contentsline {subsubsection}{1. \textbf {For Clarity in Professional Life}}{7}{section*.17}%
+\contentsline {subsubsection}{2. \textbf {For Connection in Personal Moments}}{7}{section*.18}%
+\contentsline {subsubsection}{3. \textbf {For Creativity in Expression}}{8}{section*.19}%
+\contentsline {subsubsection}{4. \textbf {For Collaboration in Building}}{8}{section*.20}%
+\contentsline {subsubsection}{5. \textbf {For Guidance When We're Lost}}{8}{section*.21}%
+\contentsline {subsection}{\textbf {Elena's New Launch}}{8}{section*.22}%
+\contentsline {subsection}{\textbf {What Was Elena Really Asking For?}}{8}{section*.23}%
+\contentsline {subsection}{\textbf {Elena and the Meeting That Didn't Ask}}{9}{section*.24}%
+\contentsline {subsection}{\textbf {When a Group Talks but No One Asks}}{9}{section*.25}%
+\contentsline {subsection}{\textbf {This Is Why We Start with Request}}{10}{section*.26}%
+\contentsline {subsubsection}{\textbf {Seeing the Menu}}{10}{section*.27}%
+\contentsline {subsubsection}{\textbf {Action}}{11}{section*.28}%
+\contentsline {subsubsection}{\textbf {Advice}}{11}{section*.29}%
+\contentsline {subsubsection}{\textbf {Strategy}}{11}{section*.30}%
+\contentsline {subsubsection}{\textbf {Persuasion}}{11}{section*.31}%
+\contentsline {subsubsection}{\textbf {Revision}}{11}{section*.32}%
+\contentsline {subsubsection}{\textbf {Reinvention}}{11}{section*.33}%
+\contentsline {subsubsection}{\textbf {Clarity}}{12}{section*.34}%
+\contentsline {subsubsection}{\textbf {Creativity}}{12}{section*.35}%
+\contentsline {subsubsection}{\textbf {Compassion}}{12}{section*.36}%
+\contentsline {subsection}{\textbf {Closing: The Core of the Conversation}}{12}{section*.37}%
+\contentsline {subsection}{\textbf {The Model Needs a Model}}{13}{section*.38}%
+\contentsline {section}{Chapter 2: Give Examples}{13}{section*.39}%
+\contentsline {subsection}{How the Model Learns From What You Show}{13}{section*.40}%
+\contentsline {subsection}{Tell Me vs.~Like This}{13}{section*.41}%
+\contentsline {subsection}{\textbf {The Apology}}{14}{section*.42}%
+\contentsline {subsection}{\textbf {Takeaways}}{14}{section*.43}%
+\contentsline {subsection}{\textbf {Example Types}}{14}{section*.44}%
+\contentsline {subsubsection}{\textbf {1. Tone Example}}{15}{section*.45}%
+\contentsline {subsubsection}{\textbf {2. Structural Example}}{15}{section*.46}%
+\contentsline {subsubsection}{\textbf {3. Before and After}}{15}{section*.47}%
+\contentsline {subsubsection}{\textbf {4. Self-Correction Example}}{15}{section*.48}%
+\contentsline {subsubsection}{\textbf {5. Imaginary Sample}}{15}{section*.49}%
+\contentsline {subsubsection}{\textbf {6. Instructional Examples}}{16}{section*.50}%
+\contentsline {subsubsection}{\textbf {7. Bad Examples}}{16}{section*.51}%
+\contentsline {subsubsection}{\textbf {8. Persona Example}}{16}{section*.52}%
+\contentsline {subsection}{\textbf {You Just Need One That Lands}}{16}{section*.53}%
+\contentsline {subsection}{\textbf {Elena and the Junior Marketer}}{17}{section*.54}%
+\contentsline {subsection}{\textbf {Takeaways}}{18}{section*.55}%
+\contentsline {subsection}{\textbf {A Tale of Two Coaches}}{18}{section*.56}%
+\contentsline {subsection}{Post-game Analysis}{19}{section*.57}%
+\contentsline {subsection}{\textbf {Reflection}}{19}{section*.58}%
+\contentsline {subsection}{\textbf {Shape the Shape}}{19}{section*.59}%
+\contentsline {section}{Chapter 3: How to Format Your Output}{19}{section*.60}%
+\contentsline {subsection}{\textbf {The King and the Mapmaker}}{19}{section*.61}%
+\contentsline {subsection}{Here Be Dragons}{20}{section*.62}%
+\contentsline {subsection}{\textbf {Format a Useful Map}}{20}{section*.63}%
+\contentsline {subsection}{\textbf {Format Types}}{21}{section*.64}%
+\contentsline {subsubsection}{\textbf {1. List Format}}{21}{section*.65}%
+\contentsline {subsubsection}{\textbf {2. Paragraph Format}}{21}{section*.66}%
+\contentsline {subsubsection}{\textbf {3. Table Format}}{21}{section*.67}%
+\contentsline {subsubsection}{\textbf {4. Headline / One-Liner Format}}{21}{section*.68}%
+\contentsline {subsubsection}{\textbf {5. Multi-Part Structured Format}}{22}{section*.69}%
+\contentsline {subsubsection}{\textbf {6. Slide / Outline Format}}{22}{section*.70}%
+\contentsline {subsubsection}{\textbf {7. Creative Format}}{22}{section*.71}%
+\contentsline {subsection}{\textbf {The Invisible Insight}}{23}{section*.72}%
+\contentsline {subsection}{\textbf {Takeaways}}{23}{section*.73}%
+\contentsline {subsection}{\textbf {Reflection}}{23}{section*.74}%
+\contentsline {subsection}{\textbf {Backlit}}{24}{section*.75}%
+\contentsline {section}{Chapter 4: What's the Context?}{24}{section*.76}%
+\contentsline {subsubsection}{Do those statements make sense?}{24}{section*.77}%
+\contentsline {subsection}{\textbf {What Is Context in a Prompt?}}{25}{section*.78}%
+\contentsline {subsection}{\textbf {Context Can Be:}}{25}{section*.79}%
+\contentsline {subsection}{\textbf {Elena in the Briefing Room}}{25}{section*.80}%
+\contentsline {subsubsection}{\textbf {Takeaways}}{26}{section*.81}%
+\contentsline {subsubsection}{\textbf {How to Include Context in a Prompt}}{26}{section*.82}%
+\contentsline {subsubsection}{\textbf {1. Inline Context}}{26}{section*.83}%
+\contentsline {subsubsection}{\textbf {2. Uploaded Context }}{26}{section*.84}%
+\contentsline {subsubsection}{\textbf {3. Running Context}}{26}{section*.85}%
+\contentsline {subsection}{\textbf {The Rule of Context}}{26}{section*.86}%
+\contentsline {subsection}{\textbf {The Letter She Couldn't Start}}{27}{section*.87}%
+\contentsline {subsection}{\textbf {Why the Third Prompt Worked}}{27}{section*.88}%
+\contentsline {subsection}{\textbf {Chapter Reflection: Context}}{27}{section*.89}%
+\contentsline {subsection}{\textbf {And Now the Model Asks: ``Who Am I?''}}{28}{section*.90}%
+\contentsline {section}{Chapter 5: Your Assistant's Role}{28}{section*.91}%
+\contentsline {subsection}{\textbf {The Model Doesn't Have a Voice---Until You Give It One}}{28}{section*.92}%
+\contentsline {subsection}{\textbf {Why Role Matters}}{28}{section*.93}%
+\contentsline {subsection}{\textbf {The Pirate, the Butler, and the CEO}}{29}{section*.94}%
+\contentsline {subsection}{\textbf {What the Boys Were Really Learning}}{29}{section*.95}%
+\contentsline {subsection}{\textbf {1. The Coach}}{29}{section*.96}%
+\contentsline {subsection}{\textbf {2. The CEO}}{29}{section*.97}%
+\contentsline {subsection}{\textbf {3. The Skeptic}}{30}{section*.98}%
+\contentsline {subsection}{\textbf {4. The Therapist}}{30}{section*.99}%
+\contentsline {subsection}{\textbf {How to Assign Role in a Prompt}}{30}{section*.100}%
+\contentsline {subsubsection}{\textbf {Use Any Role You Can Think Of}}{30}{section*.101}%
+\contentsline {subsection}{\textbf {Do Role and Request Go in the Same Prompt?}}{31}{section*.102}%
+\contentsline {subsection}{\textbf {Will ChatGPT Remember the Role?}}{31}{section*.103}%
+\contentsline {subsection}{\textbf {What Happens If You Skip the Role?}}{31}{section*.104}%
+\contentsline {subsection}{\textbf {How Can Role Be Misused?}}{31}{section*.105}%
+\contentsline {subsection}{\textbf {The Letter That Didn't Land}}{32}{section*.106}%
+\contentsline {subsection}{\textbf {Post-Game: The Voice That Wasn't Invited}}{32}{section*.107}%
+\contentsline {subsection}{\textbf {The Takeaway}}{33}{section*.108}%
+\contentsline {subsection}{\textbf {Chapter Reflection: Role}}{33}{section*.109}%
+\contentsline {subsection}{\textbf {Are There Any Limits?}}{33}{section*.110}%
+\contentsline {section}{Chapter 6: What are the Constraints?}{33}{section*.111}%
+\contentsline {subsection}{\textbf {Reveal What Matters}}{34}{section*.112}%
+\contentsline {subsection}{\textbf {The Email That Spooked the Room}}{34}{section*.113}%
+\contentsline {subsection}{\textbf {Post-Game: What Jules Should've Done}}{34}{section*.114}%
+\contentsline {subsection}{\textbf {Constraint Types}}{35}{section*.115}%
+\contentsline {subsubsection}{\textbf {1. Length}}{35}{section*.116}%
+\contentsline {subsubsection}{\textbf {2. Tone}}{35}{section*.117}%
+\contentsline {subsubsection}{\textbf {3. Vocabulary }}{36}{section*.118}%
+\contentsline {subsubsection}{\textbf {4. Scope}}{36}{section*.119}%
+\contentsline {subsubsection}{\textbf {5. Exclusion}}{36}{section*.120}%
+\contentsline {subsection}{\textbf {The Mother and the Messy Room}}{36}{section*.121}%
+\contentsline {section}{Chapter 7: How to Prompt Powerfully}{37}{section*.122}%
+\contentsline {subsection}{The Compleat Prompt}{38}{section*.123}%
+\contentsline {subsection}{The Final Prompt}{38}{section*.124}%
+\contentsline {section}{Appendix: 500 Power Prompts}{39}{section*.125}%
+\contentsline {subsection}{\textbf {Request}}{39}{section*.126}%
+\contentsline {subsubsection}{1. Writing \& Editing}{39}{section*.127}%
+\contentsline {subsection}{2. Content Creation}{39}{section*.128}%
+\contentsline {subsection}{3. Communication}{40}{section*.129}%
+\contentsline {subsection}{4. Transformation}{40}{section*.130}%
+\contentsline {subsection}{5. Explanation}{41}{section*.131}%
+\contentsline {subsubsection}{6. Style Expansion}{42}{section*.132}%
+\contentsline {subsubsection}{7. Visual Examples}{42}{section*.133}%
+\contentsline {subsubsection}{8. Role-Based Examples}{42}{section*.134}%
+\contentsline {subsubsection}{9. Interactive Examples}{43}{section*.135}%
+\contentsline {subsubsection}{10. Meta Examples}{43}{section*.136}%
+\contentsline {subsection}{Examples}{43}{section*.137}%
+\contentsline {subsection}{1. Pattern Matching}{43}{section*.138}%
+\contentsline {subsection}{2. Contrast \& Correction}{44}{section*.139}%
+\contentsline {subsection}{3. Comparative Learning}{44}{section*.140}%
+\contentsline {subsection}{4. Prompted by Example}{45}{section*.141}%
+\contentsline {subsection}{5. Step-by-Step by Example}{46}{section*.142}%
+\contentsline {subsection}{6. Style Expansion}{46}{section*.143}%
+\contentsline {subsection}{7. Visual Examples}{47}{section*.144}%
+\contentsline {subsection}{8. Role-Based Examples}{47}{section*.145}%
+\contentsline {subsection}{9. Interactive Examples}{48}{section*.146}%
+\contentsline {subsection}{10. Meta Examples}{48}{section*.147}%
+\contentsline {subsection}{Format}{49}{section*.148}%
+\contentsline {subsection}{1. Lists \& Bullets}{49}{section*.149}%
+\contentsline {subsection}{2. Tables \& Matrices}{49}{section*.150}%
+\contentsline {subsection}{3. Outlines \& Structures}{50}{section*.151}%
+\contentsline {subsection}{4. Slide \& Deck Formats}{50}{section*.152}%
+\contentsline {subsection}{5. Code \& Logic Structures}{51}{section*.153}%
+\contentsline {subsection}{6. Question \& Answer Formats}{52}{section*.154}%
+\contentsline {subsection}{7. Email \& Message Styles}{52}{section*.155}%
+\contentsline {subsection}{8. Web \& Content Layouts}{53}{section*.156}%
+\contentsline {subsection}{9. Scripts \& Performance Formats}{53}{section*.157}%
+\contentsline {subsection}{10. Mixed Media Formats}{54}{section*.158}%
+\contentsline {subsection}{Context}{54}{section*.159}%
+\contentsline {subsection}{1. Purpose Framing}{54}{section*.160}%
+\contentsline {subsection}{2. Audience Targeting}{55}{section*.161}%
+\contentsline {subsection}{3. Emotional Tone}{55}{section*.162}%
+\contentsline {subsection}{4. Relevance \& Background}{56}{section*.163}%
+\contentsline {subsection}{5. Framing as Scenarios}{56}{section*.164}%
+\contentsline {subsection}{6. Time \& Place Cues}{57}{section*.165}%
+\contentsline {subsection}{7. Communication Channel Framing}{58}{section*.166}%
+\contentsline {subsection}{8. User Intent Cues}{58}{section*.167}%
+\contentsline {subsection}{9. Psychological Framing}{59}{section*.168}%
+\contentsline {subsection}{10. Framing with Memory or Identity}{59}{section*.169}%
+\contentsline {subsection}{Role}{60}{section*.170}%
+\contentsline {subsection}{1. Professional Roles}{60}{section*.171}%
+\contentsline {subsection}{2. Creator Roles}{60}{section*.172}%
+\contentsline {subsection}{3. Public Roles}{61}{section*.173}%
+\contentsline {subsection}{4. Everyday Roles}{61}{section*.174}%
+\contentsline {subsection}{5. Meta Roles}{62}{section*.175}%
+\contentsline {subsection}{Constraints}{62}{section*.176}%
+\contentsline {subsection}{1. Word \& Length Limits}{63}{section*.177}%
+\contentsline {subsection}{2. Structural Rules}{63}{section*.178}%
+\contentsline {subsection}{3. Style Constraints}{64}{section*.179}%
+\contentsline {subsection}{4. Time Constraints}{64}{section*.180}%
+\contentsline {subsection}{5. Creative Constraints}{65}{section*.181}%
+\contentsline {section}{Appendix: Prompt Outside the Box}{65}{section*.182}%
+\contentsline {subsection}{1. Wild Cards}{65}{section*.183}%
+\contentsline {subsection}{2. Hybrid}{66}{section*.184}%
+\contentsline {subsection}{3. Philosophical or Paradoxical}{66}{section*.185}%
+\contentsline {section}{Bibliography \& Influences}{67}{section*.186}%
+\contentsline {subsection}{Prompt Engineering Guides \& Resources}{67}{section*.187}%
+\contentsline {subsection}{Prompting Communities}{67}{section*.188}%
+\contentsline {subsection}{AI Research}{68}{section*.189}%
+\contentsline {section}{Index}{68}{section*.190}%
+\contentsline {section}{Epilogue}{68}{section*.191}%
+\contentsline {section}{Teaser}{68}{section*.192}%
+\contentsline {subsubsection}{\emph {ChatGPT for Business: How to Create Powerful AI Workflows}}{68}{section*.193}%
+\contentsline {section}{About Lexicon Systems}{69}{section*.194}%

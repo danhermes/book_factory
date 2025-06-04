@@ -169,7 +169,7 @@ def main():
     
     # Write command
     write_parser = subparsers.add_parser("write", help="Generate chapter content")
-    write_parser.add_argument("--chapter", type=int, required=True, 
+    write_parser.add_argument("--chapter", type=int, required=False, 
                              help="Chapter number to generate (1-based)")
     write_parser.add_argument("--force", action="store_true",
                              help="Force regeneration even if chapter already exists")
@@ -239,8 +239,8 @@ def main():
     
     elif args.command == "flow":
         # First generate the outline
-        logging.info("Generating book outline...")
-        run_command([python_exe, "src/book_writing_flow/main.py"])
+        #logging.info("Generating book outline...")
+        #run_command([python_exe, "src/book_writing_flow/main.py"])
         
         # Check if the outline files were generated successfully
         if os.path.exists("output/outlines/book_outline.json"):

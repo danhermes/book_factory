@@ -475,10 +475,24 @@ class write_chapter_task(Task):
 
                 # Load the research log file for this chapter
                 chapter_number = 1  # Default to chapter 1
-                # # Try to extract chapter number from title
+                
+                # Try to extract chapter number from title using regex
+                # Log the chapter title for debugging
+                logger.info(f"Extracting chapter number from title: '{chapter_title}'")
+                
+                # Try different regex patterns to extract the chapter number
                 match = re.search(r"Chapter (\d+)", chapter_title)
                 if match:
                     chapter_number = int(match.group(1))
+                    logger.info(f"Found chapter number: {chapter_number}")
+                else:
+                    # Try to extract from the beginning of the title (e.g., "2: Process Automation")
+                    match = re.search(r"^(\d+):", chapter_title)
+                    if match:
+                        chapter_number = int(match.group(1))
+                        logger.info(f"Found chapter number from beginning: {chapter_number}")
+                    else:
+                        logger.warning(f"Could not extract chapter number from title: '{chapter_title}'. Using default: 1")
                 safe_title = chapter_title.replace(' ', '_').replace(':', '_').replace('/', '_').replace('\\', '_')
                 research_log_file = f"output/research/{chapter_number:02d}_{safe_title}_research.md"
                 # Load research data for this section if available

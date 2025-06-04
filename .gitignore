@@ -58,8 +58,11 @@ coverage.xml
 *.log
 
 # Output
+books/
+rag/
 output/
 output/chapters
 output/sections
 output/research
 output/logs
+output_Prompt_Power/

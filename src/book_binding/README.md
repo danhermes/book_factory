@@ -43,10 +43,12 @@ The script expects the following files in the `output/chapters/clean` directory:
 The final compiled book is saved as:
 
 ```
-output/chapters/clean/final_book.pdf
+output/chapters/final_book.pdf
 ```
 
 ## Process
+
+0. Chapters have been sanitized in the chapter-writing process. (sanitize_all.py)
 
 1. Converts cover images to PDF format (if present)
 2. Creates necessary LaTeX files for formatting

@@ -94,9 +94,21 @@ def generate_full_outline():
     
     # Log the command we're about to run
     logger.info("Running: python src/book_writing_flow/main.py")
-    result = run_command(["python", "src/book_writing_flow/main.py"])
-    if result:
-        logger.info("Command output length: " + str(len(result)))
+    
+    # Use PYTHONPATH to ensure src directory is in the Python path
+    env = os.environ.copy()
+    src_path = os.path.abspath("src")
+    if "PYTHONPATH" in env:
+        env["PYTHONPATH"] = f"{src_path}{os.pathsep}{env['PYTHONPATH']}"
+    else:
+        env["PYTHONPATH"] = src_path
+    
+    # Run the command with the modified environment
+    result = subprocess.run(["python", "src/book_writing_flow/main.py"], env=env)
+    if result.returncode != 0:
+        logging.info(f"Error running command (exit code {result.returncode})")
+    else:
+        logger.info("Command executed successfully")
     
     outline_time = time.time() - start_time
     logger.info(f"Outline generation took {outline_time:.2f} seconds")

@@ -1,5 +1,7 @@
 import time
 import logging
+import os
+import yaml
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
@@ -33,17 +35,80 @@ class Outline(BaseModel):
 
 @CrewBase
 class OutlineCrew:
-    """Outline Crew"""
 
-    agents_config = "config/agents.yaml"
-    tasks_config = "config/tasks.yaml"
-    outline_path = RAG_CONTENT_FILES["outline"]
+    def __init__(self):
+        self.agents_config = None
+        self.tasks_config = None
+        self.task_expected_output = None
+        self.outline_path = None
+
+        # # Use absolute paths for configuration files
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
+        agents_config_path = os.path.join(project_root, "src/book_writing_flow/crews/Outline_crew/config/agents.yaml")
+        tasks_config_path = os.path.join(project_root, "output/tasks/tasks.outline.yaml")
+        task_expected_output_path = os.path.join(project_root, "output/tasks/tasks.outline.expected_output.yaml")
+        outline_path = RAG_CONTENT_FILES["book_outline"]
+        logging.info(f"RAG_CONTENT_FILES: {RAG_CONTENT_FILES['book_outline']}")
     
-    # Initialize RAG provider
-    rag_provider = RagContentProvider(RAG_CONTENT_FILES)
+        # Load agents configuration
+        try:
+            with open(agents_config_path, 'r') as f:
+                self.agents_config = yaml.safe_load(f)
+            logger.info(f"Successfully loaded agents config from {agents_config_path}")
+        except Exception as e:
+            logger.warning(f"Error loading agents config: {e}")
+            # Provide default configurations
+            agents_config = {
+                "research_agent": {
+                    "name": "Research Agent",
+                    "description": "Researches topics and gathers information.",
+                    "goal": "Gather comprehensive information about the topic."
+                },
+                "outline_writer": {
+                    "name": "Outline Writer",
+                    "description": "Creates detailed book outlines.",
+                    "goal": "Create a well-structured book outline with chapters and sections."
+                }
+            }
+            logger.info("Using default agent configurations")
     
-    # Store inputs for access by tasks
-    _inputs = {}
+        # # Initialize RAG provider
+        rag_provider = RagContentProvider(RAG_CONTENT_FILES)
+        
+        # Store inputs for access by tasks
+        self._inputs = {}
+        
+        # Load task configurations
+        try:
+            with open(tasks_config_path, 'r') as f:
+                self.tasks_config = yaml.safe_load(f)
+            logger.info(f"Successfully loaded tasks config from {tasks_config_path}")
+            logger.info(f"tasks_config: {self.tasks_config['research_task']['expected_output']}")
+        except Exception as e:
+            logger.warning(f"Error loading tasks config: {e}")
+            # Provide default configurations
+            tasks_config = {
+                "research_task": {
+                    "description": "Research the topic and gather information.",
+                    "expected_output": "A list of insights and key points about the topic.",
+                    "agent": "research_agent"
+                },
+                "write_outline": {
+                    "description": "Create a detailed outline for a book.",
+                    "agent": "outline_writer"
+                }
+            }
+            logger.info("Using default task configurations")
+        
+        # Load expected output
+        try:
+            with open(task_expected_output_path, 'r') as f:
+                self.task_expected_output = yaml.safe_load(f)
+            logger.info(f"Successfully loaded expected output from {task_expected_output_path}")
+            logger.info(f"task_expected_output: {self.task_expected_output['expected_output']}")
+        except Exception as e:
+            logger.warning(f"Error loading expected output: {e}")
+            task_expected_output = {"expected_output": "A detailed book outline with chapters and sections."}
     
     def get_inputs(self):
         """Get the inputs passed to the crew during kickoff"""
@@ -51,25 +116,55 @@ class OutlineCrew:
     
     @agent
     def research_agent(self) -> Agent:
-        return Agent(config=self.agents_config["research_agent"],
-                     tools=[BrightDataWebSearchTool(), ReaderTool()],
-                     llm=llm,
-                     context=[
-                         {
-                             "key": "rag_files",
-                             "value": {
-                                 "outline": "rag/ChatGPT_for_Business_Expanded_Outline.txt",
-                                 "full_content": "rag/ChatGPT_for_Business_FULL_WITH_COVER.txt"
-                             },
-                             "description": "Paths to RAG content files"
-                         }
-                     ])
+        # # Create a proper agent configuration dictionary
+        # agent_config = {
+        #     "name": self.agents_config["research_agent"]["name"],
+        #     "description": self.agents_config["research_agent"]["description"],
+        #     "goal": self.agents_config["research_agent"]["goal"]
+        # }
+        
+        return Agent(
+            config=self.agents_config["research_agent"],
+            tools=[BrightDataWebSearchTool(), ReaderTool()],
+            llm=llm,
+            context=[
+                {
+                    "key": "rag_files",
+                    "value": {
+                        "outline": "rag/ChatGPT_for_Business_Expanded_Outline.txt",
+                        "full_content": "rag/ChatGPT_for_Business_FULL_WITH_COVER.txt"
+                    },
+                    "description": "Paths to RAG content files"
+                }
+            ]
+        )
 
     @task
     def research_task(self) -> Task:
+        # Add debug logging
+        logger.info(f"In research_task method, tasks_config type: {type(self.tasks_config)}")
+        logger.info(f"In research_task method, tasks_config keys: {list(self.tasks_config.keys()) if hasattr(self.tasks_config, 'keys') else 'No keys method'}")
+        
         # Create a task with proper context format
+        try:
+            x = 0
+            #if 'research_task' in self.tasks_config:
+                #logger.info(f"Found research_task in tasks_config: {self.tasks_config['research_task']['expected_output']}")
+            task_config = dict(self.tasks_config['research_task'])
+            #else:
+            #    raise KeyError("research_task")
+        except KeyError as e:
+            logger.error(f"KeyError: {e} - research_task not found in tasks_config")
+            # Use a default configuration
+            logger.info("Using default research_task configuration")
+            task_config = {
+                "description": "Research the topic and gather information about ChatGPT for Business.",
+                "expected_output": "A list of insights and key points about ChatGPT for Business.",
+                "agent": "research_agent"
+            }
+            
         return Task(
-            config=self.tasks_config["research_task"],
+            config=task_config,
             context=[
                 {
                     "key": "outline_path",
@@ -82,29 +177,38 @@ class OutlineCrew:
     
     @agent
     def outline_writer(self) -> Agent:
-        return Agent(config=self.agents_config["outline_writer"],
-                     tools=[ReaderTool()],
-                     llm=llm,
-                     context=[
-                         {
-                             "key": "rag_files",
-                             "value": {
-                                 "outline": "rag/ChatGPT_for_Business_Expanded_Outline.txt",
-                                 "full_content": "rag/ChatGPT_for_Business_FULL_WITH_COVER.txt"
-                             },
-                             "description": "Paths to RAG content files"
-                         },
-                         {
-                             "key": "rag_access_instructions",
-                             "value": "To access the RAG files, use the Reader Tool with either the file paths or these aliases: 'expanded_outline_chatgpt_for_business.txt' or 'outline' for the outline file, and 'full_content_chatgpt_for_business.txt' or 'full_content' for the full content file.",
-                             "description": "Instructions for accessing RAG content"
-                         },
-                         {
-                             "key": "chapter1_stories",
-                             "value": ["WelcomeWell", "StackHaven", "FlexTax", "LeadFleet", "BriteTeam"],
-                             "description": "Case studies for Chapter 1: Customer Experience"
-                         }
-                     ])
+        # # Create a proper agent configuration dictionary
+        # agent_config = {
+        #     "name": self.agents_config["outline_writer"]["name"],
+        #     "description": self.agents_config["outline_writer"]["description"],
+        #     "goal": self.agents_config["outline_writer"]["goal"]
+        # }
+        
+        return Agent(
+            config=self.agents_config["outline_writer"],
+            tools=[ReaderTool()],
+            llm=llm,
+            context=[
+                {
+                    "key": "rag_files",
+                    "value": {
+                        "outline": "rag/ChatGPT_for_Business_Expanded_Outline.txt",
+                        "full_content": "rag/ChatGPT_for_Business_FULL_WITH_COVER.txt"
+                    },
+                    "description": "Paths to RAG content files"
+                },
+                {
+                    "key": "rag_access_instructions",
+                    "value": "To access the RAG files, use the Reader Tool with either the file paths or these aliases: 'expanded_outline_chatgpt_for_business.txt' or 'outline' for the outline file, and 'full_content_chatgpt_for_business.txt' or 'full_content' for the full content file.",
+                    "description": "Instructions for accessing RAG content"
+                },
+                {
+                    "key": "chapter1_stories",
+                    "value": ["WelcomeWell", "StackHaven", "FlexTax", "LeadFleet", "BriteTeam"],
+                    "description": "Case studies for Chapter 1: Customer Experience"
+                }
+            ]
+        )
 
     @task
     def write_outline(self) -> Task:
@@ -173,31 +277,7 @@ class OutlineCrew:
         except Exception as e:
             logger.error(f"Error enhancing task with RAG content: {e}")
         
-        # Create the context list with standard items
-        context_items = [
-            {
-                "key": "outline_path",
-                "value": self.outline_path,
-                "description": "Path to the outline file",
-                "expected_output": "A file path string"
-            },
-            {
-                "key": "use_rag",
-                "value": True,
-                "description": "Whether to use RAG for enhanced content",
-                "expected_output": "A boolean value"
-            },
-            {
-                "key": "rag_files",
-                "value": {
-                    "outline": "rag/ChatGPT_for_Business_Expanded_Outline.txt",
-                    "full_content": "rag/ChatGPT_for_Business_FULL_WITH_COVER.txt"
-                },
-                "description": "Paths to RAG content files that should be used to enhance the outline",
-                "expected_output": "A dictionary mapping content types to file paths"
-            }
-        ]
-        
+       
         # Check if we're generating a single chapter outline
         # This will be passed from the kickoff inputs
         inputs = self.get_inputs()
@@ -209,32 +289,77 @@ class OutlineCrew:
                 
                 # Modify the task description to focus on a single chapter
                 if "description" in task_config:
+                    logger.info(f"Original description: {task_config['description']}")
                     task_config["description"] = task_config["description"].replace(
                         "Create a logical flow between chapters",
                         f"Create a detailed outline for Chapter {chapter_number}"
                     )
+                    logger.info(f"Modified description: {task_config['description']}")
                     task_config["description"] = task_config["description"].replace(
                         "ensure each chapter tells a cohesive story",
                         "ensure this chapter tells a cohesive story"
                     )
-                
-                # Add chapter number to context
-                context_items.append({
-                    "key": "single_chapter",
-                    "value": True,
-                    "description": "Whether to generate a single chapter outline",
-                    "expected_output": "A boolean value"
-                })
-                context_items.append({
-                    "key": "chapter_number",
-                    "value": chapter_number,
-                    "description": "The chapter number to generate",
-                    "expected_output": "An integer"
-                })
+                    logger.info(f"Modified description 2: {task_config['description']}")
+                # Create the context list with standard items
+                #context_items = [
+                    # {
+                    #     "key": "outline_path",
+                    #     "value": self.outline_path,
+                    #     "description": "Path to the outline file",
+                    #     "expected_output": "A file path string"
+                    # },
+                    # {
+                    #     "key": "use_rag",
+                    #     "value": True,
+                    #     "description": "Whether to use RAG for enhanced content",
+                    #     "expected_output": "A boolean value"
+                    # },
+                    # {
+                    #     "key": "rag_files",
+                    #     "value": {
+                    #         "outline": "rag/ChatGPT_for_Business_Expanded_Outline.txt",
+                    #         "full_content": "rag/ChatGPT_for_Business_FULL_WITH_COVER.txt"
+                    #     },
+                    #     "description": "Paths to RAG content files that should be used to enhance the outline",
+                    #     "expected_output": "A dictionary mapping content types to file paths"
+                    # }
+                #]
+         
+                # # Add chapter number to context
+                # context_items.append({
+                #     "key": "single_chapter",
+                #     "value": True,
+                #     "description": "Whether to generate a single chapter outline",
+                #     "expected_output": "A boolean value"
+                # })
+                # context_items.append({
+                #     "key": "chapter_number",
+                #     "value": chapter_number,
+                #     "description": "The chapter number to generate",
+                #     "expected_output": "An integer"
+                # })
         
         # Create the task with the enhanced config
         logger.info(f"Total write_outline task creation took {time.time() - start_time:.2f} seconds")
         logger.info("===== WRITE_OUTLINE TASK CREATION COMPLETE =====")
+        
+        # Initialize context_items if it wasn't defined in the single chapter case
+        #if not locals().get('context_items'):
+        context_items = [
+            {
+                "key": "book_title",
+                "value": "ChatGPT for Business",
+                "description": "The title of the book",
+                "expected_output": "A string"
+            },
+            {
+                "key": "expected_output",
+                "value": self.task_expected_output["expected_output"],
+                "description": "Prompt from file tasks.outline.expected_output.yaml",
+                "expected_output": "A string"
+            }
+        ]
+            
         return Task(
             config=task_config,
             output_pydantic=Outline,
@@ -265,7 +390,7 @@ class OutlineCrew:
                    tasks=self.tasks,
                    process=Process.sequential,
                    verbose=True,
-                   callbacks={"on_kickoff": on_kickoff})
+                   callbacks={"on_kickoff": on_kickoff}) #delete on_kickoff - not used
         
         logger.info(f"Crew created in {time.time() - start_time:.2f} seconds")
         logger.info(f"Crew has {len(crew.agents)} agents and {len(crew.tasks)} tasks")

@@ -1,13 +1,25 @@
 #!/usr/bin/env python
 import os
+import sys
 import time
 import asyncio
 import json
 import logging
 
+# Add the src directory to the Python path
+src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if src_path not in sys.path:
+    sys.path.insert(0, src_path)
+
 from pydantic import BaseModel
 
 from crewai.flow import Flow, listen, start
+
+# Configure the Python path for relative imports
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(os.path.dirname(current_dir))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
 # Configure logging
 logging.basicConfig(
@@ -61,7 +73,7 @@ class BookFlow(Flow[BookState]):
             return
             
         loaded_chapters = []
-        for filename in os.listdir("chapters"):
+        for filename in os.listdir("output/chapters"):
             if filename.endswith(".md"):
                 try:
                     chapter_num = int(filename.split("_")[0])

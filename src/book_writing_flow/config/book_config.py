@@ -4,15 +4,15 @@ Book-specific configuration for the book writing flow.
 
 # RAG content files configuration
 RAG_CONTENT_FILES = {
-    "outline": "rag/ChatGPT_for_Business_Expanded_Outline.txt",
-    "full_content": "rag/ChatGPT_for_Business_FULL_WITH_COVER.txt",
+    "book_outline": "rag/ChatGPT_in_the_Office.md",
+    "chapter_content": "rag/chatgpt_office_use_cases_detailed_outline.txt",
     # Add more content files as needed
 }
 
 # Book metadata
 BOOK_METADATA = {
-    "title": "ChatGPT for Business",
-    "author": "Author Name",
+    "title": "ChatGPT for the Office",
+    "author": "Dan Hermes",
     "description": "A comprehensive guide to using ChatGPT in business contexts",
 }
 

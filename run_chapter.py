@@ -17,6 +17,7 @@ from pydantic import BaseModel
 from src.book_writing_flow.crews.Writer_crew.writer_crew import ChapterWriterCrew
 from src.book_writing_flow.crews.Writer_crew.writer_crew import write_chapter_task
 from sanitize_markdown import sanitize_markdown
+from src.book_writing_flow.book_model import Chapter, Section
 
 # Configure basic logging
 logging.basicConfig(
@@ -30,18 +31,18 @@ llm = LLM(model="gpt-4o")
 logging.getLogger().setLevel(logging.INFO)
 logger = logging.getLogger("run_chapter")
 
-class Section(BaseModel):
-    """Section of a chapter"""
-    chapter_title : str
-    title: str
-    type: str  # Introduction, Story, Topic Explanation, Bonus Topic, Big Box, Chapter Summary, Chapter Bridge, Outro
-    content: str
+# class Section(BaseModel):
+#     """Section of a chapter"""
+#     chapter_title : str
+#     title: str
+#     type: str  # Introduction, Story, Topic Explanation, etc.
+#     content: str
 
-class Chapter(BaseModel):
-    """Chapter of the book"""
-    title: str
-    content: str
-    sections: list[Section] = []
+# class Chapter(BaseModel):
+#     """Chapter of the book"""
+#     title: str
+#     content: str
+#     sections: list[Section] = []
 
 def run_single_chapter(chapter_index=0, force_regenerate=False):
     """Run just a single chapter generation with enhanced RAG content and section guidance"""

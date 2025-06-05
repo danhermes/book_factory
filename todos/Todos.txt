@@ -1,0 +1,29 @@
+#Todos
+
+#Load Book data from file instead of hard code:
+class BookState(BaseModel):
+    topic: str = "ChatGPT prompts for use by the businsessperson"
+    book_title: str = "ChatGPT for the Office"
+    total_chapters: int = 7
+    titles: list[str] = []
+    chapters: list[Chapter] = []
+
+#Use Classes instead of hard-coding
+"topic": "ChatGPT for Business",
+
+
+# Book metadata - Use book_config.py template and copy into output/
+BOOK_METADATA = {
+    "title": "",
+    "author": "",
+    "description": "",
+
+
+    class BookState(BaseModel):
+    topic: str = "ChatGPT prompts for use by the businsessperson" --------------------
+    book_title: str = "ChatGPT for the Office" --------------------
+    book_outline: str = "" #from RAG file
+    chapter_content: str = "" #from RAG file
+    total_chapters: int = 0
+    titles: list[str] = []
+    chapters: list[Chapter] = []

@@ -30,6 +30,8 @@ def sanitize_markdown(text: str) -> str:
     # Collapse multiple blank lines
     text = re.sub(r'\n{3,}', '\n\n', text)
 
+    text = re.sub(r'(?m)^\s*---\s*$', '***', text) # Replace --- with ***   
+
     return text
 
 def sanitize_all_md_files(directory="."):

@@ -19,22 +19,17 @@ class Section(BaseModel):
     content: str = ""
     previous_section: Optional[str] = None
     next_section: Optional[str] = None
-    structure: Optional[List[str]] = None
-    rag_content: Optional[str] = None
     chapter_number: Optional[int] = None
     section_number: Optional[int] = None
-    min_length: Optional[int] = None
 
 class Chapter(BaseModel):
     title: str = ""
-    content: str = ""
+    number: int = 0
     sections: List[Section] = []
 
 class BookModel(BaseModel):
     topic: Optional[str] = "ChatGPT prompts for use by the businessperson"
     book_title: Optional[str] = "ChatGPT for the Office"
-    book_outline: Optional[str] = ""
-    chapter_content: Optional[str] = ""
     total_chapters: Optional[int] = None
     titles: Optional[List[str]] = None
     chapters: List[Chapter] = []

@@ -30,7 +30,7 @@ cd src/book_binding
 
 ## Input Files
 
-The script expects the following files in the `output/chapters/clean` directory:
+The script expects the following files in the `output/chapters` directory:
 
 - `*.md` - Chapter files (sorted alphanumerically)
 - `front_matter.md` (optional) - Content for the front matter

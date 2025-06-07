@@ -1,5 +1,17 @@
 #Todos
 
+# sanitize_all.py - should happen during chapter writing - did I break this?
+
+# Don't use these in manuscript! "---"  They crash {Pandoc}
+
+# prompts not wrapping in pdf (pandoc)
+ChatGPT: To ensure that PROMPT: and RESPONSE: blocks are visually preserved and wrapped correctly in the final PDF, you should wrap them in code block fences (```) in the Markdown before passing it to Pandoc. Pandoc converts fenced code blocks to verbatim environments in LaTeX, which handle wrapping and special characters properly.
+
+
+# Every Chapter.md:
+   ## Chapter 1: Unknown Chapter 
+   # Unknown Chapter
+
 #Load Book data from file instead of hard code:
 class BookState(BaseModel):
     topic: str = "ChatGPT prompts for use by the businsessperson"

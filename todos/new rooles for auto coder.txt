@@ -1,0 +1,12 @@
+Domain Model First: Always prioritize using the established domain models (like BookState) as the primary data structures throughout the codebase. Never create parallel or alternative data structures that bypass the domain model.
+
+Model-Aligned Serialization: When serializing domain models, always use the model's built-in serialization methods (.dict() or .model_dump() for Pydantic) rather than creating custom dictionaries.
+
+Architectural Continuity: Every technical solution must maintain continuity with the architectural vision. Before implementing any fix, explicitly verify: "Does this solution maintain or strengthen the established architecture?"
+
+Implementation Hierarchy: When solving problems, follow this hierarchy:
+
+First: Solutions that leverage existing domain models
+Second: Solutions that extend domain models
+Last Resort: Solutions that work around domain models (and only with explicit justification)
+Explicit Architecture Validation: After implementing any solution, validate and document how it aligns with the architectural principles.

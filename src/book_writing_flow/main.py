@@ -224,8 +224,8 @@ class BookFlow(Flow[BookState]):
                     logger.info(f"Saving chapter: {chapter.title}")
                     for section in chapter.sections:
                         if isinstance(section, Section):
-                            f.write(f"- {section.title} ({section.type})\n")
-                            logger.info(f"Saving section: {section.title} ({section.type})")
+                            f.write(f"- {section.section_title} ({section.type})\n")
+                            logger.info(f"Saving section: {section.section_title} ({section.type})")
                         else:
                             logger.warning(f"Section is not a Section object: {section}")
                     f.write("\n")
@@ -259,7 +259,7 @@ class BookFlow(Flow[BookState]):
             for chapter in self.state.chapters:
                 chapter_data = {
                     "title": chapter.title,
-                    "sections": [{"title": section.title, "type": section.type, "content": section.content} for section in chapter.sections]
+                    "sections": [{"title": section.section_title, "type": section.type, "content": section.content} for section in chapter.sections]
                 }
                 book_outline["chapters"].append(chapter_data)
         
@@ -355,7 +355,7 @@ class BookFlow(Flow[BookState]):
                     "title": chapter.title,
                     "content": chapter.content,
                     "sections": [
-                        {"title": section.title, "type": section.type, "content": section.content}
+                        {"title": section.section_title, "type": section.type, "content": section.content}
                         for section in chapter.sections
                     ] if hasattr(chapter, 'sections') else []
                 }

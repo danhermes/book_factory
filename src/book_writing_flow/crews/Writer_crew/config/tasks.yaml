@@ -141,7 +141,7 @@ write_chapter:
   description: >
     Write a comprehensive, in-depth chapter about the topic {title} based on the insights and key points gathered by the topic researcher agent.
     CRITICAL: You MUST use EXACTLY the section titles from the book outline in the exact order specified. DO NOT create your own section titles or change the order.
-    Each section must adhere to its designated type (Introduction, Story, Topic Explanation, etc.) and meet or exceed its minimum word count requirement.
+    Each section must adhere to its designated type (Introduction, Story, Topic Explanation, etc.) and meet or exceed its minimum Minimum word count requirement.
     Incorporate the RAG content provided to maintain consistency with existing materials and ensure high quality.
     Ensure the chapter is engaging, well-researched, and provides substantial depth in each section.
     Rules: 
@@ -157,17 +157,14 @@ write_chapter:
     - Avoid repetition between sections
     - Write approximately 4000-5000 words total with proper depth in each section
   expected_output: >
-    A beautifully crafted, thoroughly researched chapter about the topic {title} that follows the outline exactly, with each section properly developed according to its type and meeting or exceeding its minimum word count requirement.
+    A beautifully crafted, thoroughly researched chapter about the topic {title} that follows the outline exactly, with each section properly developed according to its type and meeting or exceeding its minimum Minimum word count requirement.
 
 
 write_section:
   description: >
     Write a detailed section titled "{title}" for the chapter "{chapter_title}".
-    This section is of type {section_type} and should be at least {min_length} words.
-
+    This section is of type {section_type} and should be at least Minimum word count words, specified in the section type.
     CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
-    Follow the recommended structure for this section type: {structure}
-
     GOAL: In the midst of the chaos and fun, keep the focus on the book goal: helping individual businesspeople create wins using ChatGPT prompts.
     
     Narrative Background: 
@@ -208,8 +205,8 @@ write_section:
     Rules:
     - CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
     - CRITICAL: You MUST use EXACTLY the ChatGPT prompts and responses from the research provided. DO NOT modify or change the prompts or responses in any way.
-    - The section must meet or exceed the minimum word count of {min_length} words
-    - Follow the recommended structure for this section type: {structure}
+    - The section must meet or exceed the minimum Minimum word count of specified Minimum word count words
+    - Follow the recommended section rules for each section type below.
     - Incorporate the RAG content provided to maintain consistency with existing materials
     - Include substantial research, data, statistics, and expert opinions to support claims
     - For stories, provide detailed company information, implementation specifics, and concrete metrics
@@ -242,7 +239,7 @@ write_section:
       - Format the responses as distinct blocks with quotes SET APART WITH A LINE BREAK above and below each response and show how they would be used in the story.
       - Response text from prompts are not always included in the story but many are.
   
-    Section-specific rules:
+    Section rules for each section type:
     
     Introduction sections:
     - Author: typically Marva Lenna just to get things off on the right foot, but Tendy does one on occasion.
@@ -253,7 +250,7 @@ write_section:
     - Include relevant statistics and research to establish context
     - Include expert quotes or industry perspectives where appropriate
     - Style: Authoritative using business language but speaking directly to the reader in a slightly personal tone.
-    - Length: 600-800 words
+    - Minimum word count: 600-800 words
     
     Story sections:
     - Author: Tendy Bantner
@@ -289,7 +286,7 @@ write_section:
     - Discuss challenges encountered and how they were overcome
     - Include ROI calculations or business impact where possible
     - Style: Take the stories into a more casual, personable tone. Personable people. Inside take on a business run by a friend's friend.
-    - Length: 1500-2500 words
+    - Minimum word count: 2000 words
     
     Topic Explanation sections:
     - Author: Marva Lenna
@@ -306,18 +303,18 @@ write_section:
     - Discuss potential challenges and how to overcome them
     - Include industry standards or benchmarks when relevant
     - Style: Business-like tone with a touch of technical depth using industry AI terms when appropriate.
-    - Length: 1000-2000 words
+    - Minimum word count: 1800 words
 
     Net Zero Prompt sections:
     - Author: Tendy Bantner
     - Feature terrible prompt examples.
     - Teach how to avoid the pitfalls of ChatGPT.
-    - Length: 500-700 words
+    - Minimum word count: 700 words
 
     Prompt Talk sections:
     - This is a section where Tendy and Marva talk to one another about the prompts and responses.
     - Author: Tendy Bantner and Marva Lenna
-    - Length: 500-700 words
+    - Minimum word count: 700 words
     
     Bonus Topic sections:
     - Author: Marva Lenna with an occasional visit by Tendy Bantner.
@@ -332,14 +329,14 @@ write_section:
     - Can be more concise than main topic explanations
     - Include practical examples and use cases
     - Provide actionable insights or tips
-    - Length: 500-700 words
+    - Minimum word count: 700 words
 
     Leaderboard sections:
     - Author: Tendy "Cosell" Bantner
     - Sports-like competition of Razorbeam and DriftLoaf prompt performance.
     - Compare highlights with failures.
     - Give employees a chane to respond in one-on-one interview with Tendy.
-    - Length: 500-700 words
+    - Minimum word count: 700 words
     
     Big Box sections:
     - Author: Marva Lenna
@@ -351,7 +348,7 @@ write_section:
     - Discuss integration points with other systems
     - Identify limitations and considerations
     - Style: Adopt a friendly but authoritative tone to describe tech concepts to non-technical readers.
-    - Length: 900-1200 words
+    - Minimum word count: 1000 words
     
     Chapter Summary sections:
     - Author: Marva Lenna
@@ -361,7 +358,7 @@ write_section:
     - Use expert recommendations for implementation of this chapter's topic 
     - Provide actionable next steps, considerations, and implementation guidance
     - Connect AI concepts solidly to broader business implications
-    - Length: 800-1200 words
+    - Minimum word count: 1000 words
     
     Chapter Bridge sections:
     - Author: Marva Lenna
@@ -369,7 +366,7 @@ write_section:
     - Connect the current chapter's concepts to upcoming themes
     - Maintain narrative flow between chapters
     - Include a question or thought that leads into the next topic
-    - Length: 300-400 words
+    - Minimum word count: 400 words
     
     Outro sections (final chapter only):
     - Author: Marva Lenna
@@ -377,11 +374,11 @@ write_section:
     - Reinforce the book's main thesis
     - Offer forward-looking perspectives
     - Include future outlook and emerging trends
-    - Length: 500-700 words
+    - Minimum word count: 800 words
 
   expected_output: >
-    A beautifully crafted, thoroughly researched section titled "{title}" that meets or exceeds the minimum length of {min_length} words.
-    The section should follow the structure provided and incorporate the RAG content while maintaining consistency with the chapter theme.
+    A beautifully crafted, thoroughly researched section titled "{title}" that meets or exceeds the minimum length of minimum Minimum word count in the section rules.
+    The section should follow the section rules provided by section type and incorporate the RAG content while maintaining consistency with the chapter theme.
     A log of all research findings used in the section, saved to the specified research log file.
  
   context:

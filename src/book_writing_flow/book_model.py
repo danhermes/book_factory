@@ -14,7 +14,7 @@ from typing import Optional, List
 
 class Section(BaseModel):
     chapter_title: Optional[str] = None
-    title: str = ""
+    section_title: str = ""
     type: str = ""
     content: str = ""
     previous_section: Optional[str] = None
@@ -22,6 +22,7 @@ class Section(BaseModel):
     structure: Optional[List[str]] = None
     rag_content: Optional[str] = None
     chapter_number: Optional[int] = None
+    section_number: Optional[int] = None
     min_length: Optional[int] = None
 
 class Chapter(BaseModel):

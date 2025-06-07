@@ -96,18 +96,21 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
     # Generate the chapter
     try:
         # Research the chapter topics
-        crew = ChapterWriterCrew().crew()
-        logging.info(f"RUN_SINGLE_CHAPTER: Crew created")
+        # crew for chapter research only - not used for chapter writing
+        crew = ChapterWriterCrew().crew()       
 
+        logging.info(f"RUN_SINGLE_CHAPTER: Crew created")
         chapter_data = chapters[chapter_index]
 
         result = crew.kickoff(inputs={
             "title": chapter_title,
             "topic": "ChatGPT for Business: How to Create Powerful AI Workflows",
             "chapters": [chapter["title"] for chapter in chapters],
-            "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
+            "outline_sections": [section.get("section_title", "") for section in chapter_data.get("sections", [])]
         })
         
+    
+    
         logging.info(f"Checking result.pydantic: {hasattr(result, 'pydantic')}")
         if hasattr(result, 'pydantic'):
             logging.info(f"Result.pydantic type: {type(result.pydantic)}")
@@ -152,7 +155,7 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         #     logger.info(f"Research file already exists: {research_log_file}")
 
         # Save research results to file
-        with open(research_log_file, "w") as f:
+        with open(research_log_file, "w", encoding="utf-8") as f:
                 f.write(f"# Research for Chapter {chapter_index+1}: {chapter_title}\n\n")
                 local_time = datetime.now(ZoneInfo("America/New_York"))
                 f.write(f"Generated on: {local_time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
@@ -177,23 +180,23 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         with open("src/book_writing_flow/crews/Writer_crew/config/tasks.yaml", "r") as f:
             tasks_config = yaml.safe_load(f)
 
-        agents = {}
-        agents = {
-        "section_writer": Agent(
-            config=agents_config["section_writer"],
-            llm=llm,
-            verbose=True
-        ),
-        "writer": Agent(
-            config=agents_config["writer"],
-            llm=llm,
-            verbose=True
-        ),
-        "topic_researcher": Agent(
-            config=agents_config["topic_researcher"],
-            llm=llm,
-            verbose=True
-        )}
+        # agents = {}
+        # agents = {
+        # "section_writer": Agent(
+        #     config=agents_config["section_writer"],
+        #     llm=llm,
+        #     verbose=True
+        # ),
+        # "writer": Agent(
+        #     config=agents_config["writer"],
+        #     llm=llm,
+        #     verbose=True
+        # ),
+        # "topic_researcher": Agent(
+        #     config=agents_config["topic_researcher"],
+        #     llm=llm,
+        #     verbose=True
+        # )}
 
         # # Create context items from inputs
         # context_items = []
@@ -210,21 +213,34 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
         #         "value": value,
         #         "description": f"Input for {key}"
         #     })
+        logging.info(f"Define write_chapter_task")
 
         task = write_chapter_task(
-            description=tasks_config["write_chapter"]["description"], #f"Write chapter {chapter_title} using the outline",
-            expected_output=tasks_config["write_chapter"]["expected_output"], #"A completed chapter object with full sections",
-            config=tasks_config,#["write_section"],
-            output_pydantic=Chapter,
-            inputs={
-            "chapter_title": chapter_title,
-            "title": chapter_title,
-            "topic": "ChatGPT for Business",
-            "agents": agents,
-            "chapters": [chapter["title"] for chapter in chapters],
-            "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
-            }
+            description=tasks_config["write_section"]["description"],
+            expected_output=tasks_config["write_section"]["expected_output"],
+            config=agents_config,
+            research_content=research_content
         )
+
+        # task = write_chapter_task(
+        #     #description=tasks_config["write_chapter"]["description"], #f"Write chapter {chapter_title} using the outline",
+        #     #expected_output=tasks_config["write_chapter"]["expected_output"], #"A completed chapter object with full sections",
+        #     tasks=tasks_config,              # output_pydantic=Chapter,
+        #     agents=agents_config,            # inputs={ #???????????????????????????????????????????????? necessary?
+        #     research_content=research_content
+        #     # "chapter_title": chapter_title,
+        #     # "title": chapter_title,
+        #     # "topic": "ChatGPT for Business",
+        #     # inputs={
+        #     #   "agents": agents_config["chapter_writer"]            
+        #     # }
+        #     #"chapters": [chapter["title"] for chapter in chapters],
+        #     #"outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
+        #     #}
+        #     # "chapters": [chapter["title"] for chapter in chapters],
+        #     # "outline_sections": [section.get("title", "") for section in chapter_data.get("sections", [])]
+        #     # }
+        #     )
         
         logging.info("🚀 Crew finished successfully!")
 

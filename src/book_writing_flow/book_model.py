@@ -25,6 +25,7 @@ class Section(BaseModel):
 class Chapter(BaseModel):
     title: str = ""
     number: int = 0
+    content: str = ""
     sections: List[Section] = []
 
 class BookModel(BaseModel):

@@ -11,7 +11,7 @@ from book_writing_flow.crews.Writer_crew.writer_crew import ChapterWriterCrew
 from book_writing_flow.crews.Outline_crew.outline_crew import OutlineCrew
 from dotenv import load_dotenv
 from book_writing_flow.tools.rag_utils import RagContentProvider
-from output.book_config import RAG_CONTENT_FILES
+from output.book_config import RAG_CONTENT_FILES, BOOK_TITLE, BOOK_TOPIC
 from book_writing_flow.book_model import Chapter, Section, BookModel
 
 # Add the src directory to the Python path
@@ -47,8 +47,8 @@ class BookFlow(Flow[BookState]):
     def __init__(self):
         super().__init__()
         self.book_outline = BookState()
-        self.book_outline.topic = ""
-        self.book_outline.book_title = ""
+        self.book_outline.topic = BOOK_TOPIC
+        self.book_outline.book_title = BOOK_TITLE
         self.book_outline.total_chapters = 0
         self.rag_chapter_content = ""
         self.rag_book_outline = ""
@@ -316,8 +316,9 @@ class BookFlow(Flow[BookState]):
     #     logger.info("Book state saved to output/book_state.json")
 
 
-def kickoff():
-    book_flow = BookFlow()
+def kickoff(book_flow=None):
+    if book_flow is None:
+        book_flow = BookFlow()
     asyncio.run(book_flow.kickoff_async())
 
 
@@ -400,4 +401,20 @@ def kickoff():
 
 
 if __name__ == "__main__":
-    kickoff()
+    import argparse
+    
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description="Book Writing Flow")
+    parser.add_argument("--topic", type=str, default=BOOK_TOPIC,
+                        help="Book topic")
+    parser.add_argument("--book-title", type=str, default=BOOK_TITLE,
+                        help="Book title")
+    args = parser.parse_args()
+    
+    # Create BookFlow instance and set topic and book_title
+    book_flow = BookFlow()
+    book_flow.book_outline.topic = args.topic
+    book_flow.book_outline.book_title = args.book_title
+    
+    # Kickoff the flow with our configured book_flow instance
+    kickoff(book_flow)

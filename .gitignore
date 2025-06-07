@@ -66,3 +66,9 @@ output/sections
 output/research
 output/logs
 output_Prompt_Power/
+
+src/book_binding/front_cover.pdf
+src/book_binding/back_cover.pdf
+src/book_binding/build_temp.pdf
+src/book_binding/build_temp.tex
+src/book_binding/build_temp.toc

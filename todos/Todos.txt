@@ -8,6 +8,8 @@
 ChatGPT: To ensure that PROMPT: and RESPONSE: blocks are visually preserved and wrapped correctly in the final PDF, you should wrap them in code block fences (```) in the Markdown before passing it to Pandoc. Pandoc converts fenced code blocks to verbatim environments in LaTeX, which handle wrapping and special characters properly.
 
 
+Use BookModel.title
+
 # Every Chapter.md:
    ## Chapter 1: Unknown Chapter 
    # Unknown Chapter

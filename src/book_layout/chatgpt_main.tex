@@ -1,0 +1,21 @@
+\documentclass[12pt,oneside]{memoir}
+\usepackage{chatgpt_layout}
+
+%%% === Code Block wrapping ===
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+
+\title{ChatGPT in the Office}
+\author{Dan Hermes}
+
+\begin{document}
+\frontmatter
+\maketitle
+\clearpage               % ← force new page after the title
+\tableofcontents
+\clearpage               % ← force new page after the TOC
+\mainmatter
+\include{chapters/chapter1_write.tex}
+\end{document}

@@ -1,0 +1,14 @@
+  pandoc -f markdown \
+    -V documentclass=memoir -V lang=nl-BE -M lang:nl \
+    --include-in-header=preamble.tex \
+    --include-before-body=coversheet.tex \
+    --include-after-body=afterbody.tex \
+    --pdf-engine=xelatex \
+    --filter pandoc-citeproc \
+    --filter filters/fancybreak.py \
+    --top-level-division=part \
+    --metadata-file=metadata.yml \
+    --highlight-style=haddock \
+    -t latex+smart > book.tex \
+    chap1.pd.md chap2.pd.md chap3.pd.md ... \
+  xelatex book.tex

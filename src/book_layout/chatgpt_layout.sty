@@ -1,0 +1,41 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{chatgpt_layout}[2025/06/13 Layout for ChatGPT in the Office]
+
+\RequirePackage{mathpazo}         % Palatino
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{microtype}
+\RequirePackage{hyperref}
+\RequirePackage{xcolor}
+
+%%% === Page Layout ===
+\setstocksize{9in}{6in}
+\settrimmedsize{9in}{6in}{*}
+\settypeblocksize{7in}{4.5in}{*}
+\setlrmarginsandblock{0.75in}{0.75in}{*}
+\setulmarginsandblock{0.75in}{0.75in}{*}
+\setheadfoot{14pt}{24pt}
+\setheaderspaces{*}{*}{1}
+\checkandfixthelayout
+
+%%% === Typography ===
+\linespread{1.2}
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+
+%%% === Chapter Style ===
+\chapterstyle{default}
+\pagestyle{ruled}
+
+%%% === Prompt Box ===
+\newtcolorbox{promptbox}{
+  colback=gray!10, colframe=black,
+  boxrule=0.5pt, arc=2pt,
+  left=6pt, right=6pt, top=4pt, bottom=4pt,
+  breakable, enhanced
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+}

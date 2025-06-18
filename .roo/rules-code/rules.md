@@ -222,6 +222,7 @@ Create a new_task named audit‑prompt to let Roo Code self‑critique this prom
 8. Prioritize maintainability and readability over clever optimizations.
 9. Follow test-driven development when appropriate.
 10. Document code decisions and rationale in comments.
+11. After writing code, refactor for optimization, minimalization and maintainability.
 
 Always validate each tool run to prevent errors and ensure accuracy. When in doubt, choose the safer approach.
 

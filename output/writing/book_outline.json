@@ -1,0 +1,84 @@
+{
+  "ChatGPT_in_the_Office": [
+    {
+      "category": "Write",
+      "capabilities": [
+        "Draft emails, reports, presentations",
+        "Fix grammar, improve tone and clarity",
+        "Adapt writing for audience and channel"
+      ]
+    },
+    {
+      "category": "Meet",
+      "capabilities": [
+        "Summarize agendas, notes, and transcripts",
+        "Generate action items and follow-up emails",
+        "Role-play scenarios for prep (interviews, pitches)"
+      ]
+    },
+    {
+      "category": "Change",
+      "capabilities": [
+        "Change one format to many (deck → blog → email)",
+        "Brainstorm taglines, headlines, and social content",
+        "Create outreach scripts and onboarding material"
+      ]
+    },
+    {
+      "category": "Research",
+      "capabilities": [
+        "TL;DR long PDFs, whitepapers, and policies",
+        "Extract insights, risks, and trends",
+        "Compare documents or competitors side by side"
+      ]
+    },
+    {
+      "category": "Plan, Strategize, and Decide",
+      "capabilities": [
+        "Generate decision matrices, SWOTs, business cases",
+        "Break down high-level goals into tactical plans",
+        "Explore \"what if\" scenarios with structured reasoning"
+      ]
+    },
+    {
+      "category": "Produce and Flow",
+      "capabilities": [
+        "Build checklists, SOPs, templates",
+        "Convert formats (CSV ↔ JSON ↔ Markdown)",
+        "Draft logic flows for automation tools"
+      ]
+    },
+    {
+      "category": "Learn",
+      "capabilities": [
+        "Teach tools, topics, or frameworks fast",
+        "Explain complex ideas simply",
+        "Prep for interviews, tests, or new roles"
+      ]
+    },
+    {
+      "category": "Communicate",
+      "capabilities": [
+        "Write praise, constructive feedback, or tricky messages",
+        "Mediate conflicts with diplomacy",
+        "Match tone to audience (peer, exec, client)"
+      ]
+    },
+    {
+      "category": "Understand",
+      "capabilities": [
+        "Summarize reviews, surveys, or social chatter",
+        "Identify patterns, pain points, and priorities",
+        "Suggest improvements based on tone/sentiment"
+      ]
+    },
+    {
+      "category": "AI Transformation",
+      "capabilities": [
+        "Create prompt libraries for your team",
+        "Build GPT workflows (assistants, bots, internal tools)",
+        "Automate document generation, reports, and dashboards"
+      ]
+    }
+  ]
+}

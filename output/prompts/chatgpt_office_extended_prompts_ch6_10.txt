@@ -1,0 +1,59 @@
+6. Productivity & Workflow
+**Optimize + Document** How can I simplify this workflow for a new team member? Then create a short how-to doc for onboarding.
+**Automation Review** Look at this process and suggest 2-3 ways to automate it using no-code tools.
+**What’s the most error-prone step in this workflow and how can it be fixed?**
+**Convert and Clean** Upload a messy CSV and get a cleaned-up JSON version along with a summary of issues found.
+**Turn into SOP + Checklist** Turn this rough process into both a formal SOP and an actionable checklist.
+**Build Table + Summary** Organize the following workflow into a markdown table and summarize the most time-consuming steps.
+**What steps can I eliminate without losing value?**
+**Explain and Reorder** Explain this workflow in plain language. Then reorder it for efficiency.
+**Upload & Audit** Upload your process notes and receive an efficiency audit with 3 recommendations.
+**Draft Recurring Template** Create a monthly version of this recurring task flow that includes deadlines and dependencies.
+
+7. Learning & Development
+**Explain for Multiple Levels** Teach this concept to: (a) an intern, (b) a manager, (c) a subject-matter expert.
+**Quiz Me on Upload** Upload a document and create a 10-question quiz with answer key and difficulty ratings.
+**What key ideas are most likely to confuse a beginner here?**
+**Compare and Contrast** How is this model different from the older one? What changed and why does it matter?**
+**What are three ways to visualize this process for easier understanding?**
+**Build Guided Learning Plan** Create a 3-week self-study plan with milestones and check-ins based on this topic.
+**Role-Based Learning** Customize this topic explanation for a product manager vs. a data analyst.
+**Turn into Flashcards + Summary** Create flashcards and a one-page reference guide for this content.
+**How should I explain this topic in a lunch-and-learn session?**
+**Upload & Break Down** Upload a dense whitepaper and get a modular learning path from it with section goals.
+
+8. Feedback & Communication
+**Rewrite for Two Tones** Rewrite this difficult feedback in (1) an assertive tone and (2) a collaborative tone.
+**Draft Feedback + Action Plan** Give feedback on this performance issue and suggest a 2-week improvement plan.
+**What’s the most respectful way to deliver this critique?**
+**Make This Positive** Flip this complaint-heavy review into constructive feedback without losing substance.
+**Performance Snippet** Turn this achievement into a one-line highlight for a review document and a resume bullet.
+**Email + Slack Rewrite** Rewrite this message for email and Slack, adjusting tone and formatting for each.
+**Upload & Evaluate Tone** Upload a draft message and assess for tone, clarity, and potential misinterpretation.
+**How would a DEI coach suggest I rewrite this message?**
+**Two Response Drafts** Draft two responses to this complaint: one formal, one empathetic and informal.
+**What phrases should I avoid when giving negative feedback to a peer?**
+
+9. Data & Sentiment Analysis
+**What are the 3 most common concerns in this dataset? Upload to analyze.**
+**Summarize + Prioritize** Summarize this survey feedback and rank issues from most to least urgent.
+**What is the overall tone across these 100 comments?**
+**Theme Clustering** Group these reviews into sentiment clusters and suggest names for each category.
+**Upload & Visualize** Upload data and generate a summary + suggested visuals for reporting.
+**How does this customer sentiment compare to last quarter’s? Upload both sets to compare.**
+**Rewrite Feedback + Score It** Rewrite this comment to be more constructive, then assign a sentiment score.
+**Create Multi-Lens Analysis** Analyze this dataset from a customer success lens and a product improvement lens.
+**What themes are buried under this positive feedback?**
+**Upload Multiple Files** Upload 2+ feedback sets and generate cross-set insights with visual and textual summaries.
+
+10. Building with GPT (Meta Productivity)
+**Design Prompt Library** Create a categorized prompt library from this list of tasks. Include labels and intended use cases.
+**Evaluate + Rewrite** Upload 10 prompts and evaluate them for clarity and results; rewrite the 3 weakest.
+**What prompt formats work best for knowledge extraction? Show 3 examples.**
+**Assistant Blueprint** Draft a system message + default prompt format for a GPT agent that helps with hiring tasks.
+**Multi-Channel Flow** Create a prompt flow that works across email, chat, and forms for handling internal requests.
+**Scale This Process** How can I turn this personal workflow into a reusable assistant for my team? Draft prompt architecture.
+**Upload + Auto-Classify** Upload a document full of prompts and auto-tag them by function and role.
+**What’s the best few-shot format to teach GPT how to generate meeting minutes?**
+**Evaluate Prompt + Output** Upload a prompt and output sample, then analyze what improved version would work better.
+**Create a Prompt Set** Build a mini toolkit of 5 prompts for reviewing, revising, and publishing internal policies.

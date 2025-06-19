@@ -7,6 +7,7 @@ import argparse
 import subprocess
 from typing import List, Optional, Dict, Any
 import logging
+from output.book_config import BOOK_TITLE, BOOK_TOPIC
 
 # Configure logging
 logging.basicConfig(
@@ -87,16 +88,33 @@ def extract_chapter_from_outline(outline_path, chapter_index, output_prefix):
         return None
 
 
-def generate_full_outline():
+def generate_full_outline(topic=BOOK_TOPIC, book_title=BOOK_TITLE):
     """Generate a full book outline"""
-    logger.info("Generating full book outline...")
+    logger.info(f"Generating full book outline for topic: {topic}, title: {book_title}...")
     start_time = time.time()
     
     # Log the command we're about to run
-    logger.info("Running: python src/book_writing_flow/main.py")
-    result = run_command(["python", "src/book_writing_flow/main.py"])
-    if result:
-        logger.info("Command output length: " + str(len(result)))
+    logger.info(f"Running: python src/book_writing_flow/main.py --topic \"{topic}\" --book-title \"{book_title}\"")
+    
+    # Use PYTHONPATH to ensure src directory is in the Python path
+    env = os.environ.copy()
+    src_path = os.path.abspath("src")
+    if "PYTHONPATH" in env:
+        env["PYTHONPATH"] = f"{src_path}{os.pathsep}{env['PYTHONPATH']}"
+    else:
+        env["PYTHONPATH"] = src_path
+    
+    # Run the command with the modified environment and pass topic and book_title
+    result = subprocess.run([
+        "python",
+        "src/book_writing_flow/main.py",
+        "--topic", topic,
+        "--book-title", book_title
+    ], env=env)
+    if result.returncode != 0:
+        logging.info(f"Error running command (exit code {result.returncode})")
+    else:
+        logger.info("Command executed successfully")
     
     outline_time = time.time() - start_time
     logger.info(f"Outline generation took {outline_time:.2f} seconds")
@@ -113,10 +131,10 @@ def generate_full_outline():
         logger.warning("output/outlines/book_outline.md not found after generation")
 
 
-def generate_full_outline_and_extract_chapter(chapter_num):
+def generate_full_outline_and_extract_chapter(chapter_num, topic=BOOK_TOPIC, book_title=BOOK_TITLE):
     """Generate a full book outline and extract a specific chapter"""
     # First generate the full outline
-    generate_full_outline()
+    generate_full_outline(topic, book_title)
     
     # Then extract the specific chapter
     logger.info(f"Extracting chapter {chapter_num}...")
@@ -160,8 +178,10 @@ def main():
     
     # Outline command
     outline_parser = subparsers.add_parser("outline", help="Generate book outline")
-    outline_parser.add_argument("--topic", type=str, default="ChatGPT for Business",
+    outline_parser.add_argument("--topic", type=str, default=BOOK_TOPIC,
                                help="Book topic")
+    outline_parser.add_argument("--book-title", type=str, default=BOOK_TITLE,
+                               help="Book title")
     outline_parser.add_argument("--chapter", type=int,
                                help="Generate outline for specific chapter (1-based)")
     outline_parser.add_argument("--use-existing", action="store_true",
@@ -169,7 +189,7 @@ def main():
     
     # Write command
     write_parser = subparsers.add_parser("write", help="Generate chapter content")
-    write_parser.add_argument("--chapter", type=int, required=True, 
+    write_parser.add_argument("--chapter", type=int, required=False, 
                              help="Chapter number to generate (1-based)")
     write_parser.add_argument("--force", action="store_true",
                              help="Force regeneration even if chapter already exists")
@@ -177,9 +197,11 @@ def main():
     # Full flow command
     flow_parser = subparsers.add_parser("flow", help="Run full book writing flow")
     flow_parser.add_argument("--chapters", type=str, default="all",
-                            help="Chapters to generate (comma-separated numbers or 'all')")
-    flow_parser.add_argument("--topic", type=str, default="ChatGPT for Business", 
-                            help="Book topic")
+                             help="Chapters to generate (comma-separated numbers or 'all')")
+    flow_parser.add_argument("--topic", type=str, default=BOOK_TOPIC,
+                             help="Book topic")
+    flow_parser.add_argument("--book-title", type=str, default=BOOK_TITLE,
+                             help="Book title")
     
     # Parse arguments
     args = parser.parse_args()
@@ -218,13 +240,13 @@ def main():
                 logger.error("Falling back to full outline generation and extraction")
                 
                 # Fall back to the old method
-                generate_full_outline_and_extract_chapter(args.chapter)
+                generate_full_outline_and_extract_chapter(args.chapter, args.topic, args.book_title)
             
             outline_time = time.time() - start_time
             logger.info(f"Chapter outline generation took {outline_time:.2f} seconds")
         else:
             # Generate full book outline
-            generate_full_outline()
+            generate_full_outline(args.topic, args.book_title)
     
     elif args.command == "write":
         # Use the run_chapter.py script to generate the chapter with the enhanced writer crew
@@ -239,8 +261,8 @@ def main():
     
     elif args.command == "flow":
         # First generate the outline
-        logging.info("Generating book outline...")
-        run_command([python_exe, "src/book_writing_flow/main.py"])
+        #logging.info("Generating book outline...")
+        #run_command([python_exe, "src/book_writing_flow/main.py"])
         
         # Check if the outline files were generated successfully
         if os.path.exists("output/outlines/book_outline.json"):

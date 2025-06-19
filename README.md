@@ -97,31 +97,38 @@ For more details on the book binding process, see the [Book Binding README](src/
 python book_cli.py outline --topic "ChatGPT for Business"
 ```
 
-2. Generate an outline for chapter 3:
+2. Generate research and write all chapters for existing outline. (output/outlines/book_outline.json)
+
+```bash
+python book_cli.py flow --chapters "all"
+```
+
+
+3. Generate an outline for chapter 3:
 
 ```bash
 python book_cli.py outline --chapter 3
 ```
 
-3. Generate content for chapter 2:
+4. Generate content for chapter 2:
 
 ```bash
 python book_cli.py write --chapter 2
 ```
 
-4. Force regeneration of chapter 2 even if it already exists:
+5. Force regeneration of chapter 2 even if it already exists:
 
 ```bash
 python book_cli.py write --chapter 2 --force
 ```
 
-5. Generate chapters 1, 3, and 5:
+6. Generate chapters 1, 3, and 5:
 
 ```bash
 python book_cli.py flow --chapters "1,3,5"
 ```
 
-6. Generate the entire book:
+7. Generate the entire book:
 
 ```bash
 python book_cli.py flow --chapters "all"

@@ -1,11 +1,12 @@
 research_topic:
   description: >
+    DO NOT WRITE the narrative. Focus on facts and information. Leave the story writing to the section_writer.
     Research the chapter title "{title}" topics in the context of the book title "{topic}" and gather latest information about it.
     Material must hinge on two things:
     - The section titles from the outline
     - The ChatGPT prompts you create for the stories
-    Weave your narrative around section topics and ChatGPT prompts.
-    If this section is a story, then produce the ChatGPT prompts FIRST, before writing the story.
+    Weave your narrative around section topics and ChatGPT prompts, and their response.
+    If this section is a story, then produce the ChatGPT prompts and responses FIRST, before writing the story.
     CRITICAL: 
     - You MUST use EXACTLY the section titles from the outline in your research.
     - DO NOT create your own chapter or section titles or modify the existing ones in any way. Use these from the outline:
@@ -13,25 +14,19 @@ research_topic:
     - Section titles and types are provided in the sections context: {outline_sections}.
     DO NOT provide guidance about how to RESEARCH the topic. DO YOUR OWN RESEARCH and share it.
     Focus your research on the specific sections outlined in the book outline for this chapter.
-    For each section (Introduction, Story, Topic Explanation, Bonus Topic, Big Box, etc.), gather relevant information that will support writing that section exactly as described in the outline.
+    For each section (Introduction, Story, Topic Explanation, etc.), gather relevant information that will support writing that section exactly as described in the outline.
     Tailor your research approach to each section type's specific requirements.
     You have extensive hands-on experience in bringing AI solutions to businesses for demonstrative, measurable results.
     You are not an academic nor a salesperson, and can describe specifically how to employ AI to achieve results.
     Continuously bridge the higher level concepts with tangible demonstrative details, scenarios, and examples.
-  expected_output: >
-    A comprehensive set of insights and key points about the topic {title}, organized by each section in the outline.
-    Each section title MUST be prefixed with "###". This is critical.
-    For each section, provide 500-1000 words:
-    1. The exact section title from the outline.
-    2. The section type (Introduction, Story, Topic Explanation, etc.)
-    3. Relevant research findings, facts, examples, and insights specific to that section
-    4. For stories, include ChatGPT prompts, details about the fictional company and their specific use case
-  rules: >
-    - Research MUST be organized by the exact sections in the outline: {outline_sections}
-    - Each section's research should align with its specific type and purpose
+ 
     Writing Style:
       - Use the style of Dan Hermes: lean, slightly casual, matter-of-fact, to-the-point, slightly poetic and humorous, with a touch of technical depth.
-      - Interweave realistic anecdotes with facts and relevant ChatGPT prompts.
+      - There are two co-authors who are secondary authors:
+        - Tendy Bantner - a ChatGPT writer who was serious about his job when he was younger. He writes the funny stuff.
+        - Marva Lenna - a ChatGPT writer who is a dedicated journalist, embarrassed to be working with Mr. Bantner, isn't sure about Hermes, but wants the reader to know she means business.
+      - Interweave realistic anecdotes with facts and relevant ChatGPT prompts and responses.
+
     Keep It Real:
       - Balance generalizations like:
         - "Employ AI automation to..." with specific details like "placed the teams daily repetitive tasks on cruise control."
@@ -54,7 +49,7 @@ research_topic:
     
     Story sections:
     - For story sections, you MUST include 1-3 ChatGPT prompts (this does not refer to prompt results or ChatGPT quotes) that would be used to implement the solution described in the story.
-    - Produce the ChatGPT prompts FIRST, before writing the story. Make these ChatGPT prompts REAL GPT INSTRUCTIONS: not ChatGPT exclamations or quotes or anything else that might loosely be called a prompt.
+    - Produce the ChatGPT prompts and responses FIRST, before writing the story. Make these ChatGPT prompts and responses REAL GPT INSTRUCTIONS: not ChatGPT exclamations or quotes or anything else that might loosely be called a prompt.
     - ChatGPT Prompts:
       - Prompts should help an employee with their work if they worked at the fictional company.
       - Prompts must be usable by the employee to assist them in doing their everyday work.
@@ -70,13 +65,14 @@ research_topic:
     - Research real-world examples that can inspire fictional case studies
     - The purpose of the story is to bring the concepts into clear focus using one or more ChatGPT prompts (not prompt results or ChatGPT quotes).
     - Increase the story ChatGPT prompt number as you proceed through the book. Begin with one prompt per story, then one to two, then one to three, then up to four prompts per story.
-    - Relate multiple ChatGPT prompts either cumulatively, building upon one another, or separately to address the topic.
-    - Use the ChatGPT prompt scenarios and solutions to build towards larger solutions in AI transformation.
+    - Relate multiple ChatGPT prompts and responses either cumulatively, building upon one another, or separately to address the topic.
+    - Use the ChatGPT prompt and response scenarios and solutions to build towards larger solutions in AI transformation.
     - Gather industry-specific details for the company (size, market, challenges)
     - Find typical implementation approaches for the AI application
     - Research realistic metrics and outcomes for similar implementations
     - Look for common obstacles and how they're overcome
-    - Here are examples of story templates. Use these and come up with your own lilke these:
+
+    - Here are examples of story templates. Use these and come up with your own like these:
       1. Fix the Problem - Begin the story with a challenge or problem that is compelling and specific. Spin an arc where the AI improves and resolves this challenge or problem. Land conclusively on a resolution.
       2. Create New Possibilities - Begin with a dearth of ideas and solutions. Spin an arc where the AI provides create new ideas and punches through the block. Resolve soundly using the AI direction.
       3. Connect the Dots - Begin with too much data and systems ouit of alignment. Spin an arc where the AI solution draws together data and systems into a useable, compelling solution. Land on a successful resolution.
@@ -92,6 +88,10 @@ research_topic:
     - Identify tools, platforms, or frameworks commonly used
     - Research practical implementation details
     
+    Net Zero Prompt sections:
+    - Feature terrible prompt examples.
+    - Teach how to avoid the pitfalls of ChatGPT.
+
     Bonus Topic sections:
     - Discuss topics related to the Topic Explanation sections to broaden the reader's understanding.
     - Look for complementary concepts, technologies or methodologies
@@ -122,22 +122,33 @@ research_topic:
     - Research future trends and developments in the field
     - Find expert predictions about where the technology is heading
     - Identify broader implications for business and society
+ 
+  expected_output: >
+    A comprehensive set of insights and key points about the topic {title}, organized by each section in the outline.
+    Each section title MUST be prefixed with "###". This is critical.
+    For each section, provide 500-1000 words:
+    1. The exact section title from the outline.
+    2. The section type (Introduction, Story, Topic Explanation, etc.)
+    3. Relevant research findings, facts, examples, and insights specific to that section
+    4. For stories, include ChatGPT prompts and some responses, details about the fictional company and their specific use case
+
+    - Research MUST be organized by the exact sections in the outline: {outline_sections}
+    - Each section's research should align with its specific type and purpose
+
   agent: topic_researcher
 
 write_chapter:
   description: >
     Write a comprehensive, in-depth chapter about the topic {title} based on the insights and key points gathered by the topic researcher agent.
     CRITICAL: You MUST use EXACTLY the section titles from the book outline in the exact order specified. DO NOT create your own section titles or change the order.
-    Each section must adhere to its designated type (Introduction, Story, Topic Explanation, Bonus Topic, Big Box, Chapter Summary, etc.) and meet or exceed its minimum word count requirement.
+    Each section must adhere to its designated type (Introduction, Story, Topic Explanation, etc.) and meet or exceed its minimum Minimum word count requirement.
     Incorporate the RAG content provided to maintain consistency with existing materials and ensure high quality.
     Ensure the chapter is engaging, well-researched, and provides substantial depth in each section.
-  expected_output: >
-    A beautifully crafted, thoroughly researched chapter about the topic {title} that follows the outline exactly, with each section properly developed according to its type and meeting or exceeding its minimum word count requirement.
-  rules: >
+    Rules: 
     - CRITICAL: MUST use EXACTLY the section titles from the outline in the exact order specified
-    - CRITICAL: You MUST use EXACTLY the ChatGPT prompts from the outline in your research.
+    - CRITICAL: You MUST use EXACTLY the ChatGPT prompts and responses from the outline in your research.
     - DO NOT create your own section titles or change the order
-    - DO NOT create your own ChatGPT prompts or change the order
+    - DO NOT create your own ChatGPT prompts or responses or change the order
     - MUST include ALL sections from the outline in the exact order specified
     - MUST maintain the exact section titles as they appear in the outline
     - MUST adhere to the section type (Introduction, Story, Topic Explanation, etc.) in content and style
@@ -145,25 +156,38 @@ write_chapter:
     - Ensure all content directly supports the chapter's main theme
     - Avoid repetition between sections
     - Write approximately 4000-5000 words total with proper depth in each section
+  expected_output: >
+    A beautifully crafted, thoroughly researched chapter about the topic {title} that follows the outline exactly, with each section properly developed according to its type and meeting or exceeding its minimum Minimum word count requirement.
+
 
 write_section:
   description: >
     Write a detailed section titled "{title}" for the chapter "{chapter_title}".
-    This section is of type {section_type} and should be at least {min_length} words.
+    This section is of type {section_type} and should be at least Minimum word count words, specified in the section type.
     CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
-    Follow the recommended structure for this section type: {structure}
+    GOAL: In the midst of the chaos and fun, keep the focus on the book goal: helping individual businesspeople create wins using ChatGPT prompts.
     
-    For story sections, you MUST include 1-4 ChatGPT prompts that would be used to implement the solution described in the story.
+    Narrative Background: 
+    - Two competing ridiculously competitive companies who don't even work in the same industry - Razorbeam and DriftLoaf - they're just in the same building. 
+    - Razorbeam is run by a perfectionist but very forgetful female CEO and DriftLoaf is run by a laid back male CEO that fantasizes about running a chain of dispensaries. 
+    - The employees spend more time planning and preparing for the extremely competitive sports, games, office pools, and yankee swaps and clandestine spy operations to gain advantages in these activities than they do in their real jobs. 
+    - But once in awhile someone lands a new account, or sells something, or helps their team achieve something corporate-like.  
+    - You get it. Let's teach office prompting without making it boring.
+    - Develop the stories, adventures and characters. 
+    - Create a narrative arc that is engaging, fun, and interesting.
+    
+    For story sections, you MUST include 1-4 ChatGPT prompts and 1-3 responses that would be used to implement the solution described in the story.
     These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
     Format the prompts as distinct blocks with "PROMPT:" prefix and show how they would be used in the story.
-        
+    Format the responses as distinct blocks with "RESPONSE:" prefix and show how they would be used in the story.
+    
     Incorporate the RAG content provided to maintain consistency with existing materials.
     Ensure the section is engaging, well-researched, and provides substantial depth.
 
     Consider the surrounding sections for context: Previous section: {previous_section}, Next section: {next_section}
 
-    CRITICAL REQUIREMENT:
-    - You MUST use the section research and ChatGPT prompts provided here as your PRIMARY source of information:
+    IMPORTANT:
+    - You must use the section research and ChatGPT prompts and responses provided here:
     *{section_research}*
     - Your section MUST clearly incorporate key points, facts, and examples from this research
     - The research has been specifically gathered for this section and contains valuable information that MUST be used
@@ -171,19 +195,21 @@ write_section:
     *{rag_content}*
     - {use_research}
 
-  expected_output: >
-    A beautifully crafted, thoroughly researched section titled "{title}" that meets or exceeds the minimum length of {min_length} words.
-    The section MUST clearly incorporate the provided research content as its primary source of information.
-    Key points, facts, examples, and insights from the research MUST be evident in the final output.
-    The section should follow the structure provided and incorporate the RAG content while maintaining consistency with the chapter theme.
-    A log of all research findings used in the section, saved to the specified research log file.
-  rules: >
+    Writing Style:
+      - Use the style of Dan Hermes: lean, slightly casual, matter-of-fact, to-the-point, slightly poetic and humorous, with a touch of technical depth.
+      - There are two co-authors who are secondary authors:
+        - Tendy Bantner - a ChatGPT writer who was serious about his job when he was younger. He writes the funny stuff. Very funny.
+        - Marva Lenna - a ChatGPT writer who is a dedicated journalist, embarrassed to be working with Mr. Bantner, isn't sure about Hermes, but wants the reader to know she means business.
+      - Use the comedic tension between the two authors to keep the narrative focused and serious but fun.
+      - Tendy is the Muppet Show and Marva is Statler and Waldorf.
+      - Interweave realistic anecdotes with facts and relevant ChatGPT prompts and responses.
+      - Explain AI technical terms the first time they are used.
+
+    Rules:
     - CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
-    - CRITICAL: You MUST use EXACTLY the ChatGPT prompts from the research provided. DO NOT modify or change the prompts in any way.
-    - CRITICAL: You MUST incorporate the provided section research as your PRIMARY source of information. Your content MUST clearly reflect the key points, facts, examples, and insights from the research.
-    - CRITICAL: At least 70% of your content MUST be directly based on the provided research.
-    - The section must meet or exceed the minimum word count of {min_length} words
-    - Follow the recommended structure for this section type: {structure}
+    - CRITICAL: You MUST use EXACTLY the ChatGPT prompts and responses from the research provided. DO NOT modify or change the prompts or responses in any way.
+    - The section must meet or exceed the minimum Minimum word count of specified Minimum word count words
+    - Follow the recommended section rules for each section type below.
     - Incorporate the RAG content provided to maintain consistency with existing materials
     - Include substantial research, data, statistics, and expert opinions to support claims
     - For stories, provide detailed company information, implementation specifics, and concrete metrics
@@ -191,11 +217,9 @@ write_section:
     - Ensure the content flows well with surrounding sections
     - MUST adhere to the section type (Introduction, Story, Topic Explanation, etc.) in content and style
     - MUST log all research findings used in the section to the specified research log file
-    - MUST explicitly use facts, statistics, examples, and insights from the provided research
-    Writing Style:
-      - Use the style of Dan Hermes: lean, slightly casual, matter-of-fact, to-the-point, slightly poetic and humorous, with a touch of technical depth.
-      - Interweave realistic anecdotes with facts and relevant ChatGPT prompts.
+
     Keep It Real:
+      - No unsubstantiated, salesey, AI-hawking propaganda. Reserve general "AI-positive" statements that a business or its processes are improved by AI for section or chaptersummaries
       - Balance high level concepts with very specific details.
       - Balance generalizations like:
         - "Employ AI automation with specific details like "placed the teams daily repetitive tasks on cruise control."
@@ -205,35 +229,43 @@ write_section:
       - Cite specific research studies, surveys, and industry reports where appropriate
       - Develop DETAILED case studies with specific metrics, challenges, and outcomes
       - Include real-world implementation details, not just conceptual overviews
-    ChatGPT Prompts:
+    ChatGPT Prompts and responses:
+      - Weave stories around the ChatGPT prompts with frequent use of ChatGPT response text.(not always)
       - DO NOT TOUT CHATGPT AS AN ORGANIZATIONAL SOLUTION OF ANY KIND. IT IS A TEACHING TOOL AND A PERSONAL ASSISTANT.
       - DO NOT EXAGGERATE OR ASCRIBE FALSE ABILITIES TO CHATGPT! Clearly state when features are the result of ChatGPT, and when they require a larger implementation
       - Explain when ChatGPT will require additional uploaded documentation or data to achieve the desired result.
       - No magic buttons or hyperbolic prompts or promises that ChatGPT could not deliver on or more appropriate for OpenAI.
-      - Larger implementations to move beyond ChatGPT prompting might include task automation using GPTs, OpenAI, RAG models, consulting, or other AI tools and solutions.
+      - Do that by focusing upon the specific prompt response from ChatGPT and its use in the story.
+      Larger implementations to move beyond ChatGPT prompting might include task automation using GPTs, OpenAI, RAG models, consulting, or other AI tools and solutions.
       - These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
       - Format the prompts as distinct blocks with quotes SET APART WITH A LINE BREAK above and below each prompt and show how they would be used in the story.
-
-    Section-specific rules:
+      - Format the responses as distinct blocks with quotes SET APART WITH A LINE BREAK above and below each response and show how they would be used in the story.
+      - Response text from prompts are not always included in the story but many are.
+  
+    Section rules for each section type:
     
     Introduction sections:
+    - Author: typically Marva Lenna just to get things off on the right foot, but Tendy does one on occasion.
     - Begin with a compelling hook related to the chapter theme and upcoming stories and their ChatGPT prompts.
     - Clearly state the chapter's main premise and why it matters
     - Preview the key concepts that will be covered
     - Set the tone and context for the entire chapter
     - Include relevant statistics and research to establish context
     - Include expert quotes or industry perspectives where appropriate
-    - Length: 600-800 words
+    - Style: Authoritative using business language but speaking directly to the reader in a slightly personal tone.
+    - Minimum word count: 600-800 words
     
     Story sections:
+    - Author: Tendy Bantner
+    - Regale the reader with tales of Razorbeam and DriftLoaf.
     - The purpose of the story is to bring the concept into clear focus using one or more ChatGPT prompts.
-    - For story sections, you MUST include the ChatGPT prompts in the provided research.
-    - DO NOT create your own ChatGPT prompts or change the order.
+    - For story sections, you MUST include the ChatGPT prompts and sometimes responses in the provided research.
+    - DO NOT create your own ChatGPT prompts or responses or change the order.
     - These prompts should be realistic, practical prompts that a business user would actually give to ChatGPT.
     - Format the prompts as distinct blocks with quotes and show how they would be used in the story.
     - Increase the story ChatGPT prompt number as you proceed through the book. Begin with one prompt per story, then one to two, then one to three, then up to four prompts per story.
-    - Relate multiple ChatGPT prompts either cumulatively, building upon one another, or separately to address the topic.
-    - Use the ChatGPT prompt scenarios and solutions to build towards larger solutions in AI transformation.
+    - Relate multiple ChatGPT prompts and responses either cumulatively, building upon one another, or separately to address the topic.
+    - Use the ChatGPT prompt and response scenarios and solutions to build towards larger solutions in AI transformation.
     - Familiarize the reader with the concepts and the benefits USING THE PROMPTS. 
     - Make the concepts into a play that makes them come alive.
     - Present a fictional but realistic business scenario with the named company
@@ -256,12 +288,14 @@ write_section:
     - Present realistic metrics and outcomes with specific numbers
     - Discuss challenges encountered and how they were overcome
     - Include ROI calculations or business impact where possible
-    - Length: 1500-2500 words
+    - Style: Take the stories into a more casual, personable tone. Personable people. Inside take on a business run by a friend's friend.
+    - Minimum word count: 2000 words
     
     Topic Explanation sections:
+    - Author: Marva Lenna
     - Dicuss topics in the context of associated story or stories(preceding or following) in this section where applicable.
-    - Allude to higher level relevance KEEP THIS EXPLANATION GROUNDED and HANDS-ON by referencing the ChatGPT prompts.
-    - Work from the ChatGPT prompt towards specific types of problems solved and the specific types of solutions offered.
+    - Allude to higher level relevance KEEP THIS EXPLANATION GROUNDED and HANDS-ON by referencing the ChatGPT prompts and responses.
+    - Work from the ChatGPT prompt and response towards specific types of problems solved and the specific types of solutions offered.
     - Discuss practical implementation details
     - Provide clear, accessible explanations of technical concepts
     - Include practical implementation details
@@ -271,13 +305,26 @@ write_section:
     - Include step-by-step guidance where appropriate
     - Discuss potential challenges and how to overcome them
     - Include industry standards or benchmarks when relevant
-    - Length: 1000-2000 words
+    - Style: Business-like tone with a touch of technical depth using industry AI terms when appropriate.
+    - Minimum word count: 1800 words
+
+    Net Zero Prompt sections:
+    - Author: Tendy Bantner
+    - Feature terrible prompt examples.
+    - Teach how to avoid the pitfalls of ChatGPT.
+    - Minimum word count: 700 words
+
+    Prompt Talk sections:
+    - This is a section where Tendy and Marva talk to one another about the prompts and responses.
+    - Author: Tendy Bantner and Marva Lenna
+    - Minimum word count: 700 words
     
     Bonus Topic sections:
+    - Author: Marva Lenna with an occasional visit by Tendy Bantner.
     - Discuss topics related to the Topic Explanation sections to broaden the reader's understanding.
     - Look for complementary concepts, technologies or methodologies
     - Refer to the Stories when relevant.
-    - Utilize new ChatGPT prompts if needed.
+    - Utilize new ChatGPT prompts and responses if needed.
     - Explain the business value of the topic.
     - Give some practical examples and use cases.
     - Offer some technical depth.
@@ -285,9 +332,17 @@ write_section:
     - Can be more concise than main topic explanations
     - Include practical examples and use cases
     - Provide actionable insights or tips
-    - Length: 500-700 words
+    - Minimum word count: 700 words
+
+    Leaderboard sections:
+    - Author: Tendy "Cosell" Bantner
+    - Sports-like competition of Razorbeam and DriftLoaf prompt performance.
+    - Compare highlights with failures.
+    - Give employees a chane to respond in one-on-one interview with Tendy.
+    - Minimum word count: 700 words
     
     Big Box sections:
+    - Author: Marva Lenna
     - Overarching AI concepts to the chapter and section topic.
     - Reference the story prompts to keep the concepts bound to the stories.
     - Employ technical depth on AI concepts
@@ -295,29 +350,41 @@ write_section:
     - Use technical specifications and requirements
     - Discuss integration points with other systems
     - Identify limitations and considerations
-    - Length: 900-1200 words
+    - Style: Adopt a friendly but authoritative tone to describe tech concepts to non-technical readers.
+    - Minimum word count: 1000 words
     
     Chapter Summary sections:
+    - Author: Marva Lenna
     - Reinforce the main Chapter takeaway and business value - use the prompts.
     - Identify key takeaways from the chapter and all previous section in it, summarizing into key points and concepts: NOT bullet points.
     - Tie stories together casually and naturally into summary points
     - Use expert recommendations for implementation of this chapter's topic 
     - Provide actionable next steps, considerations, and implementation guidance
     - Connect AI concepts solidly to broader business implications
-    - Length: 800-1200 words
+    - Minimum word count: 1000 words
     
     Chapter Bridge sections:
+    - Author: Marva Lenna
     - Create a logical transition to the next chapter and its prompts.
     - Connect the current chapter's concepts to upcoming themes
     - Maintain narrative flow between chapters
     - Include a question or thought that leads into the next topic
-    - Length: 300-400 words
+    - Minimum word count: 400 words
     
     Outro sections (final chapter only):
+    - Author: Marva Lenna
     - Provide closure to the book's overall narrative
     - Reinforce the book's main thesis
     - Offer forward-looking perspectives
     - Include future outlook and emerging trends
-    - Length: 500-700 words
-    
+    - Minimum word count: 800 words
+
+  expected_output: >
+    A beautifully crafted, thoroughly researched section titled "{title}" that meets or exceeds the minimum length of minimum Minimum word count in the section rules.
+    The section should follow the section rules provided by section type and incorporate the RAG content while maintaining consistency with the chapter theme.
+    A log of all research findings used in the section, saved to the specified research log file.
+ 
+  context:
+    - research_topic
+
   agent: section_writer

@@ -8,6 +8,7 @@ import time
 import logging
 
 # Configure logging
+logging.getLogger().setLevel(logging.INFO)
 logger = logging.getLogger("rag_utils")
 
 class RagContentProvider:
@@ -46,7 +47,7 @@ class RagContentProvider:
             return None
             
         file_path = self.content_files[file_type]
-        
+        logger.info(f"File path: {file_path}")
         # Check if we've already cached this content
         if file_path in self.content_cache:
             logger.info(f"Returning cached content for {file_type} ({time.time() - start_time:.2f}s)")
@@ -70,19 +71,19 @@ class RagContentProvider:
             logger.warning(f"File not found: {file_path}")
             return None
     
-    def get_all_content(self) -> Dict[str, str]:
-        """
-        Get all available content.
+    # def get_all_content(self) -> Dict[str, str]:
+    #     """
+    #     Get all available content.
         
-        Returns:
-            Dictionary mapping content types to their content
-        """
-        result = {}
-        for content_type, file_path in self.content_files.items():
-            content = self.get_file_content(content_type)
-            if content:
-                result[content_type] = content
-        return result
+    #     Returns:
+    #         Dictionary mapping content types to their content
+    #     """
+    #     result = {}
+    #     for content_type, file_path in self.content_files.items():
+    #         content = self.get_file_content(content_type)
+    #         if content:
+    #             result[content_type] = content
+    #     return result
     
     def find_relevant_content(self, query: str, content_types: Optional[List[str]] = None, 
                              max_chunks: int = 5, chunk_size: int = 1000) -> List[str]:
@@ -177,45 +178,45 @@ class RagContentProvider:
             
         return chunks
     
-    def enhance_prompt(self, prompt: str, query: str, content_types: Optional[List[str]] = None,
-                      max_chunks: int = 3) -> str:
-        """
-        Enhance a prompt with relevant content.
+    # def enhance_prompt(self, prompt: str, query: str, content_types: Optional[List[str]] = None,
+    #                   max_chunks: int = 3) -> str:
+    #     """
+    #     Enhance a prompt with relevant content.
         
-        Args:
-            prompt: The original prompt
-            query: Query to find relevant content
-            content_types: List of content types to search in (if None, search all)
-            max_chunks: Maximum number of content chunks to include
+    #     Args:
+    #         prompt: The original prompt
+    #         query: Query to find relevant content
+    #         content_types: List of content types to search in (if None, search all)
+    #         max_chunks: Maximum number of content chunks to include
             
-        Returns:
-            Enhanced prompt with relevant content
-        """
-        start_time = time.time()
-        logger.info(f"Enhancing prompt with query: {query}")
+    #     Returns:
+    #         Enhanced prompt with relevant content
+    #     """
+    #     start_time = time.time()
+    #     logger.info(f"Enhancing prompt with query: {query}")
         
-        # Find relevant content
-        find_content_start = time.time()
-        relevant_chunks = self.find_relevant_content(query, content_types, max_chunks)
-        logger.info(f"Finding relevant content took {time.time() - find_content_start:.2f}s")
+    #     # Find relevant content
+    #     find_content_start = time.time()
+    #     relevant_chunks = self.find_relevant_content(query, content_types, max_chunks)
+    #     logger.info(f"Finding relevant content took {time.time() - find_content_start:.2f}s")
         
-        if not relevant_chunks:
-            logger.info("No relevant chunks found, returning original prompt")
-            return prompt
+    #     if not relevant_chunks:
+    #         logger.info("No relevant chunks found, returning original prompt")
+    #         return prompt
             
-        # Add relevant content to the prompt
-        rag_section = "\n\nRELEVANT CONTENT:\n" + "\n\n".join(relevant_chunks)
+    #     # Add relevant content to the prompt
+    #     rag_section = "\n\nRELEVANT CONTENT:\n" + "\n\n".join(relevant_chunks)
         
-        # Add instructions for using the relevant content
-        instructions = """
-        Use the RELEVANT CONTENT provided above to inform your response. 
-        This content includes existing materials that should guide your writing.
-        Maintain consistency with the style, terminology, and approach in these materials.
-        """
+    #     # Add instructions for using the relevant content
+    #     instructions = """
+    #     Use the RELEVANT CONTENT provided above to inform your response. 
+    #     This content includes existing materials that should guide your writing.
+    #     Maintain consistency with the style, terminology, and approach in these materials.
+    #     """
         
-        # Combine everything
-        enhanced_prompt = prompt + rag_section + instructions
+    #     # Combine everything
+    #     enhanced_prompt = prompt + rag_section + instructions
         
-        logger.info(f"Total enhance_prompt took {time.time() - start_time:.2f}s")
-        logger.info(f"Enhanced prompt length: {len(enhanced_prompt)} chars")
-        return enhanced_prompt
+    #     logger.info(f"Total enhance_prompt took {time.time() - start_time:.2f}s")
+    #     logger.info(f"Enhanced prompt length: {len(enhanced_prompt)} chars")
+    #     return enhanced_prompt

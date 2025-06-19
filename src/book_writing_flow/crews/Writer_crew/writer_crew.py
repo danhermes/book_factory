@@ -534,8 +534,8 @@ class write_chapter_task(Task):
 
                 # Create the task with the agent
                 section_task = Task(
-                        description=f"Write the '{section_title}' section for the chapter",
-                        expected_output="A well-written section with appropriate content",
+                        description=f"Write the '{section_title}' section for the chapter. IMPORTANT: You MUST use the provided research content as the primary source for this section.",
+                        expected_output="A well-written section with appropriate content that clearly incorporates the provided research",
                         agent=agents["section_writer"],  # Use the section_writer agent from inputs
                         output_pydantic=Section,
                         inputs={
@@ -547,7 +547,8 @@ class write_chapter_task(Task):
                                 "section_research": section_research,
                                 "rag_content": section_rag,
                                 "previous_section": prev_section if prev_section else "None",
-                                "next_section": next_section if next_section else "None"
+                                "next_section": next_section if next_section else "None",
+                                "use_research": "YES - You MUST incorporate the provided research content as your primary source"
                         }
                 )
                 logger.info("Successfully got section_task")

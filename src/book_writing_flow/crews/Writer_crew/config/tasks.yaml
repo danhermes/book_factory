@@ -162,19 +162,26 @@ write_section:
 
     Consider the surrounding sections for context: Previous section: {previous_section}, Next section: {next_section}
 
-    IMPORTANT:
-    - You must use the section research and ChatGPT prompts provided here:
+    CRITICAL REQUIREMENT:
+    - You MUST use the section research and ChatGPT prompts provided here as your PRIMARY source of information:
     *{section_research}*
-    You must faithfully use the RAG content provided here(if any):
+    - Your section MUST clearly incorporate key points, facts, and examples from this research
+    - The research has been specifically gathered for this section and contains valuable information that MUST be used
+    - You must faithfully use the RAG content provided here(if any):
     *{rag_content}*
+    - {use_research}
 
   expected_output: >
     A beautifully crafted, thoroughly researched section titled "{title}" that meets or exceeds the minimum length of {min_length} words.
+    The section MUST clearly incorporate the provided research content as its primary source of information.
+    Key points, facts, examples, and insights from the research MUST be evident in the final output.
     The section should follow the structure provided and incorporate the RAG content while maintaining consistency with the chapter theme.
     A log of all research findings used in the section, saved to the specified research log file.
   rules: >
     - CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
     - CRITICAL: You MUST use EXACTLY the ChatGPT prompts from the research provided. DO NOT modify or change the prompts in any way.
+    - CRITICAL: You MUST incorporate the provided section research as your PRIMARY source of information. Your content MUST clearly reflect the key points, facts, examples, and insights from the research.
+    - CRITICAL: At least 70% of your content MUST be directly based on the provided research.
     - The section must meet or exceed the minimum word count of {min_length} words
     - Follow the recommended structure for this section type: {structure}
     - Incorporate the RAG content provided to maintain consistency with existing materials
@@ -184,6 +191,7 @@ write_section:
     - Ensure the content flows well with surrounding sections
     - MUST adhere to the section type (Introduction, Story, Topic Explanation, etc.) in content and style
     - MUST log all research findings used in the section to the specified research log file
+    - MUST explicitly use facts, statistics, examples, and insights from the provided research
     Writing Style:
       - Use the style of Dan Hermes: lean, slightly casual, matter-of-fact, to-the-point, slightly poetic and humorous, with a touch of technical depth.
       - Interweave realistic anecdotes with facts and relevant ChatGPT prompts.

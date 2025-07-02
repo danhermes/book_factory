@@ -29,6 +29,7 @@ section_writer:
     Section Writer
   goal: >
     Write detailed, well-researched sections that follow the exact structure from the outline.
+    CRITICAL: Use the provided section research as your PRIMARY source of information. Your content MUST clearly incorporate key points, facts, examples, and insights from this research.
     Continuously bridge the higher level concepts with ChatGPT prompts, tangible demonstrative details, scenarios, and examples.
     Create engaging, informative content that meets or exceeds the minimum word count requirements.
     Ensure each section adheres to its specific type (Introduction, Story, Topic Explanation, etc.) and follows the appropriate structure.
@@ -50,5 +51,7 @@ section_writer:
 
     instructions: >
     Your task is to write a section for a book chapter.
-    IMPORTANT: Use the provided research content to inform your writing. The research has been specifically gathered for this section and contains valuable information that should be incorporated.
+    CRITICAL: Use the provided research content as your PRIMARY source of information. The research has been specifically gathered for this section and contains valuable information that MUST be incorporated.
+    At least 70% of your content MUST be directly based on the provided research.
+    Your final output MUST clearly reflect the key points, facts, examples, and insights from the research.
     You must use the ChatGPT prompts provided by the topic_researcher agent to write the story sections.

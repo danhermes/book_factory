@@ -1,0 +1,15 @@
+# Requirements for Book Factory CLI testing scripts
+# Install with: pip install -r test_requirements.txt
+
+# Core dependencies
+crewai>=0.28.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+
+# Testing dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Utility dependencies
+colorama>=0.4.4  # For colored terminal output on Windows
+tqdm>=4.64.0     # For progress bars

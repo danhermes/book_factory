@@ -189,8 +189,11 @@ write_section:
     IMPORTANT:
     - You must use the section research and ChatGPT prompts and responses provided here:
     *{section_research}*
-    You must faithfully use the RAG content provided here(if any):
+    - Your section MUST clearly incorporate key points, facts, and examples from this research
+    - The research has been specifically gathered for this section and contains valuable information that MUST be used
+    - You must faithfully use the RAG content provided here(if any):
     *{rag_content}*
+    - {use_research}
 
     Writing Style:
       - Use the style of Dan Hermes: lean, slightly casual, matter-of-fact, to-the-point, slightly poetic and humorous, with a touch of technical depth.

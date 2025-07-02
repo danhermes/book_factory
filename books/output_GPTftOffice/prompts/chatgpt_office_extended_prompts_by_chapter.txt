@@ -1,0 +1,59 @@
+1. Writing & Editing
+**Rewrite for Audience** Rewrite the following paragraph so it resonates with mid-level managers in healthcare.
+**Edit for Clarity and Tone** Improve this executive summary to sound confident but not aggressive. Then offer an alternate version for a more conservative audience.
+**Document Summary Request** Summarize the uploaded draft policy into a one-page overview, followed by a version in bullet points.
+**Grammar and Style Audit** Review this email for grammar, tone, and professionalism. Suggest three alternative subject lines.
+**What mistakes do you notice in this draft? How would you revise them?**
+**What is the most concise way to deliver the same message in this paragraph?**
+**Draft Multiple Versions** Create three variations of this email: one formal, one conversational, and one empathetic.
+**Turn These Points into a Narrative** Use the following list of facts to write a 150-word client-facing update.
+**How can I improve the opening sentence to grab attention more effectively?**
+**Upload & Refactor** Upload a document and return three rewrite options targeting different tones: assertive, neutral, and warm.
+
+2. Meeting Support
+**Create Meeting Brief** From the uploaded research document, create a concise meeting brief including background, objectives, and three discussion questions.
+**Agenda Builder** Build an agenda from these goals, and add estimated times per topic and key participants.
+**Roleplay Request** Simulate a meeting where I must pitch this idea to a skeptical VP of Finance. Respond to my points.
+**Decision Log Extract** Pull all decisions made from the meeting transcript and format them in a log table.
+**What information is missing from this summary that might be critical to attendees?**
+**Summarize + Contextualize** Give me a summary of this transcript, then list relevant prior decisions it builds on.
+**Draft Two Follow-Ups** Create one email for internal stakeholders and one for external partners, based on these meeting notes.
+**Meeting Comparison** Compare the goals from our last two meetings. What progress has been made, and what remains open?
+**What are the risks of not addressing this issue raised in the meeting?**
+**Upload + Annotate** Upload your notes and get a list of action items, decisions, and unresolved questions.
+
+3. Content Creation & Repurposing
+**Repurpose Across Channels** Turn this internal report into: (1) an external blog post, (2) an internal newsletter blurb, and (3) a tweet thread.
+**Rewrite for Clarity and Appeal** Rewrite the product description to appeal to non-technical customers, and suggest a better headline.
+**Create Launch Collateral** Draft an internal email, social media post, and slide text announcing the new product feature.
+**From FAQ to Training** Convert this FAQ into a short training script, including a quiz question for each section.
+**What are three different tone options I could use for this announcement and what audiences do they suit best?**
+**Rewrite Two Ways** Rewrite this content in two different formats: a listicle and a customer success story.
+**Long-Form Conversion** Expand this short summary into a 600-word blog post with headings and subheadings.
+**Upload + Reframe** Upload a press release and reframe it for a skeptical investor audience.
+**What’s missing from this overview that would make it more persuasive to external stakeholders?**
+**Create Variants** Give me five versions of this product tagline, each with a slightly different emotional appeal.
+
+4. Research & Document Analysis
+**Summarize + Highlight** Summarize the key findings of this uploaded research paper. Highlight any assumptions or biases present.
+**Compare for Conflict** Compare the following two policy documents and list any contradictions, overlaps, or unclear responsibilities.
+**Risk Evaluation** Identify potential legal or operational risks in this proposal document and rate their severity.
+**From Report to Insight** Turn this technical report into an executive insights brief, including a bullet-point summary and a visual suggestion.
+**What assumptions are embedded in this analysis?**
+**Extract Key Metrics** What are the primary KPIs mentioned in this document and what benchmarks are they compared to?**
+**Build Table + Analysis** Extract deadlines and responsible roles and present in a table with observations about task sequencing.
+**Rewrite Complex Section** Simplify this legal language and explain it in layman's terms for internal training.
+**Upload + Structure** Upload two draft plans and organize their shared goals, unique elements, and conflicting areas into three columns.
+**What additional context might be necessary to fully evaluate this analysis?**
+
+5. Strategic Planning
+**Create Strategic Brief** Build a 1-page strategic brief from this uploaded pitch, including goals, risks, and key stakeholders.
+**SWOT + Prioritization** Perform a SWOT analysis on this idea, then identify and rank the top 3 strategic priorities.
+**Draft Quarterly OKRs** Convert this roadmap into three objective sets with corresponding key results.
+**Scenario Mapping** Map three scenarios (best case, worst case, likely) for this strategic decision and list corresponding metrics.
+**Who are the key decision-makers and what are their interests?**
+**Go-to-Market Framework** Based on this input, draft a phased go-to-market plan with milestones and responsibilities.
+**Strategic Storytelling** Tell the strategic story of this product idea in a compelling 3-paragraph narrative.
+**Upload & Align** Upload a product plan and ensure alignment with broader company vision; point out mismatches.
+**How might this strategy be received by external partners or regulators?**
+**Draft Three Pitches** Create three versions of a strategic pitch: one for execs, one for frontline teams, and one for press.

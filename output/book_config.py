@@ -3,12 +3,12 @@ Book-specific configuration for the book writing flow.
 """
 
 # Default book title and topic for CLI
-BOOK_TITLE = "ChatGPT in the Office"
-BOOK_TOPIC = "ChatGPT in the Office"
+BOOK_TITLE = "AI-Enhanced"
+BOOK_TOPIC = "Personal and Professional growth through AI"
 
 # RAG content files configuration
 RAG_CONTENT_FILES = {
-    "book_outline": "output/rag/ChatGPT_in_the_Office.md",
-    "chapter_content": "output/rag/chatgpt_office_use_cases_detailed_outline.txt",
+    "book_outline": "output/rag/book_outline.json",
+    "chapter_content": "output/rag/chapter_content.txt",
     # Add more content files as needed
 }

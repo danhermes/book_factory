@@ -25,4 +25,8 @@ class BookState(BaseModel):
 #Use Classes instead of hard-coding
 "topic": "ChatGPT for Business",
 
+Automate sanitize_all chapters during quick_draft process. OR sanitze them upon their initial writing!
+
+
+
 

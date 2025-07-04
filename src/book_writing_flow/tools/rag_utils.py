@@ -57,7 +57,7 @@ class RagContentProvider:
         if os.path.exists(file_path):
             try:
                 file_read_start = time.time()
-                with open(file_path, 'r') as f:
+                with open(file_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 logger.info(f"File read took {time.time() - file_read_start:.2f}s")
                 

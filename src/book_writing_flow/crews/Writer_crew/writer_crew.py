@@ -84,11 +84,13 @@ logger.addHandler(file_handler)
 class ChapterWriterCrew:
     """Chapter Writer Crew"""
 
-    def __init__(self):
+    def __init__(self, chapter_number, chapter_title):
         """Initialize the ChapterWriterCrew instance"""
-        with open("src/book_writing_flow/crews/Writer_crew/config/agents.yaml", "r") as f:
+        self.chapter_number = chapter_number
+        self.chapter_title = chapter_title
+        with open("src/book_writing_flow/crews/Writer_crew/config/agents.yaml", "r", encoding='utf-8') as f:
             self.agents_config = yaml.safe_load(f)
-        with open("src/book_writing_flow/crews/Writer_crew/config/tasks.yaml", "r") as f:
+        with open("src/book_writing_flow/crews/Writer_crew/config/tasks.yaml", "r", encoding='utf-8') as f:
             self.tasks_config = yaml.safe_load(f)
         logger.info("ChapterWriterCrew initialized")
         self.llm = LLM(model="gpt-4o")
@@ -110,6 +112,7 @@ class ChapterWriterCrew:
     def load_rag_content(self, chapter_title, sections=None):
         logger.info("Loading RAG content")
         logger.info(f"load_rag_content - chapter_title: {chapter_title}")
+        logger.info(f"load_rag_content - sections: {sections}")
         """Load RAG content and update state with book outline and chapter content"""
         logger.info(f"RAG content files: {RAG_CONTENT_FILES}")
         rag_provider = RagContentProvider(RAG_CONTENT_FILES)
@@ -166,58 +169,65 @@ class ChapterWriterCrew:
         Override the research_topic task to focus on the outline structure.
         """       
         #Get the chapter title from the stored inputs ---------- chapter_title is None but task still does the research (!!!)
-        chapter_title = None
+        #chapter_title = None
         logger.info(f"Researching...")  
-        logger.info(f"Research inputs: %s", json.dumps(self._inputs, indent=2))
-        if hasattr(self, '_inputs') and self._inputs:
-            chapter_title = self._inputs.get('title')
-            logger.info(f"Research task for chapter 1: {chapter_title}")
+        # logger.info(f"Research inputs: %s", json.dumps(self._inputs, indent=2))
+        # if hasattr(self, '_inputs') and self._inputs:
+        #     chapter_title = self._inputs.get('title')
+        #     logger.info(f"Research task for chapter 1: {chapter_title}")
         
-        logger.info(f"Research task for chapter 2: {chapter_title}")
-        task_config = dict(self.tasks_config["research_topic"])
+        # logger.info(f"Research task for chapter 2: {chapter_title}")
+        research_task_config = dict(self.tasks_config["research_topic"])
         # First try to load from output/outlines directory
         if os.path.exists("output/outlines/book_outline.json"):
-            with open("output/outlines/book_outline.json", 'r') as f:
+            with open("output/outlines/book_outline.json", 'r', encoding='utf-8') as f:
                 outline = json.load(f)
         # Fall back to root directory if not found in output/outlines
         elif os.path.exists("book_outline.json"):
-            with open("book_outline.json", 'r') as f:
+            with open("book_outline.json", 'r', encoding='utf-8') as f:
                 outline = json.load(f)
         else:
             raise FileNotFoundError("book_outline.json not found in output/outlines or root directory")
         
         # Add outline information to the task config
-        task_config["additional_info"] = f"Outline with {len(outline.get('chapters', []))} chapters"
+        #research_task_config["additional_info"] = f"Outline with {len(outline.get('chapters', []))} chapters"
         
-        # Extract chapter titles for reference
-        chapter_titles = [chapter.get("title", "") for chapter in outline.get("chapters", [])]
-        if chapter_titles:
-            task_config["chapter_titles"] = ", ".join(chapter_titles)
+        # # Extract chapter titles for reference
+        # chapter_titles = [chapter.get("title", "") for chapter in outline.get("chapters", [])]
+        # if chapter_titles:
+        #     research_task_config["chapter_titles"] = ", ".join(chapter_titles)
             
-        # Extract exact section titles and types from the current chapter only
-        if chapter_title:
-            current_chapter = None
-            for chapter in outline.get("chapters", []):
-                if chapter.get("title", "") == chapter_title:
-                    current_chapter = chapter
-                    break
+        # # Extract exact section titles and types from the current chapter only
+        # if self.chapter_title:
+        #     current_chapter = None
+        #     for chapter in outline.get("chapters", []):
+        #         if chapter.get("title", "") == self.chapter_title:
+        #             current_chapter = chapter
+        #             break
+        
+        #if self.chapter_title:
+        #    current_chapter = None
+        # for chapter in outline.get("chapters", []):
+        #     if chapter.get("number", "") == self.chapter_number:
+        #         current_chapter = chapter
+        #         break
             
-            if current_chapter:
-                sections = []
-                for section in current_chapter.get("sections", []):
-                    section_title = section.get("title", "")
-                    section_type = "Unknown"
+        #     if current_chapter:
+        #         sections = []
+        #         for section in current_chapter.get("sections", []):
+        #             section_title = section.get("title", "")
+        #             section_type = "Unknown"
                     
-                    # Try to extract section type from title if it's in parentheses
-                    if "(" in section_title and ")" in section_title:
-                        type_part = section_title.split("(")[-1].split(")")[0]
-                        if type_part in ["Introduction", "Topic Explanation", "Story", "Bonus Topic", "Big Box", "Outro", "Chapter Bridge"]:
-                            section_type = type_part
+        #             # Try to extract section type from title if it's in parentheses
+        #             if "(" in section_title and ")" in section_title:
+        #                 type_part = section_title.split("(")[-1].split(")")[0]
+        #                 if type_part in ["Introduction", "Topic Explanation", "Story", "Bonus Topic", "Big Box", "Outro", "Chapter Bridge"]:
+        #                     section_type = type_part
                     
-                    sections.append({
-                        "title": section_title,
-                        "type": section_type
-                    })
+            # sections.append({
+            #     "title": section_title,
+            #     "type": section_type
+            # })
                 
                 # # Add to task config ?????????????????????????????????????????????????????????????
                 # task_config["sections"] = json.dumps(sections)
@@ -279,8 +289,10 @@ class write_chapter_task: #Not Task, Not Baseclass
     research_content: str = ""
 
     
-    def __init__(self, description, expected_output, config, research_content, **kwargs):
+    def __init__(self, description, expected_output, config, research_content, chapter_title, chapter_number):#**kwargs):
         logger.info("Starting write_chapter_task __init__")
+        self.chapter_title = chapter_title
+        self.chapter_number = chapter_number
         self.description = description
         logger.info(f"write_chapter_task __init__ - description assigned.")
         self.expected_output = expected_output
@@ -304,34 +316,34 @@ class write_chapter_task: #Not Task, Not Baseclass
                          "This will likely lead to errors when trying to access specific task configurations like 'write_section' in the execute() method.")
             self.tasks_config = {} # Initialize to empty dict to prevent immediate NoneType error later.
 
-        self.context_key_values = []     # Initialize self.context as an empty list before appending
-        logger.info("isinstance")
-        inputs = kwargs.get('inputs', {})
-        if isinstance(inputs, dict):
-            for key, value in inputs.items():
-                self.context_key_values.append({
-                    "key": key,
-                    "value": value,
-                    "description": f"Input for {key}"
-                })
-        else:
-            logger.error(f"Expected 'inputs' to be a dict, got {type(inputs).__name__}: {inputs}")
-        logger.info(f"Added inputs to context: {list(kwargs.get('inputs', {}).keys())}")
+        # self.context_key_values = []     # Initialize self.context as an empty list before appending
+        # logger.info("isinstance")
+        # inputs = kwargs.get('inputs', {})
+        # if isinstance(inputs, dict):
+        #     for key, value in inputs.items():
+        #         self.context_key_values.append({
+        #             "key": key,
+        #             "value": value,
+        #             "description": f"Input for {key}"
+        #         })
+        #else:
+            #logger.error(f"Expected 'inputs' to be a dict, got {type(inputs).__name__}: {inputs}")
+            #logger.info(f"Added inputs to context: {list(kwargs.get('inputs', {}).keys())}")
 
     async def execute(self):
         """Custom execution logic to generate each section separately"""
         
         logger.info("Executing write_chapter task with section-by-section approach")
         
-        # Get the chapter title from the task's context
-        chapter_title = "Unknown Chapter"
-        for item in self.context_key_values:
-            if item.get("key") == "chapter_title":
-                chapter_title = item.get("value")
-                break
+        # # Get the chapter title from the task's context
+        # chapter_title = "Unknown Chapter"
+        # for item in self.context_key_values:
+        #     if item.get("key") == "chapter_title":
+        #         chapter_title = item.get("value")
+        #         break
         
         # Log the chapter title for debugging
-        logger.info(f"execute - write_chapter_task - Using chapter title: {chapter_title}")
+        logger.info(f"execute - write_chapter_task - Using chapter title: {self.chapter_title}")
         
         # Important: We must use the exact section titles from the book_outline.md file
         # This ensures the generated chapter matches the outline exactly
@@ -342,13 +354,13 @@ class write_chapter_task: #Not Task, Not Baseclass
         try:
             # First try to load from output/outlines directory
             if os.path.exists("output/outlines/book_outline.json"):
-                with open("output/outlines/book_outline.json", 'r') as f:
+                with open("output/outlines/book_outline.json", 'r', encoding='utf-8') as f:
                     #outline = json.load(f)
                     outline_dict = json.load(f)
                     outline = BookModel(**outline_dict) 
             # Fall back to root directory if not found in output/outlines
             elif os.path.exists("book_outline.json"):
-                with open("book_outline.json", 'r') as f:
+                with open("book_outline.json", 'r', encoding='utf-8') as f:
                     #outline = json.load(f)
                     outline_dict = json.load(f)
                     outline = BookModel(**outline_dict)
@@ -360,40 +372,40 @@ class write_chapter_task: #Not Task, Not Baseclass
             outline = {
                 "chapters": [
                     {
-                        "title": chapter_title,
+                        "title": self.chapter_title,
                         "sections": []
                     }
                 ]
             }
 
         # Load the research log file for this chapter
-        chapter_number = 1  # Default to chapter 1
+        #chapter_number = 1  # Default to chapter 1
         
         # Try to extract chapter number from title using regex
         # Log the chapter title for debugging
-        logger.info(f"Extracting chapter number from title: '{chapter_title}'")
+        logger.info(f"Extracting chapter number from title: '{self.chapter_title}'")
         
         # Try different regex patterns to extract the chapter number
-        match = re.search(r"Chapter (\d+)", chapter_title)
-        if match:
-            chapter_number = int(match.group(1))
-            logger.info(f"Found chapter number: {chapter_number}")
-        else:
-            # Try to extract from the beginning of the title (e.g., "2: Process Automation")
-            match = re.search(r"^(\d+):", chapter_title)
-            if match:
-                chapter_number = int(match.group(1))
-                logger.info(f"Found chapter number from beginning: {chapter_number}")
-            else:
-                logger.warning(f"Could not extract chapter number from title: '{chapter_title}'. Using default: 1")
+        # match = re.search(r"Chapter (\d+)", chapter_title)
+        # if match:
+        #     chapter_number = int(match.group(1))
+        #     logger.info(f"Found chapter number: {chapter_number}")
+        # else:
+        #     # Try to extract from the beginning of the title (e.g., "2: Process Automation")
+        #     match = re.search(r"^(\d+):", chapter_title)
+        #     if match:
+        #         chapter_number = int(match.group(1))
+        #         logger.info(f"Found chapter number from beginning: {chapter_number}")
+        #     else:
+        #         logger.warning(f"Could not extract chapter number from title: '{chapter_title}'. Using default: 1")
 
-        chapter_data = outline.chapters[chapter_number - 1]
+        chapter_data = outline.chapters[self.chapter_number - 1]
         outline_sections = chapter_data.sections or []
         logger.info(f"outline_sections: {outline_sections}")
         
         if not chapter_data:
-            logger.warning(f"Chapter '{chapter_title}' not found in outline")
-            return Chapter(title=chapter_title, content="", sections=[])
+            logger.warning(f"Chapter '{self.chapter_title}' not found in outline")
+            return Chapter(title=self.chapter_title, content="", sections=[])
         
         # Extract section information
         section_titles = []
@@ -406,15 +418,15 @@ class write_chapter_task: #Not Task, Not Baseclass
         
         # If no sections are found in the chapter data, try to parse them from the outline.md file
         if not outline_sections:
-            logger.info(f"No sections found for chapter. Parse the '{chapter_title}' from the outline.md file")
+            logger.info(f"No sections found for chapter. Parse the '{self.chapter_title}' from the outline.md file")
             try:
                 # Try to load the outline.md file
                 if os.path.exists("output/outlines/book_outline.md"):
-                    with open("output/outlines/book_outline.md", "r") as f:
+                    with open("output/outlines/book_outline.md", "r", encoding='utf-8') as f:
                         outline_md = f.read()
                     
                     # Find the chapter section
-                    chapter_pattern = f"## Chapter {chapter_title.split(':')[0].strip()}: .*?\\n\\n(.*?)\\n\\n##"
+                    chapter_pattern = f"## Chapter {self.chapter_title.split(':')[0].strip()}: .*?\\n\\n(.*?)\\n\\n##"
                     chapter_match = re.search(chapter_pattern, outline_md, re.DOTALL)
                     
                     if chapter_match:
@@ -426,8 +438,8 @@ class write_chapter_task: #Not Task, Not Baseclass
                 logger.error(f"Error parsing outline.md: {e}")
         
         if not outline_sections:
-            logger.warning(f"No sections found for chapter '{chapter_title}'")
-            return Chapter(title=chapter_title, content="", sections=[])
+            logger.warning(f"No sections found for chapter '{self.chapter_title}'")
+            return Chapter(title=self.chapter_title, content="", sections=[])
         
         # # Load section templates --------------------- Do this in the prompt!!!!!!!
         # section_templates = {}
@@ -442,15 +454,15 @@ class write_chapter_task: #Not Task, Not Baseclass
         # logger.info("About to call load_rag_content")
         try:
         #     # Get RAG content for the chapter and sections using the stored instance
-            logger.info(f"Calling load_rag_content with chapter_title: {chapter_title}")
-            rag_content = ChapterWriterCrew().load_rag_content(chapter_title, outline_sections)
+            logger.info(f"Calling load_rag_content with chapter_title: {self.chapter_title}")
+            rag_content = ChapterWriterCrew(self.chapter_number, self.chapter_title).load_rag_content(self.chapter_title, outline_sections)
             logger.info("Successfully got RAG content")
         except Exception as e:
              logger.error(f"Error in load_rag_content: {e}")
              raise
         
         # Generate a brief chapter introduction
-        chapter_intro = f"# {chapter_title}\n\nThis chapter explores {chapter_title.split(':')[-1].strip()}.\n\n"
+        chapter_intro = f"# {self.chapter_title}\n\nThis chapter explores {self.chapter_title.split(':')[-1].strip()}.\n\n"
         
         # Generate each section separately
         next_section_number = 0
@@ -580,7 +592,7 @@ class write_chapter_task: #Not Task, Not Baseclass
             except Exception as e:
                 logger.error(f"Error in write_section: {e}")
                 raise
-            logger.info("🚀 chapter_title = %s", chapter_title)
+            logger.info("🚀 chapter_title = %s", self.chapter_title)
     
             # Create a local crew instance for this section
             # Create the section crew with the section_writer_agent
@@ -620,7 +632,7 @@ class write_chapter_task: #Not Task, Not Baseclass
                                         inputs={
                                 "title": section_title,  # Use section_title instead of chapter_title
                                 "section_type": section_type,
-                                "chapter_title": chapter_title,
+                                "chapter_title": self.chapter_title,
                                 #"min_length": template["min_length"], #todo from JSON?
                                 # "structure": ", ".join(template["structure"]),  # Convert list to string for template
                                 "section_research": section_research,
@@ -642,7 +654,7 @@ class write_chapter_task: #Not Task, Not Baseclass
             logger.info(f"SECTION RESULT ---- Section class")
             # Create a default section if we couldn't extract it
             section_content = Section(
-                chapter_title=chapter_title,
+                chapter_title=self.chapter_title,
                 section_title=section_title,
                 type=section_type,
                 content=section_result.raw 
@@ -653,14 +665,14 @@ class write_chapter_task: #Not Task, Not Baseclass
         
         # Combine all sections into a complete chapter
         logging.info("Combining chapter sections")
-        chapter_content = f"## Chapter {chapter_number}: {chapter_title}\n\n"
+        chapter_content = f"## Chapter {self.chapter_number}: {self.chapter_title}\n\n"
         chapter_content += f"{chapter_intro}\n\n"
         for section in sections:
             chapter_content += f"## {section.section_title}\n\n{section.content}\n\n"
                
         # Create the chapter object
         chapter = Chapter(
-            title=chapter_title,
+            title=self.chapter_title,
             content=chapter_content,
             sections=sections
         )

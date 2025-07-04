@@ -54,7 +54,7 @@ else
 fi
 
 echo "📦 Gathering chapters"
-CHAPTERS=($(ls "$CHAPTER_DIR"/*.md | grep -vE 'front_matter.md|back_matter.md|pagebreak.md' | sort -V))
+CHAPTERS=($(ls "$CHAPTER_DIR"/*_clean.md | sort -V))
 INPUTS=()
 
 # Add front matter if present

@@ -24,7 +24,7 @@ The script requires the following tools to be installed:
 ## Usage
 
 ```bash
-cd src/book_binding
+cd src/book_quick_draft
 ./build_book.sh
 ```
 

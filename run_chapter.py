@@ -97,7 +97,7 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
     try:
         # Research the chapter topics
         # crew for chapter research only - not used for chapter writing
-        crew = ChapterWriterCrew().crew()       
+        crew = ChapterWriterCrew(chapter_number=chapter_index+1, chapter_title=chapter_title).crew()       
 
         logging.info(f"RUN_SINGLE_CHAPTER: Crew created")
         chapter_data = chapters[chapter_index]
@@ -109,7 +109,6 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
             "outline_sections": [section.get("section_title", "") for section in chapter_data.get("sections", [])]
         })
         
-    
     
         logging.info(f"Checking result.pydantic: {hasattr(result, 'pydantic')}")
         if hasattr(result, 'pydantic'):
@@ -219,7 +218,9 @@ def run_single_chapter(chapter_index=0, force_regenerate=False):
             description=tasks_config["write_section"]["description"],
             expected_output=tasks_config["write_section"]["expected_output"],
             config=agents_config,
-            research_content=research_content
+            research_content=research_content,
+            chapter_title=chapter_title,
+            chapter_number=chapter_index+1
         )
 
         # task = write_chapter_task(

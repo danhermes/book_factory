@@ -142,9 +142,18 @@ class ChapterWriterCrew:
         section_content = ""
         if sections:
             for section in sections:
-                logger.info(f"Calling section find_relevant_content with chapter_title: {chapter_title}")
-                logger.info(f"Calling section find_relevant_content with section_title: {section}")
-                section_query = f"{chapter_title} {section.section_title}"
+                # Check if section is a dict or a Section object
+                if isinstance(section, dict):
+                    chapter_title_val = section.get('chapter_title', '')
+                    section_title_val = section.get('section_title', '')
+                else:
+                    # It's a Section object, access attributes directly
+                    chapter_title_val = section.chapter_title if hasattr(section, 'chapter_title') else ''
+                    section_title_val = section.section_title if hasattr(section, 'section_title') else ''
+                
+                logger.info(f"Calling section find_relevant_content with chapter_title: {chapter_title_val}")
+                logger.info(f"Calling section find_relevant_content with section_title: {section_title_val}")
+                section_query = f"{chapter_title_val} {section_title_val}"
                 logger.info(f"section_query: {section_query}")
                 content = rag_provider.find_relevant_content(
                     query=section_query, #todo pass in Section
@@ -398,12 +407,6 @@ class write_chapter_task: #Not Task, Not Baseclass
         # Extract section information
         section_titles = []
         
-        # # Get the sections from the outline
-        # outline_sections = []
-        # for section in chapter_data.get("sections", []):
-        #     section_title = section.get("title", "")
-        #     outline_sections.append(section_title)
-        
         # If no sections are found in the chapter data, try to parse them from the outline.md file
         if not outline_sections:
             logger.info(f"No sections found for chapter. Parse the '{chapter_title}' from the outline.md file")
@@ -439,9 +442,23 @@ class write_chapter_task: #Not Task, Not Baseclass
         #     logger.error(f"Error loading section templates: {e}")
  
         # Add debug logging
-        # logger.info("About to call load_rag_content")
+        logger.info(f"=== DEBUGGING SECTION ACCESS ===")
+        logger.info(f"About to call load_rag_content")
+        logger.info(f"chapter_data type: {type(chapter_data)}")
+        logger.info(f"chapter_data keys: {list(chapter_data.keys())}")
+        logger.info(f"sections type: {type(chapter_data.get('sections', []))}")
+        logger.info(f"Number of sections: {len(chapter_data.get('sections', []))}")
+
+        if chapter_data.get('sections', []):
+            first_section = chapter_data.get('sections', [])[0]
+            logger.info(f"First section type: {type(first_section)}")
+            logger.info(f"First section keys: {list(first_section.keys())}")
+            logger.info(f"First section content: {first_section}")
+            logger.info(f"Accessing first_section['section_title']: {first_section.get('section_title', 'NOT_FOUND')}")
+            logger.info(f"Accessing first_section['chapter_title']: {first_section.get('chapter_title', 'NOT_FOUND')}")
+
         try:
-        #     # Get RAG content for the chapter and sections using the stored instance
+            #     # Get RAG content for the chapter and sections using the stored instance
             logger.info(f"Calling load_rag_content with chapter_title: {chapter_title}")
             rag_content = ChapterWriterCrew().load_rag_content(chapter_title, outline_sections)
             logger.info("Successfully got RAG content")
@@ -625,8 +642,8 @@ class write_chapter_task: #Not Task, Not Baseclass
                                 # "structure": ", ".join(template["structure"]),  # Convert list to string for template
                                 "section_research": section_research,
                                 "rag_content": section_rag,
-                                "previous_section": prev_section.section_title if prev_section else "None",
-                                "next_section": next_section.section_title if next_section else "None"
+                                "previous_section": get_section_title(prev_section) if prev_section else "None",
+                                "next_section": get_section_title(next_section) if next_section else "None"
                         }
             )
             logger.info(f"Kickoff completed")
@@ -665,6 +682,13 @@ class write_chapter_task: #Not Task, Not Baseclass
             sections=sections
         )
         
+        logger.info(f"load_rag_content call completed")
+        logger.info(f"=== END DEBUGGING ===")
+        logger.info(f"=== SECTION LOOP COMPLETED ===")
+        logger.info(f"Number of sections processed: {len(sections) if sections else 0}")
+        logger.info(f"Section content length: {len(section_content)}")
+        logger.info(f"Section content preview: {section_content[:200] if section_content else 'No content'}")
+        logger.info(f"=== END SECTION LOOP ===")
         return chapter
     
     # def load_rag_content(self):

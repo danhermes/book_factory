@@ -45,8 +45,9 @@
           "section_title": "Human in the Mirror",
           "type": "Story",
           "description": "Tendy reflects on how he used to be witty, until GPT got funnier. Razorbeam\u2019s contractor accidentally wins a Toastmasters award for a speech he didn\u2019t write.",
-          "story": "DriftLoaf intern uses AI to plagiarize therapy notes. A Razorbeam dev renames herself 'GPTasha' and insists the change is spiritual, not strategic.",
+          "story": "Shari\u2019s boyfriend breaks up with her via Replika. A DriftLoaf intern uses AI to plagiarize therapy notes. A Razorbeam dev renames herself 'GPTasha' and insists the change is spiritual, not strategic.",
           "tools": [
+            "Replika",
             "Jasper",
             "ChatGPT"
           ],
@@ -68,6 +69,7 @@
           "tools": [
             "ChatGPT",
             "Notion AI",
+            "Replika",
             "Humata"
           ],
           "content": "",
@@ -87,7 +89,7 @@
           "story": "Everyone\u2019s trying to prompt better. Nobody\u2019s reading the outputs. Quinn writes a script to check if anything makes sense. It flags all of Tendy\u2019s memos.",
           "tools": [
             "ChatGPT",
-            "X formerly called Twitter",
+            "Twitter",
             "Zapier"
           ],
           "content": "",
@@ -125,7 +127,7 @@
           "description": "Marva explains how tools like Claude can hold logic across a conversation and what it means for humans building beliefs. She warns of persuasive pattern traps. DriftLoaf doesn\u2019t listen.",
           "story": "Benji builds a fake guru chatbot. Razorbeam accidentally markets it. Quinn runs an intervention. The bot quotes Marcus Aurelius\u2014incorrectly.",
           "tools": [
-            "Claude",
+            "Claude AI",
             "ChatGPT",
             "Humata"
           ],
@@ -198,8 +200,8 @@
           "story": "Marva previews RAG, agents, and summarization. Tendy leaves a prompt trail that leads into the next chapter.",
           "tools": [
             "ChatGPT",
-            "Claude",
-            "Perplexity AI"
+            "Claude AI",
+            "Perplexity.ai"
           ],
           "content": "",
           "previous_section": "Closing the Loop",
@@ -221,13 +223,12 @@
           "chapter_title": "Chapter 2: Enhanced Intelligence \u2014 Processing and Understanding More",
           "section_title": "Your Brain on Bots",
           "type": "Introduction",
-          "description": "A Marva-led overview of how AI tools like Perplexity and Claude shift knowledge gathering, especially under pressure, and Poe provides a smorgasborg of GPTs. Shari uses AI to audit DriftLoaf\u2019s entire org chart \u2014 and leaks it.",
+          "description": "A Marva-led overview of how AI tools like Perplexity and Claude shift knowledge gathering, especially under pressure. Shari uses AI to audit DriftLoaf\u2019s entire org chart \u2014 and leaks it.",
           "story": "Shari\u2019s curious dig leads her to use Claude and Perplexity to analyze internal files. She stumbles on a hidden network of side hustles. Quinn steps in to redact. Marva doesn\u2019t know what to publish.",
           "tools": [
-            "Perplexity AI",
+            "Perplexity.ai",
             "ChatGPT",
-            "Claude",
-            "Poe"
+            "Claude AI"
           ],
           "content": "",
           "previous_section": null,
@@ -246,7 +247,7 @@
           "story": "Miranda tests Claude on complex documents. Benji scripts a summarizer that loops until the docs are nonsense. Greg, the office spider-bot, tapes summaries on desks. Tendy reports hallucinated mergers.",
           "tools": [
             "ChatGPT",
-            "Claude"
+            "Claude AI"
           ],
           "content": "",
           "previous_section": "Your Brain on Bots",
@@ -266,7 +267,7 @@
           "tools": [
             "ChatGPT",
             "RAG pipelines",
-            "Perplexity AI"
+            "Perplexity.ai"
           ],
           "content": "",
           "previous_section": "The Doc That Ate Itself",
@@ -387,7 +388,8 @@
           "story": "Tendy\u2019s GPT tries online dating. DriftLoaf\u2019s chatbot flirts with clients. Razorbeam\u2019s HR bans all charmware.",
           "tools": [
             "ChatGPT",
-            "Hume AI"
+            "Hume AI",
+            "Replika"
           ],
           "content": "",
           "previous_section": "Less Input, More Insight",
@@ -413,6 +415,7 @@
           "story": "Razorbeam mandates a tone review on all emails. Tendy evades it by sending limericks. Quinn creates a prompt to soften tense messages \u2014 and accidentally proposes marriage.",
           "tools": [
             "Hume AI",
+            "Replika",
             "Grammarly",
             "ChatGPT"
           ],
@@ -561,7 +564,7 @@
           "story": "Jasper\u2019s dating prompt becomes Razorbeam\u2019s new mission statement. Quinn drafts a business plan in limericks. Marva\u2019s not amused.",
           "tools": [
             "ChatGPT",
-            "Perplexity AI"
+            "Perplexity.ai"
           ],
           "content": "",
           "previous_section": "Charisma Amplified",
@@ -973,7 +976,7 @@
           "type": "Story",
           "description": "How AI can channel the voice and judgment of experts to enhance your work, even in unfamiliar territory.",
           "tools": [
-            "Perplexity AI",
+            "Perplexity.ai",
             "Elicit"
           ],
           "story": "Marva uses Perplexity to validate a medical metaphor in a product pitch. Tendy uses Elicit to argue his way out of a parking ticket with actuarial precision. Razorbeam\u2019s execs consider embedding these tools in HR evaluations.",
@@ -1333,7 +1336,7 @@
           "description": "You don\u2019t need every tool\u2014just the right few. This section helps readers begin constructing their stack with proven tools and patterns.",
           "tools": [
             "ChatGPT (Custom GPTs)",
-            "Perplexity AI",
+            "Perplexity.ai",
             "Reflect.app",
             "Mem",
             "Notion"

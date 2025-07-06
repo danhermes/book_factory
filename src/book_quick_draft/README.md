@@ -4,7 +4,7 @@ The `build_book.sh` script is a comprehensive tool for compiling a complete book
 
 ## Overview
 
-This script takes individual chapter Markdown files from the `output/chapters/clean` directory and combines them into a single, professionally formatted PDF book with:
+This script takes individual chapter Markdown files from the `output/chapters` directory and combines them into a single, professionally formatted PDF book with:
 
 - Front and back covers (if provided)
 - Front matter (if provided)
@@ -48,7 +48,7 @@ output/chapters/final_book.pdf
 
 ## Process
 
-0. Chapters have been sanitized in the chapter-writing process. (sanitize_all.py)
+0. Chapters have already been sanitized in the chapter-writing process. (run_chapter.py:sanitize_markdown(text))
 
 1. Converts cover images to PDF format (if present)
 2. Creates necessary LaTeX files for formatting

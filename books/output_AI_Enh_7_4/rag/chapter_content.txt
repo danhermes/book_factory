@@ -86,6 +86,7 @@ ai_tool_taxonomy.md
 ## III. Communication & Relationship Extenders
 - **Conversation AIs**
   - Human-facing chatbots (ChatGPT, Pi)
+  - Synthetic personas (Replika, Character.AI)
 - **Writing & Outreach Assistants**
   - Cold email / LinkedIn tools (Regie.ai, Lavender)
   - Tone adjusters, translators, rewriters

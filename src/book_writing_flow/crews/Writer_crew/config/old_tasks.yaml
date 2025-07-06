@@ -125,7 +125,7 @@ research_topic:
  
   expected_output: >
     A comprehensive set of insights and key points about the topic {title}, organized by each section in the outline.
-    Each section title MUST be prefixed with "###". This is critical.
+    Each section title MUST be prefixed with "##". This is critical.
     For each section, provide 500-1000 words:
     1. The exact section title from the outline.
     2. The section type (Introduction, Story, Topic Explanation, etc.)

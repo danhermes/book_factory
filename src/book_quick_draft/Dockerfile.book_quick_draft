@@ -1,10 +1,24 @@
+# Build stage
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Runtime stage
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies
+# Install runtime dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
     texlive-xetex \
     pandoc \
     imagemagick \
@@ -14,15 +28,16 @@ RUN apt-get update && apt-get install -y \
 # Configure ImageMagick policy to allow PDF operations
 RUN sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml
 
-# Copy requirements first for better caching
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy installed packages from builder stage
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Copy only the book_quick_draft module
 COPY src/book_quick_draft /app/src/book_quick_draft
 
-# Create necessary directories
-RUN mkdir -p /app/output/chapters
+# Create necessary directories and ensure shell scripts have LF line endings
+RUN mkdir -p /app/output/chapters && \
+    find /app/src/book_quick_draft -name "*.sh" -type f -exec sed -i 's/\r$//' {} \;
 
 # Set environment variables
 ENV PYTHONPATH=/app

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   book_factory:
     build:
@@ -12,13 +10,15 @@ services:
     environment:
       - PYTHONPATH=/app
       - OPENAI_API_KEY
+      - BRIGHDATA_USERNAME
+      - BRIGHDATA_PASSWORD
     networks:
       - app-network
 
   book_layout:
     build:
       context: .
-      dockerfile: Dockerfile.book_layout
+      dockerfile: src/book_layout/Dockerfile.book_layout
     volumes:
       - ./output:/app/output
       - ./src/book_layout:/app/src/book_layout
@@ -30,7 +30,7 @@ services:
   book_quick_draft:
     build:
       context: .
-      dockerfile: Dockerfile.book_quick_draft
+      dockerfile: src/book_quick_draft/Dockerfile.book_quick_draft
     volumes:
       - ./output:/app/output
       - ./src/book_quick_draft:/app/src/book_quick_draft

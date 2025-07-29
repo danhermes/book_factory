@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  book_factory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./output:/app/output
+      - ./src/book_writing_flow:/app/src/book_writing_flow
+      - ./.env:/app/.env
+    environment:
+      - PYTHONPATH=/app
+      - OPENAI_API_KEY
+    networks:
+      - app-network
+
+  book_layout:
+    build:
+      context: .
+      dockerfile: Dockerfile.book_layout
+    volumes:
+      - ./output:/app/output
+      - ./src/book_layout:/app/src/book_layout
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - app-network
+
+  book_quick_draft:
+    build:
+      context: .
+      dockerfile: Dockerfile.book_quick_draft
+    volumes:
+      - ./output:/app/output
+      - ./src/book_quick_draft:/app/src/book_quick_draft
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge

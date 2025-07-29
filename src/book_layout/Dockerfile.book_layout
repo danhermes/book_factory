@@ -1,0 +1,32 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    texlive-full \
+    pandoc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy only the book_layout module
+COPY src/book_layout /app/src/book_layout
+
+# Create necessary directories
+RUN mkdir -p /app/output/chapters /app/output/outlines
+
+# Set environment variables
+ENV PYTHONPATH=/app
+
+# Set working directory to book_layout
+WORKDIR /app/src/book_layout
+
+# Make build script executable
+RUN chmod +x build.sh
+
+# Default command
+CMD ["./build.sh"]

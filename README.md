@@ -46,7 +46,7 @@ The `--force` flag will regenerate the chapter even if it already exists.
 
 ### 3. Run Full Book Writing Flow
 
-To run the complete flow (generate outline and then chapters):
+To run the complete chapter write flow (SKIPS outline generation for no. But typically: outline and then chapters):
 
 ```bash
 python book_cli.py flow [--chapters "1,2,3" | --chapters "all"] [--topic "Your Book Topic"]

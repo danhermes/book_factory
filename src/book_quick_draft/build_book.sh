@@ -18,6 +18,11 @@ PAGEBREAK="$SCRIPT_DIR/pagebreak.md"
 FRONT_COVER_PDF="$SCRIPT_DIR/front_cover.pdf"
 BACK_COVER_PDF="$SCRIPT_DIR/back_cover.pdf"
 
+BOOK_CONFIG="../../output/outlines/book_outline.json"
+BOOK_TITLE=$(python -c "import sys, json; print(json.load(open('$BOOK_CONFIG'))['book_title'])")
+#BOOK_AUTHOR=$(python -c "import sys, json; print(json.load(open('$BOOK_CONFIG'))['author'])") #Todo
+#BOOK_DATE=$(python -c "import sys, json; print(json.load(open('$BOOK_CONFIG'))['date'])") #Todo
+
 echo "📘 Starting full book build from output/chapters/..."
 
 # Create header-includes.tex if missing
@@ -54,7 +59,7 @@ else
 fi
 
 echo "📦 Gathering chapters"
-CHAPTERS=($(ls "$CHAPTER_DIR"/*.md | grep -vE 'front_matter.md|back_matter.md|pagebreak.md' | sort -V))
+CHAPTERS=($(ls "$CHAPTER_DIR"/*.md | sort -V))
 INPUTS=()
 
 # Add front matter if present
@@ -84,7 +89,7 @@ fi
 echo "🛠️ Generating LaTeX with TOC injection..."
 pandoc --standalone --pdf-engine=xelatex \
   --include-before-body="$HEADER_TEX" \
-  -V title="ChatGPT for Business" -V author="Dan Hermes" -V date="\\today" \
+  -V title="$BOOK_TITLE" -V author="Dan Hermes" -V date="\\today" \
   -V geometry=top=0.75in,bottom=0.75in,left=0.65in,right=0.65in \
   "${INPUTS[@]}" -o "$TEXFILE" > "$LOGFILE" 2>&1 || {
   echo "❌ Pandoc failed. See $LOGFILE"

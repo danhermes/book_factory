@@ -23,7 +23,7 @@ research_task:
 
 write_outline:
   description: >
-    Reorganize, reorder, and enhance the existing outline for a book entitled {book_title} of 8 chapters.
+    Reorganize and enhance the existing outline for a book entitled {book_title} of 8 chapters.
     Create a logical flow between chapters and ensure each chapter tells a cohesive story with properly paired sections.
     Add descriptive subtitles to chapter titles and make section titles more engaging and specific.
     

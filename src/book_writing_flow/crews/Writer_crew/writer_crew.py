@@ -55,31 +55,6 @@ file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelnam
 logger.addHandler(file_handler)
 # Don't add handlers here, let the root logger handle output
 
-# class Section(BaseModel):
-#     """Section of a chapter"""
-#     chapter_title : str
-#     title: str
-#     type: str  # Introduction, Story, etc.
-#     content: str
-
-# class SectionInput(BaseModel):
-#     """Input for generating a section"""
-#     title: str
-#     type: str
-#     chapter_title: str
-#     chapter_number: int
-#     min_length: int
-#     structure: List[str]
-#     rag_content: str
-#     previous_section: Optional[str] = None
-#     next_section: Optional[str] = None
-
-# class Chapter(BaseModel):
-#     """Chapter of the book"""
-#     title: str
-#     content: str
-#     sections: list[Section] = []
-
 @CrewBase
 class ChapterWriterCrew:
     """Chapter Writer Crew"""
@@ -249,32 +224,10 @@ class write_chapter_task: #Not Task, Not Baseclass
                          "This will likely lead to errors when trying to access specific task configurations like 'write_section' in the execute() method.")
             self.tasks_config = {} # Initialize to empty dict to prevent immediate NoneType error later.
 
-        # self.context_key_values = []     # Initialize self.context as an empty list before appending
-        # logger.info("isinstance")
-        # inputs = kwargs.get('inputs', {})
-        # if isinstance(inputs, dict):
-        #     for key, value in inputs.items():
-        #         self.context_key_values.append({
-        #             "key": key,
-        #             "value": value,
-        #             "description": f"Input for {key}"
-        #         })
-        #else:
-            #logger.error(f"Expected 'inputs' to be a dict, got {type(inputs).__name__}: {inputs}")
-            #logger.info(f"Added inputs to context: {list(kwargs.get('inputs', {}).keys())}")
-
     async def execute(self):
         """Custom execution logic to generate each section separately"""
         
         logger.info("Executing write_chapter task with section-by-section approach")
-        
-        # # Get the chapter title from the task's context
-        # chapter_title = "Unknown Chapter"
-        # for item in self.context_key_values:
-        #     if item.get("key") == "chapter_title":
-        #         chapter_title = item.get("value")
-        #         break
-        
         # Log the chapter title for debugging
         logger.info(f"execute - write_chapter_task - Using chapter title: {self.chapter_title}")
         
@@ -351,15 +304,6 @@ class write_chapter_task: #Not Task, Not Baseclass
             logger.warning(f"No sections found for chapter '{self.chapter_title}'")
             return Chapter(title=self.chapter_title, content="", sections=[])
         
-        # # Load section templates --------------------- Do this in the prompt!!!!!!!
-        # section_templates = {}
-        # try:
-        #     if os.path.exists("section_templates.json"):
-        #         with open("section_templates.json", 'r') as f:
-        #             section_templates = json.load(f)
-        # except Exception as e:
-        #     logger.error(f"Error loading section templates: {e}")
- 
         # Add debug logging
         # logger.info("About to call load_rag_content")
         try:
@@ -416,33 +360,8 @@ class write_chapter_task: #Not Task, Not Baseclass
                     # If no exact match, use the whole research
                     section_research = self.research_content
                     logger.info("No match found, using entire research content")
-            #         else:
-            #             logger.info(f"Research file does not exist: {research_log_file}")
-            #         #logging.info(f"***** section_research: {section_research}")
-            #         #logger.info(f"***** section_research length: {len(section_research)}")
-            #     except Exception as e:
-            #         logger.error(f"Error loading research for section {section_title}: {e}")
 
                 logger.info("Create section Task")
-                # # Get the agents from the task's inputs
-                # agents = None
-                # for item in self.context_key_values:
-                #     if item.get("key") == "agents":
-                #         agents = item.get("value")
-                #         break
-                # if not agents:
-                #     raise ValueError("No agents found in task inputs")
-                
-                # logger.info(f"***+++ Research file exists: {os.path.exists(research_log_file)}")
-                # if os.path.exists(research_log_file):
-                #     logger.info(f"Research file size: {os.path.getsize(research_log_file)} bytes")
-                #     #logger.info(f"First 200 chars of research content: {research_content}")
-                #     logger.info(f"Section-specific research found: {bool(match)}")
-                #     logger.info(f"Section base title: {section_title}")
-                #     logger.info(f"Section research length: {len(section_research)}")
-                #     logger.info(f"****** Section research: {section_research}")
-                #     logger.info(f"***---")
-                #     logger.info(f"📦 tasks_config keys: {list(self.tasks_config.keys())}")
                 section_writer_config = self.agents_config['section_writer']
                 section_writer_agent = Agent(
                     role=section_writer_config["role"],
@@ -473,21 +392,6 @@ class write_chapter_task: #Not Task, Not Baseclass
                 verbose=True
             )
 
-            # x=Crew(agents=self.agents,
-            #             tasks=self.tasks,
-            #             process=Process.sequential,
-            #             verbose=True)
-            # context_items.append({
-            #         "key": "sections",
-            #         "value": sections,
-            #         "description": f"Exact section titles and types for chapter: {chapter_title}",
-            #         "expected_output": "A list of section information"
-            #     })
-            # # Create the task with the enhanced config
-            # return Task(
-            #   config=task_config,
-            #   context=context_items
-            # )
             #crew.kickoff(inputs={'topic': 'AI Agents'})
             #https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
             #CrewAI inserting input fields into prompts. Use input in Kickoff and format-like curlybraces in prompts.
@@ -547,44 +451,5 @@ class write_chapter_task: #Not Task, Not Baseclass
         
         return chapter
     
-    # def load_rag_content(self):
-    #         logger.info("Loading RAG content")
-    #         """Load RAG content and update state with book outline and chapter content"""
-    #         logger.info(f"RAG content files: {RAG_CONTENT_FILES}")
-    #         rag_provider = RagContentProvider(RAG_CONTENT_FILES)
-    #         # self.state.book_outline = rag_provider.get_file_content("book_outline")
-    #         # self.state.chapter_content = rag_provider.get_file_content("chapter_content")
-            
-    #         if self.state.book_outline:
-    #             logger.info(f"Successfully loaded outline RAG content ({len(self.state.book_outline)} chars)")
-    #         else:
-    #             logger.warning("Failed to load outline RAG content")
-                
-    #         if self.state.chapter_content:
-    #             logger.info(f"Successfully loaded full content RAG content ({len(self.state.chapter_content)} chars)")
-    #         else:
-    #             logger.warning("Failed to load full content RAG content")
-                
-    #         return rag_provider
-
-
-    # Create the task with custom execution logic and use the configuration from tasks.yaml
-    # logging.info("define task")
-    # logger.warning("🚀 IN wriue chap: agents dict keys = %s", list(self.tasks_config.keys()))
-    #logger.warning("🚀 IN erotw chap: section_writer agent = %s", self.agents.get("writer", "MISSING"))
-
-    # task = Task(
-    #     config=self.tasks_config["write_chapter"],
-    #     agent=self.agents["writer"],
-    #     output_pydantic=Chapter
-    # )
-    # logging.info("wxwcutw task")
-    # Bind the custom execute method to this task instance
-    #task.execute = execute.__get__(task, Task)
-
-    # Actually run it — and return the output
-    # chapter_result = await task.execute()
-
-    # return chapter_result
 
    

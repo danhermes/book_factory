@@ -2,7 +2,8 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-CHAPTER_DIR="$SCRIPT_DIR/../../output/chapters"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+CHAPTER_DIR="$PROJECT_ROOT/output/chapters"
 
 OUTPUT="$CHAPTER_DIR/final_book.pdf"
 LOGFILE="$SCRIPT_DIR/build_book.log"
@@ -18,8 +19,14 @@ PAGEBREAK="$SCRIPT_DIR/pagebreak.md"
 FRONT_COVER_PDF="$SCRIPT_DIR/front_cover.pdf"
 BACK_COVER_PDF="$SCRIPT_DIR/back_cover.pdf"
 
-BOOK_CONFIG="../../output/outlines/book_outline.json"
-BOOK_TITLE=$(python -c "import sys, json; print(json.load(open('$BOOK_CONFIG'))['book_title'])")
+BOOK_CONFIG="$PROJECT_ROOT/output/outlines/book_outline.json"
+# Convert path to Windows format for Python on Windows (Git Bash)
+if command -v cygpath &> /dev/null; then
+  BOOK_CONFIG_WIN=$(cygpath -w "$BOOK_CONFIG")
+else
+  BOOK_CONFIG_WIN="$BOOK_CONFIG"
+fi
+BOOK_TITLE=$(python -c "import sys, json; print(json.load(open(r'$BOOK_CONFIG_WIN'))['book_title'])")
 #BOOK_AUTHOR=$(python -c "import sys, json; print(json.load(open('$BOOK_CONFIG'))['author'])") #Todo
 #BOOK_DATE=$(python -c "import sys, json; print(json.load(open('$BOOK_CONFIG'))['date'])") #Todo
 
@@ -88,6 +95,7 @@ fi
 
 echo "🛠️ Generating LaTeX with TOC injection..."
 pandoc --standalone --pdf-engine=xelatex \
+  --from markdown-yaml_metadata_block \
   --include-before-body="$HEADER_TEX" \
   -V title="$BOOK_TITLE" -V author="Dan Hermes" -V date="\\today" \
   -V geometry=top=0.75in,bottom=0.75in,left=0.65in,right=0.65in \

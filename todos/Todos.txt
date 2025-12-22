@@ -1,6 +1,34 @@
 #Todos
 
-# sanitize_all.py - should happen during chapter writing - did I break this?
+I messed tith outline_sections
+
+        sections_text = "\n\n".join([
+            f"Section {section.get('section_number', '')}: {section.get('section_title', '')}\n"
+            f"Type: {section.get('type', '')}\n"
+            f"Content: {section.get('content', '')}"
+            for section in chapter_data.get("sections", [])
+        ])
+
+        result = crew.kickoff(inputs={
+            "title": chapter_title,
+            "topic": book_topic,
+            "chapters": [chapter["title"] for chapter in chapters],
+            "sections": sections_text
+        })
+
+        # result = crew.kickoff(inputs={
+        #     "title": chapter_title,
+        #     "topic": book_topic,
+        #     "chapters": [chapter["title"] for chapter in chapters],
+        #     "outline_sections": [section.get("section_title", "") for section in chapter_data.get("sections", [])]
+        # })
+
+03_Chapter_3__Enhanced_Charisma_â€”_Better_Conversations,_Stronger_Connections_clean
+
+What did Cursor do to my chapters before build_book in book_quick_draft?  clean_all_chapters.py? clean_chapter.py?
+
+Topic Researcher needs to research the tools in **Tools Mentioned:**, their specific workflows, setups, and how a user must use them.
+
 
 # Don't use these in manuscript! "---"  They crash {Pandoc}
 
@@ -24,5 +52,12 @@ class BookState(BaseModel):
 
 #Use Classes instead of hard-coding
 "topic": "ChatGPT for Business",
+
+Automate sanitize_all chapters during quick_draft process. OR sanitze them upon their initial writing!
+
+import re
+safe_title = re.sub(r'[^A-Za-z0-9_]', '_', chapter_title)
+
+
 
 

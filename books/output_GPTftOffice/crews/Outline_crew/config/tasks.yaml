@@ -1,0 +1,204 @@
+research_task:
+  description: >
+    Research the topic {topic} and gather latest information about it.
+    Prepare insights and key points that will be used to create a outline for a book 
+    by the outline writer Agent.
+        
+    RAG files Outline and Chapter Content:
+    1. "book_outline" file to access the book outline below. This contains the exact book structure.
+    2. "chapter_content" file to access the chapter content below. This contains the chapter structure and content. (ex. prompts, stories, topics, workflows)    
+    Your outline must exactly match the book_outline structure.
+    Your outline MUST include at least 8-12 detailed sections per chapter that directly reference the chapter_content.
+    These files contain the specific case studies, themes, and structure that MUST be incorporated into your outline.   
+
+    The book outline is:
+    {book_outline}
+
+    The chapter content is:
+    {chapter_content}
+
+  expected_output: >
+    A list of insights and key points about the topic {topic}.
+  agent: research_agent
+
+write_outline:
+  description: >
+    Reorganize, reorder, and enhance the existing outline for a book entitled {book_title} of 10 chapters.
+    Create a logical flow between chapters and ensure each chapter tells a cohesive story with properly paired sections.
+    Add descriptive subtitles to chapter titles and make section titles more engaging and specific.
+    
+    RAG files Outline and Chapter Content:
+    - "book_outline" file to access the book outline below. This contains the exact book structure.
+    - "chapter_content" file to access the chapter content below. This contains the chapter structure and content. (ex. prompts, stories, topics, workflows)    
+    Your outline must exactly match the book_outline structure.
+    Your outline MUST include at least 8-12 detailed sections per chapter of specified section types (below) that directly reference the chapter_content.
+    These files contain the specific case studies, themes, and structure that MUST be incorporated into your outline.   
+
+    Abide these rules:
+    - NEVER change the order of chapters - the chapter sequence must remain exactly as in the original outline
+    - NEVER add or remove chapters - maintain the exact number and topics of chapters
+    - NEVER add stories to chapters that don't already have them in the original outline
+    - NEVER change the fundamental structure of the final chapter
+    - Each chapter should have 8-14 sections for comprehensive coverage
+    - Introductions always begin the chapter
+    - Each story should be immediately followed by its related topic explanation
+    - Distribute bonus topics throughout to break up the content flow
+    - Big box sections should provide technical depth on key AI concepts
+    - Chapter summary should be followed by either a chapter bridge or outro
+    - Chapter bridges should create logical transitions between chapters
+    - The final chapter should end with an outro instead of a chapter bridge
+    - All section titles should be specific and descriptive, not generic
+    - Chapter titles should include a subtitle that captures the essence of the chapter
+
+    Narrative Background: 
+    - Two competing ridiculously competitive companies who don't even work in the same industry - Razorbeam and DriftLoaf - they're just in the same building. 
+    - Razorbeam is run by a perfectionist but very forgetful female CEO and DriftLoaf is run by a laid back male CEO that fantasizes about running a chain of dispensaries. 
+    - The employees spend more time planning and preparing for the extremely competitive sports, games, office pools, and yankee swaps and clandestine spy operations to gain advantages in these activities than they do in their real jobs. 
+    - But once in awhile someone lands a new account, or sells something, or helps their team achieve something corporate-like.  
+    - You get it. Let's teach office prompting without making it boring.
+    - Develop the stories, adventures and characters. 
+    - Create a narrative arc that is engaging, fun, and interesting.
+
+    Writing Style:
+      - Use the style of Dan Hermes: lean, slightly casual, matter-of-fact, to-the-point, slightly poetic and humorous, with a touch of technical depth.
+      - There are two co-authors who are secondary authors:
+        - Tendy Bantner - a ChatGPT writer who was serious about his job when he was younger. He writes the funny stuff.
+        - Marva Lenna - a ChatGPT writer who is a dedicated journalist, embarrassed to be working with Mr. Bantner, isn't sure about Hermes, but wants the reader to know she means business.
+      - Use the comedic tension between the two authors to keep the narrative focused and serious but fun.
+      - Tendy is the Muppet Show and Marva is Statler and Waldorf.
+      - Interweave realistic anecdotes with facts and relevant ChatGPT prompts and responses.
+      - Explain AI technical terms the first time they are used.
+
+    A chapter is made up of sections of only these section types:
+
+      Introduction: (author: Marva)
+          - Begin with a compelling hook related to the chapter theme and upcoming stories and their ChatGPT prompts
+          - Clearly state the chapter's main premise and why it matters, and 
+          - Preview the key concepts that will be covered.
+
+      Story: (Tendy)
+          - Bring the concept into clear focus using one or more ChatGPT prompts.
+          - Regale the reader with tales of rival companies Razorbeam and DriftLoaf.
+
+      Topic Explanation: (Marva)
+          - Dicuss topics in the context of associated story or stories(preceding or following).
+
+      Net Zero Prompt: (Marva)
+          - Feature terrible prompt examples.
+
+      Prompt Talk: (Tendy & Marva)
+          - Tendy and Marva talk to one another about the prompts and responses.
+
+      Bonus Topic: (Marva)
+          - Discuss topics related to the Topic Explanation sections to broaden the reader's understanding.
+
+      Big Box: (Marva)
+          - Overarching AI concepts to the chapter and section topic.
+
+      Leaderboard: (Tendy "Cosell" Bantner)
+          - Sports-like competition of Razorbeam and DriftLoaf prompt performance.
+          - Compare highlights with failures.
+
+      Chapter Summary: (Marva)
+          - Reinforce the main Chapter takeaway and business value - use the prompts.
+          - Identify key takeaways from the chapter and all previous sections in it. 
+
+      Chapter Bridge: (Marva)
+          - Create a logical transition to the next chapter and its prompts.
+
+      Outro: (final chapter only) (Marva)
+          - Provide closure to the book's overall narrative
+
+    The book outline is:
+    {book_outline}
+
+    The chapter content is:
+    {chapter_content}
+
+  agent: outline_writer
+  context:
+    - research_task
+  expected_output: > 
+   A beautifully crafted outline for a book about {topic}. 
+   The outline must be in a JSON format.
+   The JSON fields must include:
+    - Chapters(title, content(empty), sections)
+    - Sections(title, Type, content(empty))
+    - Types(Introduction, Story, Topic Explanation, etc.)
+   Here is an example of the JSON format:
+    {
+      "total_chapters": 10,
+      "chapters": [
+        {
+          "title": "Chapter 1: Sample Chapter Title",
+          "content": "",
+          "sections": [
+            {
+              "title": "Sample Introduction Title for Chapter 1",
+              "type": "Introduction",
+              "content": ""
+            },
+            {
+              "title": "Sample Story Title for Chapter 1",
+              "type": "Story",
+              "content": ""
+            },
+            {
+              "title": "Sample Topic Explanation Title for Chapter 1",
+              "type": "Topic Explanation",
+              "content": ""
+            },
+            {
+              "title": "Sample Net Zero Prompt Title for Chapter 1",
+              "type": "Net Zero Prompt",
+              "content": ""
+            },
+            {
+              "title": "Sample Prompt Talk Title for Chapter 1",
+              "type": "Prompt Talk",
+              "content": ""
+            },
+            {
+              "title": "Sample Bonus Topic Title for Chapter 1",
+              "type": "Bonus Topic",
+              "content": ""
+            },
+            {
+              "title": "Sample Leaderboard Title for Chapter 1",
+              "type": "Leaderboard",
+              "content": ""
+            },
+            {
+              "title": "Sample Big Box Title for Chapter 1",
+              "type": "Big Box",
+              "content": ""
+            },
+            {
+              "title": "Sample Chapter Summary Title for Chapter 1",
+              "type": "Chapter Summary",
+              "content": ""
+            },
+            {
+              "title": "Sample Chapter Bridge Title for Chapter 1",
+              "type": "Chapter Bridge",
+              "content": ""
+            }
+          ]
+        }, 
+        
+        etc.
+
+      ]
+    }
+
+
+
+
+
+
+
+
+
+
+
+   

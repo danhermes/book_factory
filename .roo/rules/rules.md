@@ -1,5 +1,11 @@
 # SPARC Agentic Development Rules
 
+## Dan's Rooles
+
+Documentation
+- When the user requests code examples, setup or configuration steps, or library/API documentation, use context7.
+- When API or library-specific dethods, concepts, and implementation might be useful for coding, use context7.
+
 Core Philosophy
 
 1. Simplicity

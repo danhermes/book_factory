@@ -9,6 +9,9 @@ from typing import List, Optional, Dict, Any
 import logging
 from output.book_config import BOOK_TITLE, BOOK_TOPIC
 
+# Get the virtual environment Python executable
+VENV_PYTHON = os.path.join("bookenv", "Scripts", "python.exe") if os.name == 'nt' else os.path.join("bookenv", "bin", "python")
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -106,7 +109,7 @@ def generate_full_outline(topic=BOOK_TOPIC, book_title=BOOK_TITLE):
     
     # Run the command with the modified environment and pass topic and book_title
     result = subprocess.run([
-        "python",
+        VENV_PYTHON,
         "src/book_writing_flow/main.py",
         "--topic", topic,
         "--book-title", book_title
@@ -169,9 +172,9 @@ def main():
     """Main entry point for the CLI"""
     parser = argparse.ArgumentParser(description="Book Writing Flow CLI")
     logging.info("✅ CLI CALLED")
-    
-    # Get the Python executable path once
-    python_exe = sys.executable
+
+    # Get the Python executable path once (use venv if available)
+    python_exe = VENV_PYTHON if os.path.exists(VENV_PYTHON) else sys.executable
     
     # Command subparsers
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
@@ -252,7 +255,7 @@ def main():
         # Use the run_chapter.py script to generate the chapter with the enhanced writer crew
         logging.info("✅ run_chapter.py CALLED")
         
-        cmd = [python_exe, "run_chapter.py", str(args.chapter)]
+        cmd = [python_exe, "src/book_writing_flow/crews/Writer_crew/run_chapter.py", str(args.chapter)]
         if args.force:
             cmd.append("--force")
         

@@ -1,0 +1,50 @@
+# Build stage
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Runtime stage
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    texlive-xetex \
+    texlive-fonts-recommended \
+    texlive-latex-recommended \
+    texlive-latex-extra \
+    pandoc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy installed packages from builder stage
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+# Copy only the book_layout module
+COPY src/book_layout /app/src/book_layout
+
+# Create necessary directories and ensure shell scripts have LF line endings
+RUN mkdir -p /app/output/chapters /app/output/outlines && \
+    find /app/src/book_layout -name "*.sh" -type f -exec sed -i 's/\r$//' {} \;
+
+# Set environment variables
+ENV PYTHONPATH=/app
+
+# Set working directory to book_layout
+WORKDIR /app/src/book_layout
+
+# Make build script executable
+RUN chmod +x build.sh
+
+# Default command
+CMD ["./build.sh"]

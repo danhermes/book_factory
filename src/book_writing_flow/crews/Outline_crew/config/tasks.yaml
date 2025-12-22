@@ -6,7 +6,7 @@ research_task:
         
     RAG files Outline and Chapter Content:
     1. "book_outline" file to access the book outline below. This contains the exact book structure.
-    2. "chapter_content" file to access the chapter content below. This contains the chapter structure and content. (ex. prompts, stories, topics, workflows)    
+    2. "chapter_content" file to access the chapter content below. This contains the chapter structure and content. (ex. tools, prompts, stories, topics, workflows)    
     Your outline must exactly match the book_outline structure.
     Your outline MUST include at least 8-12 detailed sections per chapter that directly reference the chapter_content.
     These files contain the specific case studies, themes, and structure that MUST be incorporated into your outline.   
@@ -23,7 +23,7 @@ research_task:
 
 write_outline:
   description: >
-    Reorganize, reorder, and enhance the existing outline for a book entitled {book_title} of 10 chapters.
+    Reorganize and enhance the existing outline for a book entitled {book_title} of 8 chapters.
     Create a logical flow between chapters and ensure each chapter tells a cohesive story with properly paired sections.
     Add descriptive subtitles to chapter titles and make section titles more engaging and specific.
     
@@ -55,7 +55,7 @@ write_outline:
     - Razorbeam is run by a perfectionist but very forgetful female CEO and DriftLoaf is run by a laid back male CEO that fantasizes about running a chain of dispensaries. 
     - The employees spend more time planning and preparing for the extremely competitive sports, games, office pools, and yankee swaps and clandestine spy operations to gain advantages in these activities than they do in their real jobs. 
     - But once in awhile someone lands a new account, or sells something, or helps their team achieve something corporate-like.  
-    - You get it. Let's teach office prompting without making it boring.
+    - You get it. Let's teach AI Tools without making it boring.
     - Develop the stories, adventures and characters. 
     - Create a narrative arc that is engaging, fun, and interesting.
 
@@ -66,48 +66,135 @@ write_outline:
         - Marva Lenna - a ChatGPT writer who is a dedicated journalist, embarrassed to be working with Mr. Bantner, isn't sure about Hermes, but wants the reader to know she means business.
       - Use the comedic tension between the two authors to keep the narrative focused and serious but fun.
       - Tendy is the Muppet Show and Marva is Statler and Waldorf.
-      - Interweave realistic anecdotes with facts and relevant ChatGPT prompts and responses.
+      - Interweave realistic anecdotes with facts and relevant AI Tooling.
       - Explain AI technical terms the first time they are used.
 
     A chapter is made up of sections of only these section types:
 
-      Introduction: (author: Marva)
-          - Begin with a compelling hook related to the chapter theme and upcoming stories and their ChatGPT prompts
-          - Clearly state the chapter's main premise and why it matters, and 
-          - Preview the key concepts that will be covered.
 
-      Story: (Tendy)
-          - Bring the concept into clear focus using one or more ChatGPT prompts.
-          - Regale the reader with tales of rival companies Razorbeam and DriftLoaf.
+      Section Title              | Section Type
+      -------------------------- | -------------------
+      Introduction               | `intro`
+      Story                      | `story`
+      Topic Explanation          | `topic_explanation`
+      Zero Intelligence          | `zero_intelligence`
+      Bull Talk                  | `bull_talk`
+      Bonus Topic                | `bonus_topic`
+      Big Box                    | `big_box`
+      Leaderboard                | `leaderboard`
+      Chapter Summary            | `chapter_summary`
+      Chapter Bridge             | `chapter_bridge`
+      Outro (final chapter only) | `outro`
 
-      Topic Explanation: (Marva)
-          - Dicuss topics in the context of associated story or stories(preceding or following).
+      DETAILS:
 
-      Net Zero Prompt: (Marva)
-          - Feature terrible prompt examples.
+      Introduction:
+      - Author: Marva
+      - Purpose: Establish foundational concepts by connecting high-level AI-Enhancement principles with concrete examples, statistics, and business context. Identify key challenges and expert perspectives that frame the topic's importance.
+      - Find simple themes, concepts, and ideas that can be used to bridge the higher level concepts with tangible demonstrative details, scenarios, and examples.
+      - Find compelling and authoritative anecdotes, statistics or trends that highlight the importance of the topic
+      - Seek directions which yield specific benefits in the employment of AI.
+      - Research the broader business context and relevance
+      - Identify key challenges or pain points in this area
+      - Look for expert quotes that frame the topic effectively
+      
+      Story:
+      - Author: Mostly Tendy with occasional Marva
+      - Purpose: Demonstrate AI-Enhancement solutions through realistic fictional scenarios using 1-4 practical AI implementations (not just ChatGPT prompts). Show how employees would actually use AI tools in their daily work, with realistic capabilities and limitations clearly stated.
+      - For story sections, you MUST include the required AI Tools that would be used to implement the solution described in the story.
+      - Produce the AI Tools and GPT Prompts FIRST, before writing the story.
+      - AI Tools:
+        - AI Tools should help an employee with their work if they worked at the fictional company.
+        - AI Tools must be usable by the employee to assist them in doing their everyday work.
+        - AI Tools should demonstrate to the reader how to use AI to achieve results in their own work.
+        - DO NOT EXAGGERATE OR ASCRIBE FALSE ABILITIES TO AI Tools! Clearly state when features are the result of AI Tools, and when they require a larger implementation
+        - Explain when AI Tools will require additional uploaded documentation or data to achieve the desired result.
+        - No magic buttons or hyperbolic statements or promises that AI Tools could not deliver on or more appropriate for an IT Implementation.
+        - Larger implementations to move beyond AI Tools might include task automation using GPTs, OpenAI, RAG models, consulting, or other AI tools and solutions.
+        - These AI Tools should be realistic, practical AI Tools that a business user would actually try and implement
+      Also:
+      - Research real-world tool use cases that can inspire fictional case studies grounded in practical AI adoption.
+      - The purpose of the story is to bring AI tool usage into sharp focus through compelling narrative—focusing on how the tools are used, not screenshots, tutorials, or tool documentation.
+      - Increase the complexity and integration of AI tools as the book progresses. Begin with a single, straightforward tool per story, then expand to tool combinations, workflows, or toolchains of two, three, or more tools working together.
+      - Relate multiple tools and tool uses either cumulatively—where one enables the next—or in parallel—each solving a distinct part of a larger business or personal challenge.
+      - Use these tool-based scenarios to illustrate progressive AI augmentation, leading to greater autonomy, decision-making power, or productivity at scale.
+      - Define the setting with industry-specific details: company size, culture, team dynamics, key markets, known bottlenecks, and historical blockers.
+      - Incorporate implementation context—how tools were adopted, piloted, or integrated; what teams led the charge; what friction arose; and how it was addressed.
+      - Identify quantitative outcomes where possible: productivity gains, turnaround speed, conversion rates, hours saved, support deflected, new opportunities created.
+      - Highlight obstacles and real-world limitations—missing integrations, learning curve, over-reliance, misalignment—and how the protagonists navigate or resolve them.
 
-      Prompt Talk: (Tendy & Marva)
-          - Tendy and Marva talk to one another about the prompts and responses.
+      - Here are examples of story templates. Use these and come up with your own like these:
+        1. Fix the Problem - Begin the story with a challenge or problem that is compelling and specific. Spin an arc where the AI improves and resolves this challenge or problem. Land conclusively on a resolution.
+        2. Create New Possibilities - Begin with a dearth of ideas and solutions. Spin an arc where the AI provides create new ideas and punches through the block. Resolve soundly using the AI direction.
+        3. Connect the Dots - Begin with too much data and systems ouit of alignment. Spin an arc where the AI solution draws together data and systems into a useable, compelling solution. Land on a successful resolution.
+        4. Catalyze People - Begin with a lack of human alignment, misunderstanding, and disengagement. Spin an arc where the AI solution draws people from different groups and needs together into action. Show their alignment together towards the same goals.
+        5. Wrangle the Chaos - Begin with a disorganized mess of workflows, tasks, roles, and reports. Spin an arc where the AI solution draws these together into an organized, useful environment. End on harmony and productivity.
+      
+      Bull Talk:
+      - Authors: Marva and Tendy
+      - Purpose: Post-story analysis covering what worked, what didn't, and lessons learned from the AI-Enhancement implementation, identifying winners, losers, and MVPs.
+      - Marva and Tendy do the post-game talk on an AI-Enhancement story.
+      - They cover what went well, what went wrong, and what they would do differently next time.
+      - The winners, losers, and the MVP of the story.
+    
+      Topic Explanation:
+      - Author: Marva
+      - Purpose: Ground-level discussion of AI-Enhancement concepts tied to the stories, focusing on specific problems solved and practical solutions rather than abstract theory.
+      - Dicuss topics in the context of associated story or stories in this section.
+      - Allude to higher level relevance but KEEP THIS EXPLANATION GROUNDED and HANDS-ON with the specific types of problems solved and the specific types of solutions offered.
+      - Research some technical details and methodologies.
+      - Find step-by-step approaches and best practices
+      - Gather relevant statistics and research findings
+      - Identify tools, platforms, or frameworks commonly used
+      - Research practical implementation details
+      
+      Zero Intelligence:
+      - Authors: Marva and Tendy
+      - Purpose: Examine failed AI-Enhancement examples to teach readers how to avoid common pitfalls and implementation mistakes.
+      - Marva and Tendy talk about failed AI Enhancement examples.
+      - Feature terrible AI Enhancement examples.
+      - Teach how to avoid the pitfalls of AI Enhancement.
 
-      Bonus Topic: (Marva)
-          - Discuss topics related to the Topic Explanation sections to broaden the reader's understanding.
-
-      Big Box: (Marva)
-          - Overarching AI concepts to the chapter and section topic.
-
-      Leaderboard: (Tendy "Cosell" Bantner)
-          - Sports-like competition of Razorbeam and DriftLoaf prompt performance.
-          - Compare highlights with failures.
-
-      Chapter Summary: (Marva)
-          - Reinforce the main Chapter takeaway and business value - use the prompts.
-          - Identify key takeaways from the chapter and all previous sections in it. 
-
-      Chapter Bridge: (Marva)
-          - Create a logical transition to the next chapter and its prompts.
-
-      Outro: (final chapter only) (Marva)
-          - Provide closure to the book's overall narrative
+      Bonus Topic:
+      - Authors: Mostly Marva, sometimes Tendy
+      - Purpose: Expand understanding with complementary AI-Enhancement concepts, business value explanations, and practical use cases that broaden the chapter's scope.
+      - Discuss topics related to the Topic Explanation sections to broaden the reader's understanding.
+      - Look for complementary concepts, technologies or methodologies
+      - Refer to the Stories when relevant.
+      - Explain the business value of the topic.
+      - Give some practical examples and use cases.
+      - Offer some technical depth.
+      
+      Big Box:
+      - Authors: Mostly Marva, sometimes Tendy
+      - Purpose: Deep technical exploration of overarching AI-Enhancement frameworks, methodologies, integration requirements, and system limitations.
+      - Research grand, overarching AI concepts relevant to the chapter and section topic.
+      - Employ technical depth
+      - Find frameworks, models, or methodologies
+      - Gather technical specifications and requirements
+      - Research integration points with other systems
+      - Identify limitations and considerations
+      
+      Chapter Summary:
+      - Author: Marva
+      - Purpose: Synthesize key takeaways into cohesive concepts, connecting stories naturally while providing actionable next steps for implementation.
+      - Identify key takeaways from the chapter, summarizing into key points and concepts: NOT bullet points.
+      - Tie stories together casually and naturally into summary points
+      - Research actionable next steps or considerations
+      - Find expert recommendations for implementation of this chapter's topic
+      
+      Chapter Bridge:
+      - Author: Marva
+      - Purpose: Connect current chapter themes to upcoming topics, identifying natural progression points and overlapping AI-Enhancement concepts.
+      - Research connections between the current topic and the next chapter's theme
+      - Identify overlapping concepts or natural progression points
+      
+      Outro (final chapter only):
+      - Author: Dan Hermes
+      - Purpose: Explore future AI-Enhancement trends, expert predictions, and broader implications for business and society.
+      - Research future trends and developments in the field
+      - Find expert predictions about where the technology is heading
+      - Identify broader implications for business and society
 
     The book outline is:
     {book_outline}

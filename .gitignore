@@ -27,12 +27,15 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+access/
 
 # Virtual Environment
 venv/
 env/
 ENV/
-.venv/
+.venv/ 
+bookenv/
+venv312/
 
 # IDE
 .idea/
@@ -53,14 +56,12 @@ htmlcov/
 coverage.xml
 *.cover
 .hypothesis/
+.venv/
 
 # Logs
 *.log
 
 # Output
-
-
-
 src/book_binding/front_cover.pdf
 src/book_binding/back_cover.pdf
 src/book_binding/build_temp.pdf

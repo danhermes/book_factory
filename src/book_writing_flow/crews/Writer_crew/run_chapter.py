@@ -85,33 +85,25 @@ async def run_single_chapter(chapter_index=0, force_regenerate=False):
         logging.info("Please make sure book_outline.json exists and is valid in either output/outlines or root directory")
         return
     
-    # Load tool_index from output/rag/tool_index
+    # Extract tools from chapter sections in the outline
     chapter_tools = []
-    try:
-        if os.path.exists("output/rag/tool_index.json"):
-            with open("output/rag/tool_index.json", "r") as f:
-                tool_data = json.load(f)
-                # Find tools for current chapter
-                current_chapter_number = chapter_index + 1
-                for chapter in tool_data.get("chapters", []):
-                    if chapter.get("number") == current_chapter_number:
-                        chapter_tools = chapter.get("tools", [])
-                        break
-                logging.info(f"Loaded tool_index from output/rag/tool_index.json with {len(chapter_tools)} tools for chapter {current_chapter_number}")
-        else:
-            logging.warning("tool_index.json not found in output/rag/ directory")
-            chapter_tools = []
-    except (FileNotFoundError, json.JSONDecodeError) as e:
-        logging.warning(f"Error loading tool_index: {e}")
-        chapter_tools = []
+    chapters = outline.get("chapters", [])
+    if chapters and chapter_index < len(chapters):
+        chapter_data = chapters[chapter_index]
+        for section in chapter_data.get("sections", []):
+            section_tools = section.get("tools", [])
+            for tool in section_tools:
+                if tool and tool not in chapter_tools:
+                    chapter_tools.append(tool)
+        logging.info(f"Extracted {len(chapter_tools)} unique tools from chapter {chapter_index + 1} sections: {chapter_tools}")
 
     # Get the chapter title
-    chapters = outline.get("chapters", [])
     if not chapters or chapter_index >= len(chapters):
         logging.info(f"Chapter {chapter_index+1} not found in outline")
         return
     
-    chapter_title = chapters[chapter_index]["chapter_title"]
+    chapter_data = chapters[chapter_index]
+    chapter_title = chapter_data.get("chapter_title") or chapter_data.get("title")
     book_topic = outline.get("topic")
 
     logging.info(f"Found chapter title: {chapter_title}")
@@ -180,7 +172,9 @@ async def run_single_chapter(chapter_index=0, force_regenerate=False):
         sections_text = "\n\n".join([
             f"Section {section.get('section_number', '')}: {section.get('section_title', '')}\n"
             f"Type: {section.get('type', '')}\n"
-            f"Content: {section.get('content', '')}"
+            f"Description: {section.get('description', '')}\n"
+            f"Story: {section.get('story', '')}\n"
+            f"Tools: {', '.join(section.get('tools', []))}"
             for section in chapter_data.get("sections", [])
         ])
 
@@ -192,10 +186,11 @@ async def run_single_chapter(chapter_index=0, force_regenerate=False):
         result = crew.kickoff(inputs={
             "title": chapter_title,
             "topic": book_topic,
-            "chapters": [chapter["chapter_title"] for chapter in chapters],
+            "chapters": [chapter.get("chapter_title") or chapter.get("title") for chapter in chapters],
             "sections": sections_text,
             "rag_content": rag_content,
-            "context7_docs": context7_docs
+            "context7_docs": context7_docs,
+            "required_tools": ", ".join(chapter_tools) if chapter_tools else "No specific tools required"
         })
     
         logging.info(f"Checking result.pydantic: {hasattr(result, 'pydantic')}")
@@ -256,7 +251,7 @@ async def run_single_chapter(chapter_index=0, force_regenerate=False):
         
         logging.info("🚀 Launching chapter crew with:")
         logging.info("  Chapter title: %s", chapter_title)
-        logging.info("  Chapters: %s", [chapter["chapter_title"] for chapter in chapters])
+        logging.info("  Chapters: %s", [chapter.get("chapter_title") or chapter.get("title") for chapter in chapters])
         logging.info("  Outline sections: %s", [section.get("section_title", "") for section in chapter_data.get("sections", [])])
         
         with open("src/book_writing_flow/crews/Writer_crew/config/agents.yaml", "r") as f:
@@ -267,8 +262,8 @@ async def run_single_chapter(chapter_index=0, force_regenerate=False):
         logging.info(f"Define write_chapter_task")
 
         task = write_chapter_task(
-            description="", #tasks_config["write_section"]["description"],
-            expected_output="", #tasks_config["write_section"]["expected_output"],
+            description=tasks_config["write_section"]["description"],
+            expected_output=tasks_config["write_section"]["expected_output"],
             config=agents_config,
             research_content=research_content,
             chapter_title=chapter_title,

@@ -10,5 +10,5 @@ BOOK_TOPIC = "Personal and Professional growth through AI"
 RAG_CONTENT_FILES = {
     "book_outline": "output/rag/book_outline.json",
     "chapter_content": "output/rag/chapter_content.txt",
-    # Add more content files as needed
+    "tool_index": "output/rag/tool_index.json",
 }

@@ -10,7 +10,7 @@ import logging
 from output.book_config import BOOK_TITLE, BOOK_TOPIC
 
 # Get the virtual environment Python executable
-VENV_PYTHON = os.path.join("bookenv", "Scripts", "python.exe") if os.name == 'nt' else os.path.join("bookenv", "bin", "python")
+VENV_PYTHON = os.path.join(".venv", "Scripts", "python.exe") if os.name == 'nt' else os.path.join(".venv", "bin", "python")
 
 # Configure logging
 logging.basicConfig(

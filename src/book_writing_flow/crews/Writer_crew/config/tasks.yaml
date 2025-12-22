@@ -20,7 +20,10 @@ research_topic:
     - Chapters in the book are: {chapters}.
     - Use the (non-narrative)RAG content provided here(if any):
     *{rag_content}*
-    - Read and use BY TOOL the context7 documentation provided here(if any) for AI Tool workflows and hands-on details.:
+    - CRITICAL: You MUST use ONLY these required AI Tools: {required_tools}
+    - DO NOT invent, substitute, or add any tools not in the required list above.
+    - You MUST feature EVERY tool from the required list in your research and writing.
+    - Read and use the context7 documentation provided here(if any) for AI Tool workflows and hands-on details:
     *{context7_docs}*
     Weave your narrative around section topics and specified AI tools and their implementations and outcomes.
     If this section is a story, then identify the AI Tools and their usage FIRST, before writing the story
@@ -276,6 +279,11 @@ write_section:
     This section is of type {section_type} and should be at least Minimum word count words, specified in the section type.
     CRITICAL: You MUST use EXACTLY the section title provided. DO NOT modify or change the title in any way.
     GOAL: In the midst of the chaos and fun, keep the focus on the book goal: helping individual businesspeople create wins using AI tools.
+
+    SECTION DETAILS FROM OUTLINE:
+    - Description: {section_description}
+    - Story elements: {section_story}
+    - REQUIRED AI TOOLS (you MUST feature these): {section_tools}
 
     Narrative Background:
     - Two competing ridiculously competitive companies who don't even work in the same industry - Razorbeam and DriftLoaf - they're just in the same building.

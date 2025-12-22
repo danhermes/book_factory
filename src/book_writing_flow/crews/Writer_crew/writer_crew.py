@@ -347,7 +347,7 @@ class write_chapter_task: #Not Task, Not Baseclass
   
                 escaped_title = re.escape(section_title.strip())
             #                 logger.info(f"Escaped section title: '{escaped_title}'")
-                pattern = rf"^##\ {escaped_title}\n(.*?)(?=^## |\Z)"
+                pattern = rf"^###\ {escaped_title}\n(.*?)(?=^### |\Z)"
                 logger.info(f"Full regex pattern: '{pattern}'")
                 match = []
                 match = re.search(pattern, self.research_content, re.DOTALL | re.MULTILINE)
@@ -404,6 +404,9 @@ class write_chapter_task: #Not Task, Not Baseclass
                                 "title": section_title,  # Use section_title instead of chapter_title
                                 "section_type": section_type,
                                 "chapter_title": self.chapter_title,
+                                "section_description": section.description,
+                                "section_story": section.story,
+                                "section_tools": ", ".join(section.tools) if section.tools else "",
                                 #"min_length": template["min_length"], #todo from JSON?
                                 # "structure": ", ".join(template["structure"]),  # Convert list to string for template
                                 "section_research": section_research,

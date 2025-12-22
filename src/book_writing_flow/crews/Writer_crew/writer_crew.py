@@ -27,7 +27,7 @@ from book_model import Chapter, Section
 src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
 if src_path not in sys.path:
     sys.path.insert(0, src_path)
-from output.book_config import RAG_CONTENT_FILES
+from output.book_config import RAG_CONTENT_FILES, LLM_TEMPERATURE
 
 # from src.book_writing_flow.tools.custom_tool import BrightDataWebSearchTool
 # from src.book_writing_flow.tools.rag_utils import RagContentProvider
@@ -190,7 +190,7 @@ class write_chapter_task: #Not Task, Not Baseclass
     expected_output: str = ""
     config: dict = {}
     research_content: str = ""
-    llm: LLM = LLM(model="gpt-4o")
+    llm: LLM = LLM(model="gpt-4o", temperature=LLM_TEMPERATURE)
     tasks_config: dict = {} # = Field(default_factory=dict)
     agents_config: dict = {} # = Field(default_factory=dict)
     context_key_values: List[Dict] = [] # = Field(default_factory=list)

@@ -12,3 +12,5 @@ RAG_CONTENT_FILES = {
     "chapter_content": "output/rag/chapter_content.txt",
     "tool_index": "output/rag/tool_index.json",
 }
+
+LLM_TEMPERATURE = 0.9

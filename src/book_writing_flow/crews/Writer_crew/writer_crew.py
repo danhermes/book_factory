@@ -136,18 +136,11 @@ class ChapterWriterCrew:
         """
         Override the research_topic task to focus on the outline structure.
         """       
-        logger.info(f"Researching...")  
+        logger.info(f"Researching...")
         research_task_config = dict(self.tasks_config["research_topic"])
-        # First try to load from output/outlines directory
-        if os.path.exists("output/outlines/book_outline.json"):
-            with open("output/outlines/book_outline.json", 'r', encoding='utf-8') as f:
-                outline = json.load(f)
-        # Fall back to root directory if not found in output/outlines
-        elif os.path.exists("book_outline.json"):
-            with open("book_outline.json", 'r', encoding='utf-8') as f:
-                outline = json.load(f)
-        else:
-            raise FileNotFoundError("book_outline.json not found in output/outlines or root directory")
+        # Load from output/rag directory (contains tools, descriptions, stories)
+        with open("output/rag/book_outline.json", 'r', encoding='utf-8') as f:
+            outline = json.load(f)
         
         # Create the task with the enhanced config
         return Task(
@@ -235,34 +228,10 @@ class write_chapter_task: #Not Task, Not Baseclass
         # This ensures the generated chapter matches the outline exactly
         logger.info("Using exact section titles from the book outline")
          
-        # Load the outline
-        outline = None
-        try:
-            # First try to load from output/outlines directory
-            if os.path.exists("output/outlines/book_outline.json"):
-                with open("output/outlines/book_outline.json", 'r', encoding='utf-8') as f:
-                    #outline = json.load(f)
-                    outline_dict = json.load(f)
-                    outline = BookModel(**outline_dict) 
-            # Fall back to root directory if not found in output/outlines
-            elif os.path.exists("book_outline.json"):
-                with open("book_outline.json", 'r', encoding='utf-8') as f:
-                    #outline = json.load(f)
-                    outline_dict = json.load(f)
-                    outline = BookModel(**outline_dict)
-            else:
-                raise FileNotFoundError("book_outline.json not found in output/outlines or root directory")
-        except Exception as e:
-            logger.error(f"Error loading outline: {e}")
-            # Create a minimal outline with just the chapter title
-            outline = {
-                "chapters": [
-                    {
-                        "title": self.chapter_title,
-                        "sections": []
-                    }
-                ]
-            }
+        # Load the outline from output/rag directory (contains tools, descriptions, stories)
+        with open("output/rag/book_outline.json", 'r', encoding='utf-8') as f:
+            outline_dict = json.load(f)
+            outline = BookModel(**outline_dict)
 
         # Load the research log file for this chapter
         #chapter_number = 1  # Default to chapter 1
@@ -279,30 +248,9 @@ class write_chapter_task: #Not Task, Not Baseclass
             logger.warning(f"Chapter '{self.chapter_title}' not found in outline")
             return Chapter(title=self.chapter_title, content="", sections=[])
         
-        # If no sections are found in the chapter data, try to parse them from the outline.md file
+        # Sections must exist in the rag outline - no fallbacks
         if not outline_sections:
-            logger.info(f"No sections found for chapter. Parse the '{self.chapter_title}' from the outline.md file")
-            try:
-                # Try to load the outline.md file
-                if os.path.exists("output/outlines/book_outline.md"):
-                    with open("output/outlines/book_outline.md", "r", encoding='utf-8') as f:
-                        outline_md = f.read()
-                    
-                    # Find the chapter section
-                    chapter_pattern = f"## Chapter {self.chapter_title.split(':')[0].strip()}: .*?\\n\\n(.*?)\\n\\n##"
-                    chapter_match = re.search(chapter_pattern, outline_md, re.DOTALL)
-                    
-                    if chapter_match:
-                        chapter_content = chapter_match.group(1)
-                        # Extract section titles
-                        section_lines = [line.strip() for line in chapter_content.split("\n") if line.strip().startswith("- ")]
-                        outline_sections = [line[2:] for line in section_lines]
-            except Exception as e:
-                logger.error(f"Error parsing outline.md: {e}")
-        
-        if not outline_sections:
-            logger.warning(f"No sections found for chapter '{self.chapter_title}'")
-            return Chapter(title=self.chapter_title, content="", sections=[])
+            raise RuntimeError(f"No sections found for chapter '{self.chapter_title}' in output/rag/book_outline.json")
         
         # Add debug logging
         # logger.info("About to call load_rag_content")

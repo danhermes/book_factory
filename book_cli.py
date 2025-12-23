@@ -192,8 +192,10 @@ def main():
     
     # Write command
     write_parser = subparsers.add_parser("write", help="Generate chapter content")
-    write_parser.add_argument("--chapter", type=int, required=False, 
+    write_parser.add_argument("--chapter", type=int, required=False,
                              help="Chapter number to generate (1-based)")
+    write_parser.add_argument("--chapters", type=str, required=False,
+                             help="Chapters to generate (comma-separated numbers or 'all')")
     write_parser.add_argument("--force", action="store_true",
                              help="Force regeneration even if chapter already exists")
     
@@ -254,12 +256,51 @@ def main():
     elif args.command == "write":
         # Use the run_chapter.py script to generate the chapter with the enhanced writer crew
         logging.info("✅ run_chapter.py CALLED")
-        
-        cmd = [python_exe, "src/book_writing_flow/crews/Writer_crew/run_chapter.py", str(args.chapter)]
-        if args.force:
-            cmd.append("--force")
-        
-        run_command(cmd)
+
+        # Determine which chapters to generate
+        chapters_to_generate = []
+
+        if args.chapters:
+            # Handle --chapters argument (can be "all" or comma-separated numbers)
+            if args.chapters.lower() == "all":
+                # Load the outline to determine total chapters (from rag directory - has tools)
+                try:
+                    with open("output/rag/book_outline.json", "r") as f:
+                        outline = json.load(f)
+                    total_chapters = outline.get("total_chapters", 0)
+                    if total_chapters == 0:
+                        logging.error("No chapters found in book_outline.json")
+                        return
+                    chapters_to_generate = list(range(1, total_chapters + 1))
+                    logging.info(f"Writing all {total_chapters} chapters...")
+                except FileNotFoundError:
+                    logging.error("output/rag/book_outline.json not found (required - contains tools)")
+                    return
+                except json.JSONDecodeError as e:
+                    logging.error(f"Error parsing book_outline.json: {e}")
+                    return
+            else:
+                # Parse comma-separated chapter numbers
+                try:
+                    chapters_to_generate = [int(c.strip()) for c in args.chapters.split(",")]
+                except ValueError:
+                    logging.error(f"Invalid chapter numbers: {args.chapters}")
+                    return
+        elif args.chapter:
+            # Handle single --chapter argument
+            chapters_to_generate = [args.chapter]
+        else:
+            logging.error("Please specify --chapter or --chapters")
+            return
+
+        # Generate each chapter
+        for chapter_num in chapters_to_generate:
+            logging.info(f"Generating chapter {chapter_num}...")
+            cmd = [python_exe, "src/book_writing_flow/crews/Writer_crew/run_chapter.py", str(chapter_num)]
+            if args.force:
+                cmd.append("--force")
+            run_command(cmd)
+
         # The run_chapter.py script now handles copying to the output directory
     
     elif args.command == "flow":

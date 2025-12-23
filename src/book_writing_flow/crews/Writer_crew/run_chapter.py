@@ -66,24 +66,14 @@ async def run_single_chapter(chapter_index=0, force_regenerate=False):
     # Initialize Context7 MCP
     context7 = Context7_MCP(binary="node", package="./src/book_writing_flow/tools/context7.js")
 
-    # Load the outline from output/outlines directory
+    # Load the outline from output/rag directory (contains tools, descriptions, stories)
     try:
-        # First try to load from output/outlines directory
-        if os.path.exists("output/outlines/book_outline.json"):
-            with open("output/outlines/book_outline.json", "r") as f:
-                outline = json.load(f)
-                logging.info(f"Loaded outline from output/outlines/book_outline.json with {len(outline.get('chapters', []))} chapters")
-        # Fall back to root directory if not found in output/outlines
-        elif os.path.exists("book_outline.json"):
-            with open("book_outline.json", "r") as f:
-                outline = json.load(f)
-                logging.info(f"Loaded outline from book_outline.json with {len(outline.get('chapters', []))} chapters")
-        else:
-            raise FileNotFoundError("book_outline.json not found in output/outlines or root directory")
+        with open("output/rag/book_outline.json", "r") as f:
+            outline = json.load(f)
+            logging.info(f"Loaded outline from output/rag/book_outline.json with {len(outline.get('chapters', []))} chapters")
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        logging.info(f"Error loading outline: {e}")
-        logging.info("Please make sure book_outline.json exists and is valid in either output/outlines or root directory")
-        return
+        logging.error(f"Error loading outline: {e}")
+        raise RuntimeError("output/rag/book_outline.json is required (contains tools, descriptions, stories)")
     
     # Extract tools from chapter sections in the outline
     chapter_tools = []

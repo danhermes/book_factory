@@ -4,105 +4,163 @@
       "number": 1,
       "title": "The AI-Enhanced Human",
       "tools": [
-        "Notion",
-        "Mem",
-        "Reflect",
         "ChatGPT",
-        "Perplexity"
-      ]
+        "Claude",
+        "Fathom",
+        "GrammarlyGO",
+        "Humata",
+        "Jasper",
+        "Notion AI",
+        "Otter.ai",
+        "Perplexity AI",
+        "Typetone.ai",
+        "X formerly called Twitter",
+        "Zapier"
+      ],
+        "descriptions": "
+**Claude** — An AI assistant built by Anthropic for conversation, writing, analysis, and coding. Users chat with Claude to get help drafting documents, answering questions, summarizing information, debugging code, or thinking through complex problems.
+
+**Fathom** — An AI meeting recorder that automatically captures, transcribes, and summarizes video calls. Users install it on Zoom, Google Meet, or Teams to get instant notes and action items without manual note-taking.
+
+**Grammarly** — A writing assistant that checks grammar, spelling, punctuation, and clarity in real-time. Users install it as a browser extension or desktop app to catch errors and improve their writing across emails, documents, and web forms.
+
+**GrammarlyGO** — Grammarly's generative AI feature that drafts, rewrites, and replies to text on command. Users highlight text and prompt GrammarlyGO to change tone, expand ideas, or compose responses from scratch.
+
+**Humata** — An AI tool for analyzing and querying documents. Users upload PDFs, contracts, or research papers and ask questions in plain language to extract specific information without reading the entire file.
+
+**Jasper** — An AI writing platform designed for marketing content. Users generate blog posts, ad copy, social media captions, and email campaigns by selecting templates and providing brief prompts about their product or audience.
+
+**Notion AI** — An AI assistant built into the Notion workspace app. Users summon it within their notes and databases to draft content, summarize pages, brainstorm ideas, or extract action items from meeting notes.
+
+**Otter.ai** — A transcription service that converts spoken audio into searchable text. Users record meetings or upload audio files to get timestamped transcripts they can search, highlight, and share.
+
+**Perplexity AI** — An AI-powered search engine that answers questions with cited sources. Users type questions in natural language and get concise, referenced answers instead of a list of links to browse.
+
+**Typetone.ai** — An AI content platform focused on brand voice consistency. Users define their brand's tone and style, then generate on-brand marketing copy, social posts, and communications at scale.
+
+**X (formerly Twitter)** — A social media platform for short-form public posts. Users share thoughts, news, and links in posts up to 280 characters (or longer for premium users), follow others, and engage through replies and reposts.
+
+**Zapier** — An automation platform that connects apps without code. Users create "Zaps" that trigger actions between services—like saving Gmail attachments to Dropbox or posting Slack messages when a form is submitted."
     },
     {
       "number": 2,
-      "title": "Enhanced Intelligence",
+      "title": "Enhanced Intelligence \u2014 Processing and Understanding More",
       "tools": [
-        "Perplexity",
         "ChatGPT",
         "Claude",
-        "Elicit",
+        "Google Docs",
+        "Hume AI",
+        "Otter.ai",
+        "Perplexity AI",
         "Poe",
-        "Recall.ai",
-        "ChatGPT (Memory Mode)",
-        "Humata",
-        "AskYourPDF",
-        "Mem",
-        "Reflect.app"
-      ]
+        "RAG pipelines",
+        "Sembly"
+      ],
+        "description":
+        "
+        Hume AI — An AI platform that detects and analyzes human emotions from voice, facial expressions, and language. Users integrate it into applications to understand sentiment, measure engagement, or build emotionally responsive AI experiences.
+Otter.ai — A transcription service that converts spoken audio into searchable text. Users record meetings or upload audio files to get timestamped transcripts they can search, highlight, and share.
+Poe — A chatbot aggregator platform built by Quora that gives access to multiple AI models in one place. Users chat with Claude, GPT-4, Gemini, and other models side-by-side, compare responses, and create custom bots without switching apps.
+RAG pipelines — Retrieval-Augmented Generation systems that combine search with AI text generation. Users build these pipelines to let an AI answer questions using their own documents, databases, or knowledge bases rather than relying solely on the model's training data.
+Sembly — An AI meeting assistant that records, transcribes, and summarizes calls with automatic action item tracking. Users connect it to video conferencing tools to capture decisions, assignments, and key moments without manual note-taking."
     },
     {
       "number": 3,
-      "title": "Enhanced Charisma",
+      "title": "Enhanced Charisma \u2014 Better Conversations, Stronger Connections",
       "tools": [
-        "Voiceflow",
-        "Superhuman",
-        "Gmail",
-        "Rewind AI",
-        "Recall.ai",
-        "(any)GPT + LinkedIn"
+        "ChatGPT",
+        "Grammarly",
+        "Hume AI",
+        "Perplexity AI",
+        "Slackbot",
+        "Sudowrite",
+        "Typewise"
       ]
     },
     {
       "number": 4,
-      "title": "Enhanced Breadth",
+      "title": "Enhanced Breadth \u2014 Diversifying and Transforming",
       "tools": [
-        "Whisper",
-        "Descript",
-        "DeepL",
-        "DALL·E",
+        "Canva AI",
+        "ChatGPT",
+        "ChatGPT + Roleplay",
+        "Claude",
+        "Elicit",
         "Midjourney",
-        "Canva",
-        "(any)GPT + image upload",
-        "ChatGPT DALL·E 3"
+        "Notion AI",
+        "Obsidian",
+        "Obsidian + GPT",
+        "Replit Ghostwriter",
+        "Runway ML"
       ]
     },
     {
       "number": 5,
-      "title": "Enhanced Scale",
+      "title": "Enhanced Scale \u2014 Getting More Done, Touching More Lives",
       "tools": [
-        "Zapier",
-        "n8n",
+        "AutoGPT",
+        "ChatGPT",
+        "ChatGPT Advanced Data Analysis",
+        "ChatGPT Custom Instructions",
+        "ChatGPT Team",
+        "Claude",
+        "Custom GPTs",
+        "GPT for Excel",
+        "Google Sheets + GPT",
         "LangChain",
-        "AutoGen",
-        "Make",
-        "Tascade"
+        "Make.com",
+        "Notion AI",
+        "Python GPT scripts",
+        "Slack integrations",
+        "Zapier",
+        "n8n"
       ]
     },
     {
       "number": 6,
-      "title": "Enhanced Quality",
+      "title": "Enhanced Quality \u2014 Raising Your Standards, Getting Best Results",
       "tools": [
-        "Lex",
-        "Sudowrite",
-        "ChatGPT Code Interpreter",
-        "Grammarly",
-        "Wordtune",
+        "ChatGPT",
         "ChatGPT Critique Prompts",
-        "ProWritingAid",
-        "Consensus"
+        "Claude",
+        "Elicit",
+        "Grammarly",
+        "Guided Prompt Workflows",
+        "Perplexity AI",
+        "ProWritingAid"
       ]
     },
     {
       "number": 7,
-      "title": "Enhanced Leadership",
+      "title": "Enhanced Leadership \u2014 Larger Networks, Stronger Influence",
       "tools": [
-        "Reclaim.ai",
-        "Otter.ai",
-        "Tability",
-        "PromptPerfect",
-        "h2o.ai",
-        "Fathom",
-        "Loom",
-        "Scribe"
+        "ChatGPT",
+        "Claude",
+        "Feedly AI",
+        "GPT + RAG Archive",
+        "Ghostwriter",
+        "LinkedIn AI Tools",
+        "Taplio"
       ]
     },
     {
       "number": 8,
       "title": "Your Enhancement Path",
       "tools": [
+        "Any you\u2019ve loved so far",
+        "ChatGPT",
+        "ChatGPT (Custom GPTs)",
+        "Claude",
+        "Custom GPT",
         "Custom GPTs",
-        "Obsidian",
-        "Reflect.app",
         "Mem",
-        "Tana"
+        "Notion",
+        "Obsidian",
+        "Perplexity",
+        "Perplexity AI",
+        "RAG with Personal Docs",
+        "RAgent",
+        "Reflect.app"
       ]
     }
   ]

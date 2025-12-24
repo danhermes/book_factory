@@ -6,38 +6,6 @@ This chapter explores Enhanced Breadth -- Diversifying and Transforming.
 
 ### Context Switching Between Fields Effortlessly
 
-**ChatGPT** — An AI language model developed by OpenAI, capable of engaging in conversations, answering questions, drafting text, and generating creative content. It excels in simulating dialogue and exploring topics across various domains.
-
-**Claude** — An AI assistant built by Anthropic for conversation, writing, analysis, and coding. Users chat with Claude to get help drafting documents, answering questions, summarizing information, debugging code, or thinking through complex problems.
-
-**Elicit** — An AI research assistant that helps users find, summarize, and aggregate information from numerous academic sources, facilitating data synthesis and insight generation.
-
-**Fathom** — An AI meeting recorder that automatically captures, transcribes, and summarizes video calls. Users install it on Zoom, Google Meet, or Teams to get instant notes and action items without manual note-taking.
-
-**Grammarly** — A writing assistant that checks grammar, spelling, punctuation, and clarity in real-time. Users install it as a browser extension or desktop app to catch errors and improve their writing across emails, documents, and web forms.
-
-**GrammarlyGO** — Grammarly's generative AI feature that drafts, rewrites, and replies to text on command. Users highlight text and prompt GrammarlyGO to change tone, expand ideas, or compose responses from scratch.
-
-**Humata** — An AI tool for analyzing and querying documents. Users upload PDFs, contracts, or research papers and ask questions in plain language to extract specific information without reading the entire file.
-
-**Jasper** — An AI writing platform designed for marketing content. Users generate blog posts, ad copy, social media captions, and email campaigns by selecting templates and providing brief prompts about their product or audience.
-
-**Notion AI** — An AI assistant built into the Notion workspace app. Users summon it within their notes and databases to draft content, summarize pages, brainstorm ideas, or extract action items from meeting notes.
-
-**Otter.ai** — A transcription service that converts spoken audio into searchable text. Users record meetings or upload audio files to get timestamped transcripts they can search, highlight, and share.
-
-**Perplexity AI** — An AI-powered search engine that answers questions with cited sources. Users type questions in natural language and get concise, referenced answers instead of a list of links to browse.
-
-**Typetone.ai** — An AI content platform focused on brand voice consistency. Users define their brand's tone and style, then generate on-brand marketing copy, social posts, and communications at scale.
-
-**X (formerly Twitter)** — A social media platform for short-form public posts. Users share thoughts, news, and links in posts up to 280 characters (or longer for premium users), follow others, and engage through replies and reposts.
-
-**Zapier** — An automation platform that connects apps without code. Users create "Zaps" that trigger actions between services—like saving Gmail attachments to Dropbox or posting Slack messages when a form is submitted.
-
-**Perplexity AI** — An AI-powered search engine that answers questions with cited sources. Users type questions in natural language and get concise, referenced answers instead of a list of links to browse.
-
-**Zapier** — An automation platform that connects apps without code. Users create "Zaps" that trigger actions between services—like saving Gmail attachments to Dropbox or posting Slack messages when a form is submitted.
-
 In an age where business landscapes are shaped by unique intersections of disciplines, the ability to switch focus and knowledge between unrelated fields has become paramount. This is not merely a luxury; it's a competitive edge. To this end, AI tools like Elicit and ChatGPT's roleplay capabilities facilitate seamless transitions and foster cross-pollination of expertise. The following exploration captures real-life scenarios at Razorbeam and DriftLoaf, demonstrating how AI tools create innovative bridges between diverse domains.
 
 As Tendy struggled to turn a jumble of marketing notes and dev workflows into a coherent mechanical prototype, he found himself oscillating between fields with little success. His desk, strewn with sticky notes and half-formed concepts, looked like a frat party for lost ideas. "Okay, what do I even have here?" he mumbled, slumping in his chair, staring at the dreaded quagmire of concepts that seemed to drift further apart with each passing moment.

@@ -1,10 +1,16 @@
 # Chapter 5: Enhanced Scale -- Getting More Done, Touching More Lives
 
+This chapter explores Enhanced Scale -- Getting More Done, Touching More Lives.
+
+
+
+## Chapter 5: Secrets of the Shifting Power
+
+## MINI ARC B: THE INTEROFFICE OLYMPICS
+
+### Chapter 5: Semi-finals - Spreadsheet Speedrun, Email Drafting Under Pressure
+
 The air in Razorbeam was electric with anticipation as the day of the Interoffice Olympics Semi-finals arrived. The employees buzzed with excitement and a competitive spirit filled the air, akin to a stadium before a major sporting event. Desks were cleared, and monitors arranged as the semi-finalists prepared themselves for the first event: the Spreadsheet Speedrun.
-
-PUT THIS IN A STORY SOMEWHERE:
-
-**Wispr Flow** — An AI-powered voice dictation app for Mac that lets users type by speaking. Users talk naturally and the app transcribes their words directly into any text field, automatically formatting and correcting speech into clean written text without voice commands.
 
 In this challenge, competitors were tasked with transforming a chaotic jumble of numbers and incomplete formulas into a pristine, functional spreadsheet. The clock was set for thirty minutes, and the timer ticked down ominously on the big screen in the common area.
 

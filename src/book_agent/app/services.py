@@ -279,6 +279,7 @@ logger = logging.getLogger("book_agent")
 
 
 # Intent Router - LLM-based action detection
+# Keep params minimal to avoid JSON issues with special characters
 ROUTER_TOOLS = [
     {
         "type": "function",
@@ -290,18 +291,10 @@ ROUTER_TOOLS = [
                 "properties": {
                     "filename": {
                         "type": "string",
-                        "description": "The filename to edit (e.g., 'Test.md', 'chapter1.md')"
-                    },
-                    "action": {
-                        "type": "string",
-                        "description": "What to do: add, insert, edit, remove, rewrite"
-                    },
-                    "content_description": {
-                        "type": "string",
-                        "description": "What content to add/edit (e.g., 'two paragraphs about birds')"
+                        "description": "Just the filename (e.g., 'Test.md')"
                     }
                 },
-                "required": ["filename", "action", "content_description"]
+                "required": ["filename"]
             }
         }
     },
@@ -316,18 +309,10 @@ ROUTER_TOOLS = [
                     "chapter_numbers": {
                         "type": "array",
                         "items": {"type": "integer"},
-                        "description": "List of chapter numbers to edit. Use [-1] for 'all chapters'."
-                    },
-                    "action": {
-                        "type": "string",
-                        "description": "What to do: add, insert, edit, remove, rewrite"
-                    },
-                    "content_description": {
-                        "type": "string",
-                        "description": "What content to add/edit"
+                        "description": "List of chapter numbers. Use [-1] for 'all chapters'."
                     }
                 },
-                "required": ["chapter_numbers", "action", "content_description"]
+                "required": ["chapter_numbers"]
             }
         }
     },
@@ -339,17 +324,13 @@ ROUTER_TOOLS = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "question": {
-                        "type": "string",
-                        "description": "The question to answer"
-                    },
                     "scope": {
                         "type": "string",
-                        "enum": ["current_file", "all_chapters", "specific_chapters"],
+                        "enum": ["current_file", "all_chapters"],
                         "description": "What content to analyze"
                     }
                 },
-                "required": ["question", "scope"]
+                "required": ["scope"]
             }
         }
     },
@@ -360,13 +341,8 @@ ROUTER_TOOLS = [
             "description": "General conversation not related to editing files or chapters.",
             "parameters": {
                 "type": "object",
-                "properties": {
-                    "response_needed": {
-                        "type": "string",
-                        "description": "Brief description of what kind of response is needed"
-                    }
-                },
-                "required": ["response_needed"]
+                "properties": {},
+                "required": []
             }
         }
     }
@@ -380,22 +356,18 @@ def route_intent(prompt: str, available_files: List[str] = None) -> Dict:
     if available_files:
         files_context = f"\n\nAvailable files: {', '.join(available_files[:10])}"
 
-    system_msg = f"""You are an intent router. Analyze the user's request and call the appropriate function.
+    system_msg = f"""Intent router. Pick ONE function:
 
-Rules:
-- If user mentions a specific filename (like "Test.md", "readme.txt") → use edit_file
-- If user mentions chapter numbers, chapter ranges, or "all chapters" → use edit_chapters
-- If user asks a question without requesting changes → use query_content
-- For general chat unrelated to files → use general_chat
+- edit_file: User mentions a filename (.md, .txt, etc.)
+- edit_chapters: User mentions chapter numbers or "all chapters"
+- query_content: User asks a question (no edits)
+- general_chat: General conversation
 
-IMPORTANT for edit_chapters:
-- Parse chapter ranges: "Chapters 4-7" → chapter_numbers: [4, 5, 6, 7]
-- Parse lists: "Ch 4, Ch 5, Ch 7" → chapter_numbers: [4, 5, 7]
-- "all chapters" or "the book" → chapter_numbers: [-1]
-- Look for patterns like "Ch X:", "(Chapters X-Y)", "chapter X through Y"
-{files_context}
-
-Always call exactly ONE function."""
+Chapter parsing:
+- "Chapters 4-7" or "Ch 4-7" → [4, 5, 6, 7]
+- "chapter 1" or "Ch 1" → [1]
+- "all chapters" → [-1]
+{files_context}"""
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",  # Fast and cheap for routing
@@ -411,9 +383,15 @@ Always call exactly ONE function."""
 
     if response.choices[0].message.tool_calls:
         tool_call = response.choices[0].message.tool_calls[0]
+        try:
+            params = json.loads(tool_call.function.arguments)
+        except json.JSONDecodeError as e:
+            logger.warning(f"JSON parse error in router: {e}, raw: {tool_call.function.arguments[:200]}")
+            params = {}
+
         return {
             "action": tool_call.function.name,
-            "params": json.loads(tool_call.function.arguments)
+            "params": params
         }
 
     return {"action": "general_chat", "params": {}}

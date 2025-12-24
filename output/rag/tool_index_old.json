@@ -1,0 +1,109 @@
+{
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The AI-Enhanced Human",
+      "tools": [
+        "Notion",
+        "Mem",
+        "Reflect",
+        "ChatGPT",
+        "Perplexity"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Enhanced Intelligence",
+      "tools": [
+        "Perplexity",
+        "ChatGPT",
+        "Claude",
+        "Elicit",
+        "Poe",
+        "Recall.ai",
+        "ChatGPT (Memory Mode)",
+        "Humata",
+        "AskYourPDF",
+        "Mem",
+        "Reflect.app"
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Enhanced Charisma",
+      "tools": [
+        "Voiceflow",
+        "Superhuman",
+        "Gmail",
+        "Rewind AI",
+        "Recall.ai",
+        "(any)GPT + LinkedIn"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Enhanced Breadth",
+      "tools": [
+        "Whisper",
+        "Descript",
+        "DeepL",
+        "DALL·E",
+        "Midjourney",
+        "Canva",
+        "(any)GPT + image upload",
+        "ChatGPT DALL·E 3"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Enhanced Scale",
+      "tools": [
+        "Zapier",
+        "n8n",
+        "LangChain",
+        "AutoGen",
+        "Make",
+        "Tascade"
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Enhanced Quality",
+      "tools": [
+        "Lex",
+        "Sudowrite",
+        "ChatGPT Code Interpreter",
+        "Grammarly",
+        "Wordtune",
+        "ChatGPT Critique Prompts",
+        "ProWritingAid",
+        "Consensus"
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Enhanced Leadership",
+      "tools": [
+        "Reclaim.ai",
+        "Otter.ai",
+        "Tability",
+        "PromptPerfect",
+        "h2o.ai",
+        "Fathom",
+        "Loom",
+        "Scribe"
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Your Enhancement Path",
+      "tools": [
+        "Custom GPTs",
+        "Obsidian",
+        "Reflect.app",
+        "Mem",
+        "Tana"
+      ]
+    }
+  ]
+}

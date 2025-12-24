@@ -10,11 +10,9 @@ In a world spinning faster than a pre-meeting coffee jitters, knowledge is the n
 
 In the midst of the DriftLoaf office chaos, outside the window, the sky was painted with strokes of peach and violet as dawn broke. A flock of sparrows swooped in unison, their synchronized flight a display of effortless grace, pulling Eleanor's attention for a brief moment from the computer screens. It was as if they communicated telepathically, each bird aware of the others' movements, a seamless ballet of wings and instinct that seemed to mock the digital chaos inside.
 
-Need real Poe example !!!!
+Across the street, on an ancient oak, a lone robin perched atop the highest branch, surveying its domain. Its brilliant red breast was puffed with pride as it sang a melody that pierced the early morning stillness. This avian sentinel appeared almost disdainful of the human turmoil it overlooked, as if to say, "Nature's order reigns supreme over your manufactured disorder." In contrast to the frenetic energy of the office, the robin commanded attention with pure, unadulterated poise.
 
-**Poe** — A chatbot aggregator platform built by Quora that gives access to multiple AI models in one place. Users chat with Claude, GPT-4, Gemini, and other models side-by-side, compare responses, and create custom bots without switching apps.
-
-Suddenly the words 'YOUR FILES ARE ENCRYPTED. PAY 50 BITCOIN OR LOSE EVERYTHING.' loomed large on every screen, sending the DriftLoaf office into a tailspin. Eleanor's hands trembled as she frantically searched her mind for the backup passwords she had jotted down on a sticky note that had since vanished into the abyss of her cluttered desk.
+The air was thick with tension as the words 'YOUR FILES ARE ENCRYPTED. PAY 50 BITCOIN OR LOSE EVERYTHING.' loomed large on every screen, sending the DriftLoaf office into a tailspin. Eleanor's hands trembled as she frantically searched her mind for the backup passwords she had jotted down on a sticky note that had since vanished into the abyss of her cluttered desk.
 
 
 
@@ -298,8 +296,6 @@ The stories were now richer than ever, enriched by every twist they took. "Guess
 
 In the whirlwind world of information overload, the buzz around Retrieval-Augmented Generation (RAG) is more than just a catchy phrase--it's a game changer for business acumen. Think about it this way: RAG acts like a sophisticated intern, effortlessly pulling together the best insights from vast data stores while simultaneously writing a coherent narrative that saves you from drowning in a sea of information.
 
-**RAG pipelines** — Retrieval-Augmented Generation systems that combine search with AI text generation. Users build these pipelines to let an AI answer questions using their own documents, databases, or knowledge bases rather than relying solely on the model's training data.
-
 Let's set the stage. Shari, the razor-sharp project manager at Razorbeam, realizes that her team needs to harness this new RAG concept--stat! She rallies her coworkers in the conference room, all of them laden with caffeinated enthusiasm (and sugary snacks). "Alright, team, today's mini boot camp on RAG will help us process information as if we were seasoned researchers." 
 
 Meanwhile, as the team enthusiastically munches on protein bars that probably have more sugar than protein, Marva steps up for a hands-on demonstration. Like a master chef revealing secrets in a cooking show, she pulls up digital slides. "Imagine chunking and embedding as the mise en place of data processing," she announces, slicing complex phrases into manageable bits. "We gather ingredients--small, relevant pieces of data--to prepare a feast of high-quality insights."
@@ -442,10 +438,6 @@ Heavy purring echoed across the conference room as the unexpected chair of the m
 Eleanor, the perpetually distracted CEO, was sketching out another reminder on her "Memory Palace." "What? Oh yes. Mr. Whiskers supports us with a higher budget... I think?" 
 
 "Not quite yet. Remember, we're using AI!" Miranda corrected, gesturing dramatically at Otter.ai and Sembly perched on her desk like two eager contenders about to engage in a battle. 
-
-**Otter.ai** — A transcription service that converts spoken audio into searchable text. Users record meetings or upload audio files to get timestamped transcripts they can search, highlight, and share.
-
-**Sembly** — An AI meeting assistant that records, transcribes, and summarizes calls with automatic action item tracking. Users connect it to video conferencing tools to capture decisions, assignments, and key moments without manual note-taking.
 
 ## The Tool Essence  
 
@@ -761,13 +753,11 @@ Tendy, infamously chaotic but endearing, found this not only made him sound enga
 Meanwhile, down on the third floor at DriftLoaf, Greg is putting his own spin on AI-enhanced charisma. His business philosophy typically rivals that of a relaxed Californian beach day, so how could he resist using a chatbot to flirt with clients?  
 DriftLoaf's recently integrated chatbot, Hume AI, wasn't just for booking bread orders but now served to charm customers through exuberant banter. 
 
-> **WHAT ANNIE TYPED:**  **??? REAL ???**
+> **WHAT ANNIE TYPED:**  
 > "Generate a flirty yet professional response for a client asking about our sourdough's availability."  
 
 > **WHAT SHE GOT:**  
 > "Hey there! Our sourdough is rising faster than a surfboard on a wave. Want to reserve a loaf before our stock disappears like yesterday's thin crust?"  
-
-**Hume AI** — An AI platform that detects and analyzes human emotions from voice, facial expressions, and language. Users integrate it into applications to understand sentiment, measure engagement, or build emotionally responsive AI experiences.
 
 Annie couldn't help but chuckle as she sent it. The tone struck a balance between casual charm and retaining checkout integrity--something Greg's laid-back demeanor often fell short of. The results? Return customers, and maybe a few more friendly interactions.
 

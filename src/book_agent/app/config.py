@@ -23,7 +23,10 @@ CHAPTER_KEYWORDS = [
     'chapters', 'the chapter', 'the chap', 'this chap', 'that chap',
     'in book', 'in the book', 'in this book', 'whole book', 'full book',
     'the file', 'this file', 'that file', 'the doc', 'this doc', 'the document',
-    'current file', 'open file', 'loaded file', 'in file', 'into file'
+    'current file', 'open file', 'loaded file', 'in file', 'into file',
+    # File extension patterns
+    '.md file', '.md', '.txt file', '.txt',
+    'test.md', 'readme.md'
 ]
 
 EDIT_KEYWORDS = [

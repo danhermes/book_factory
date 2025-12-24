@@ -15,7 +15,7 @@ from .models import (
 from .services import (
     get_chapter_files, detect_book_edit_intent, detect_chapter_reference,
     extract_chapter_indices, run_book_edit_task, chat_completion,
-    active_tasks
+    active_tasks, route_intent
 )
 from . import background_tasks_set
 
@@ -107,125 +107,132 @@ async def save_file(file_path: str, file_content: FileContent):
 
 @router.post("/api/agent", response_model=AgentResponse)
 async def agent_chat(request: AgentRequest):
-    """Send a prompt to the AI agent."""
+    """Send a prompt to the AI agent using LLM-based intent routing."""
     try:
-        # Check for book edit request
-        if detect_book_edit_intent(request.prompt):
-            chapters = get_chapter_files()
-            if chapters:
-                # Check if user is referring to currently open file
-                prompt_lower = request.prompt.lower()
-                use_current_file = any(kw in prompt_lower for kw in [
-                    'the file', 'this file', 'that file', 'current file',
-                    'open file', 'loaded file', 'the doc', 'this doc'
-                ])
+        chapters = get_chapter_files()
+        available_files = [ch.name for ch in chapters] if chapters else []
 
-                if use_current_file and request.file_path:
-                    # Find the index of the currently open file
-                    chapter_indices = []
-                    for i, ch in enumerate(chapters):
-                        if ch.name in request.file_path or request.file_path in str(ch):
-                            chapter_indices = [i]
-                            break
+        # Use LLM to determine intent
+        intent = route_intent(request.prompt, available_files)
+        action = intent["action"]
+        params = intent["params"]
 
-                    if not chapter_indices:
-                        # File not found in chapters, try direct path
-                        return AgentResponse(
-                            response=f"Could not find '{request.file_path}' in chapters. Try specifying 'chapter X'."
-                        )
-                else:
-                    chapter_indices = extract_chapter_indices(request.prompt, len(chapters))
+        print(f"[ROUTER] Action: {action}, Params: {params}")
 
-                task_id = str(uuid.uuid4())
+        # Handle: edit_file - edit a specific file by name
+        if action == "edit_file":
+            filename = params.get("filename", "").lower()
 
-                active_tasks[task_id] = {
-                    'status': 'running',
-                    'progress': 0,
-                    'total': len(chapter_indices),
-                    'current_chapter': None,
-                    'messages': [],
-                    'completed': False,
-                    'error': None,
-                    'started': datetime.now().isoformat()
-                }
+            # Find the file in chapters
+            chapter_indices = []
+            for i, ch in enumerate(chapters):
+                if ch.name.lower() == filename or filename in ch.name.lower():
+                    chapter_indices = [i]
+                    break
 
-                task = asyncio.create_task(
-                    run_book_edit_task(task_id, request.prompt, chapter_indices)
-                )
-                background_tasks_set.add(task)
-                task.add_done_callback(background_tasks_set.discard)
-
-                chapters_to_edit = [chapters[i].name for i in chapter_indices if i < len(chapters)]
+            if not chapter_indices:
                 return AgentResponse(
-                    response=f"Starting book edit for {len(chapter_indices)} chapter(s): {', '.join(chapters_to_edit[:3])}{'...' if len(chapters_to_edit) > 3 else ''}. Task ID: `{task_id}`",
-                    task_id=task_id
+                    response=f"Could not find '{filename}'. Available files: {', '.join(available_files[:5])}"
                 )
 
-        # Check for chapter query
-        if detect_chapter_reference(request.prompt):
-            chapters = get_chapter_files()
-            if chapters:
-                chapter_indices = extract_chapter_indices(request.prompt, len(chapters))
-                prompt_lower = request.prompt.lower()
+            # Start edit task
+            task_id = str(uuid.uuid4())
+            active_tasks[task_id] = {
+                'status': 'running',
+                'progress': 0,
+                'total': 1,
+                'current_chapter': None,
+                'messages': [],
+                'completed': False,
+                'error': None,
+                'started': datetime.now().isoformat()
+            }
 
-                full_book_query = any(kw in prompt_lower for kw in FULL_BOOK_KEYWORDS)
-                chapters_to_load = chapter_indices if full_book_query else chapter_indices[:3]
+            task = asyncio.create_task(
+                run_book_edit_task(task_id, request.prompt, chapter_indices)
+            )
+            background_tasks_set.add(task)
+            task.add_done_callback(background_tasks_set.discard)
 
-                chapter_context = ""
-                for i in chapters_to_load:
-                    if i < len(chapters):
-                        content = chapters[i].read_text(encoding='utf-8')
-                        word_count = len(content.split())
-                        max_len = 8000 if full_book_query else 15000
-                        if len(content) > max_len:
-                            content = content[:max_len] + "\n\n[... truncated ...]"
-                        chapter_context += f"\n\n## {chapters[i].name} ({word_count:,} words)\n{content}"
+            return AgentResponse(
+                response=f"Editing {chapters[chapter_indices[0]].name}. Task ID: `{task_id}`",
+                task_id=task_id
+            )
 
-                system_message = f"""You are a helpful writing assistant for a book editing application.
-Answer questions accurately based on the chapter content provided.
-Loaded {len(chapters_to_load)} chapter(s) for context.
+        # Handle: edit_chapters - edit chapters by number
+        elif action == "edit_chapters":
+            chapter_nums = params.get("chapter_numbers", [])
 
-To EDIT chapters, include action words like: edit, rewrite, revise, improve, fix, change."""
+            if -1 in chapter_nums:  # All chapters
+                chapter_indices = list(range(len(chapters)))
+            else:
+                chapter_indices = [n - 1 for n in chapter_nums if 1 <= n <= len(chapters)]
 
-                messages = [{"role": "system", "content": system_message}]
+            if not chapter_indices:
+                return AgentResponse(
+                    response=f"No valid chapters specified. Available: 1-{len(chapters)}"
+                )
 
-                if request.history:
-                    for h in request.history[-10:]:
-                        messages.append({"role": h.role, "content": h.content})
+            task_id = str(uuid.uuid4())
+            active_tasks[task_id] = {
+                'status': 'running',
+                'progress': 0,
+                'total': len(chapter_indices),
+                'current_chapter': None,
+                'messages': [],
+                'completed': False,
+                'error': None,
+                'started': datetime.now().isoformat()
+            }
 
-                user_message = f"""Chapter content:
----{chapter_context}
----
+            task = asyncio.create_task(
+                run_book_edit_task(task_id, request.prompt, chapter_indices)
+            )
+            background_tasks_set.add(task)
+            task.add_done_callback(background_tasks_set.discard)
 
-Question: {request.prompt}"""
-                messages.append({"role": "user", "content": user_message})
+            chapters_to_edit = [chapters[i].name for i in chapter_indices if i < len(chapters)]
+            return AgentResponse(
+                response=f"Editing {len(chapter_indices)} chapter(s): {', '.join(chapters_to_edit[:3])}{'...' if len(chapters_to_edit) > 3 else ''}. Task ID: `{task_id}`",
+                task_id=task_id
+            )
 
-                return AgentResponse(response=chat_completion(messages))
+        # Handle: query_content - answer questions about content
+        elif action == "query_content":
+            if not chapters:
+                return AgentResponse(response="No chapters available to query.")
 
-        # Regular chat
-        system_message = """You are a helpful writing assistant for a book editing application.
-To edit chapters, include "chapter" AND an action word (edit, rewrite, improve, etc.)."""
+            # Load relevant chapters
+            chapter_context = ""
+            for i, ch in enumerate(chapters[:5]):  # Limit to first 5
+                content = ch.read_text(encoding='utf-8')
+                word_count = len(content.split())
+                if len(content) > 10000:
+                    content = content[:10000] + "\n\n[... truncated ...]"
+                chapter_context += f"\n\n## {ch.name} ({word_count:,} words)\n{content}"
 
-        messages = [{"role": "system", "content": system_message}]
+            system_message = """You are a helpful writing assistant. Answer questions about the book content provided."""
+            messages = [
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": f"Content:\n{chapter_context}\n\nQuestion: {request.prompt}"}
+            ]
 
-        if request.history:
-            for h in request.history[-10:]:
-                messages.append({"role": h.role, "content": h.content})
+            return AgentResponse(response=chat_completion(messages))
 
-        user_message = request.prompt
-        if request.file_content:
-            user_message = f"""Current file: {request.file_path or 'Unknown'}
+        # Handle: general_chat - general conversation
+        else:
+            system_message = """You are a helpful writing assistant for a book editing application.
+You can edit files and chapters. Just mention the filename (like 'Test.md') or chapter number."""
 
-File content:
----
-{request.file_content[:8000]}
----
+            messages = [{"role": "system", "content": system_message}]
 
-Request: {request.prompt}"""
+            if request.history:
+                for h in request.history[-10:]:
+                    messages.append({"role": h.role, "content": h.content})
 
-        messages.append({"role": "user", "content": user_message})
+            messages.append({"role": "user", "content": request.prompt})
 
-        return AgentResponse(response=chat_completion(messages))
+            return AgentResponse(response=chat_completion(messages))
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Agent error: {str(e)}")

@@ -43,32 +43,6 @@ Ironically, while Tendy evades the tone review, the meter of his rhyme somehow b
 
 Finally, each character learns that while AI tools may not teach charisma outright, they can significantly enhance one's ability to communicate effectively and charmingly. The realization hits that investing time into mastering digital tone awareness is not an effort in futility; instead, it opens new doors for connection and collaboration. In a nutshell, using AI tools like Hume AI and Grammarly doesn't only beautify words; it breeds relationships designed to flourish.
 
-## MINI ARC B: THE INTEROFFICE OLYMPICS - CHAPTER 3: PRELIMINARY ROUNDS
-
-The excitement in the Razorbeam office was palpable as they prepared for the annual Interoffice Olympics. This was not just any tournament; it was the epitome of competitive spirit and camaraderie, a series of events designed to test the office skills that went beyond the usual workday tasks. 
-
-The first event of the preliminary rounds, the speed-typing contest, was set to kick things off. Eleanor Chen, Razorbeam’s CEO, stood at the helm, exuding both authority and a rare hint of playfulness. "Alright team, let's see who can type the fastest email without typos!" she announced, her voice tinged with mischief. Beside her, Tyler, the intern known for his enthusiasm more than his accuracy, nervously adjusted his keyboard.
-
-"Remember, it's not just about speed; precision matters," Eleanor reminded everyone, casting a pointed glance at Tyler, who grinned sheepishly.
-
-Miranda, the analytical powerhouse of Razorbeam, was up next. Her fingers flew across the keyboard with a fluidity that seemed otherworldly, blending speed with the kind of precision that left spectators in awe. When she finished, a cheer erupted from her colleagues, marking the beginning of a friendly yet fierce competition.
-
-Next on the docket was the much-anticipated paper airplane distance event. The competitors were given identical sheets of paper and tasked with crafting the most aerodynamic design they could muster. Among the participants, Quinn, known for his meticulous attention to detail, took his time, folding and creasing with the care of a master artisan. 
-
-"I think I might have a winner," he declared confidently, launching his creation. It soared gracefully across the room, covering an impressive distance and landing with precision atop Eleanor's 'Memory Palace' wall.
-
-Not to be outdone, Tendy, the ever-creative wildcard, took a different approach, crafting a design inspired by something he claimed to have seen in a sci-fi movie. "Prepare to be amazed," he said, and with a flick of his wrist, his paper airplane soared, zigzagging unpredictably before landing upside down on a desk.
-
-The final event was the chair racing competition, a quintessential test of office agility and a crowd favorite. The course was a makeshift track looping around the office, weaving between desks and ending with a daring dash towards the break room.
-
-Vernon, Razorbeam's ambitious sales lead, was poised at the starting line, a determined glint in his eye. "I'll have you know I was the undisputed champ last year," he boasted, smirking at the new challengers.
-
-As the countdown began, the atmosphere buzzed with anticipation. On 'go,' the competitors pushed off, wheeling their way through the office's labyrinth. Quinn's strategic maneuvers and Miranda's surprising speed kept the race tight, but it was Tyler who, with an unexpected burst of momentum, crossed the finish line first, much to everyone’s astonishment.
-
-The room erupted in applause and laughter as Tyler stood, panting and triumphant. "I guess all those coffee runs paid off!" he joked, earning a pat on the back from Eleanor.
-
-With the preliminary events concluded, the buzz of friendly competition lingered in the air, setting the stage for what promised to be an exhilarating continuation of the Interoffice Olympics. Each team member's distinct flair had shone through, highlighting not just their skills but also the dynamic spirit that made Razorbeam, and the tournament itself, uniquely unforgettable.
-
 ## The Great Table Heist - Chapter 3
 
 The daily bustle at Razorbeam was in full swing when the unthinkable happened. Amid the whirl of emails and coffee runs, an unsettling discovery was made: the shuffleboard table was missing. It had been admired, used, and fiercely contested over just the day before.

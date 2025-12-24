@@ -278,6 +278,147 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("book_agent")
 
 
+# Intent Router - LLM-based action detection
+ROUTER_TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "edit_file",
+            "description": "Edit a specific file by name. Use when user mentions a filename like 'Test.md', 'readme.txt', etc.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "filename": {
+                        "type": "string",
+                        "description": "The filename to edit (e.g., 'Test.md', 'chapter1.md')"
+                    },
+                    "action": {
+                        "type": "string",
+                        "description": "What to do: add, insert, edit, remove, rewrite"
+                    },
+                    "content_description": {
+                        "type": "string",
+                        "description": "What content to add/edit (e.g., 'two paragraphs about birds')"
+                    }
+                },
+                "required": ["filename", "action", "content_description"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "edit_chapters",
+            "description": "Edit one or more book chapters by number. Use when user says 'chapter 1', 'chapters 2-5', 'all chapters', etc.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "chapter_numbers": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "description": "List of chapter numbers to edit. Use [-1] for 'all chapters'."
+                    },
+                    "action": {
+                        "type": "string",
+                        "description": "What to do: add, insert, edit, remove, rewrite"
+                    },
+                    "content_description": {
+                        "type": "string",
+                        "description": "What content to add/edit"
+                    }
+                },
+                "required": ["chapter_numbers", "action", "content_description"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "query_content",
+            "description": "Answer a question about the book/chapters without editing. Use for questions, summaries, analysis.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "question": {
+                        "type": "string",
+                        "description": "The question to answer"
+                    },
+                    "scope": {
+                        "type": "string",
+                        "enum": ["current_file", "all_chapters", "specific_chapters"],
+                        "description": "What content to analyze"
+                    }
+                },
+                "required": ["question", "scope"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "general_chat",
+            "description": "General conversation not related to editing files or chapters.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "response_needed": {
+                        "type": "string",
+                        "description": "Brief description of what kind of response is needed"
+                    }
+                },
+                "required": ["response_needed"]
+            }
+        }
+    }
+]
+
+
+def route_intent(prompt: str, available_files: List[str] = None) -> Dict:
+    """Use LLM to determine user intent and extract parameters."""
+
+    files_context = ""
+    if available_files:
+        files_context = f"\n\nAvailable files: {', '.join(available_files[:10])}"
+
+    system_msg = f"""You are an intent router. Analyze the user's request and call the appropriate function.
+
+Rules:
+- If user mentions a specific filename (like "Test.md", "readme.txt") → use edit_file
+- If user mentions chapter numbers, chapter ranges, or "all chapters" → use edit_chapters
+- If user asks a question without requesting changes → use query_content
+- For general chat unrelated to files → use general_chat
+
+IMPORTANT for edit_chapters:
+- Parse chapter ranges: "Chapters 4-7" → chapter_numbers: [4, 5, 6, 7]
+- Parse lists: "Ch 4, Ch 5, Ch 7" → chapter_numbers: [4, 5, 7]
+- "all chapters" or "the book" → chapter_numbers: [-1]
+- Look for patterns like "Ch X:", "(Chapters X-Y)", "chapter X through Y"
+{files_context}
+
+Always call exactly ONE function."""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",  # Fast and cheap for routing
+        messages=[
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": prompt}
+        ],
+        tools=ROUTER_TOOLS,
+        tool_choice="required",
+        max_tokens=500,
+        temperature=0
+    )
+
+    if response.choices[0].message.tool_calls:
+        tool_call = response.choices[0].message.tool_calls[0]
+        return {
+            "action": tool_call.function.name,
+            "params": json.loads(tool_call.function.arguments)
+        }
+
+    return {"action": "general_chat", "params": {}}
+
+
 def parse_function_calls(response, task=None) -> List[Dict]:
     """Parse function calls from OpenAI response into edit instructions."""
     instructions = []
@@ -361,9 +502,42 @@ async def process_chapter_edit(
         task['messages'].append(f"[DEBUG] Prompt received ({len(prompt)} chars): {prompt[:200]}...")
         print(f"[PROMPT] Full prompt:\n{prompt}\n---END PROMPT---")
 
+        # SPECIAL CASE: Empty file - just generate content and write directly
+        if word_count == 0 or len(content.strip()) < 10:
+            task['messages'].append(f"Empty file detected - generating content directly")
+
+            gen_response = client.chat.completions.create(
+                model=AGENT_MODEL,
+                messages=[
+                    {"role": "system", "content": "You are a creative writer. Write exactly what is requested. No preamble, no 'here is', just the content."},
+                    {"role": "user", "content": f"Write the following content:\n\n{prompt}"}
+                ],
+                max_tokens=4000,
+                temperature=AGENT_TEMPERATURE
+            )
+
+            new_content = gen_response.choices[0].message.content.strip()
+            chapter_path.write_text(new_content, encoding='utf-8')
+
+            new_word_count = len(new_content.split())
+            task['messages'].append(f"✓ {chapter_name}: Created with {new_word_count:,} words")
+            task['progress'] = chapter_index + 1
+            return
+
         system_message = f'''You are an ACTION-ORIENTED book editor. Your job is to EDIT, not to TALK.
 
 You are currently editing CHAPTER {chapter_num}.
+
+## STORY CONTEXT - TWO SEPARATE COMPANIES:
+1. **RAZORBEAM** - A high-pressure AI startup. Fast-paced, metrics-driven.
+   - Eleanor Chen (CEO), Quinn (operations), Miranda (data scientist)
+   - Vernon (sales, ambitious), Tyler (intern)
+
+2. **DRIFTLOAF** - A laid-back artisanal bread company. Hammocks, slow pace, bread-focused mission.
+   - Greg (CEO), other quirky employees
+
+These are DIFFERENT companies with different cultures and missions. Do NOT conflate them.
+Story arcs may involve characters from one or both, but keep their identities distinct.
 
 ## BEHAVIOR RULES:
 - If user asks for your OPINION, PLAN, or ANALYSIS → respond with text, no function calls
@@ -390,14 +564,35 @@ NEVER say "I can't edit files" or "here's how you could edit it" - you CAN and M
 
 {prompt}
 
-IMPORTANT: You are editing CHAPTER {chapter_num} ONLY.
-- If the instructions specify different content for different chapters (e.g., "Ch 3: setup, Ch 4: resolution"), ONLY add the content designated for Chapter {chapter_num}.
-- Do NOT add content meant for other chapters.
+## CRITICAL INSTRUCTIONS FOR MULTI-CHAPTER ARCS:
+You are editing CHAPTER {chapter_num} ONLY.
+
+1. FIND YOUR CHAPTER'S CONTENT:
+   - Look for "- Ch {chapter_num}:" or "Ch {chapter_num}:" in the instructions
+   - Your content starts there and continues until the NEXT "- Ch" marker or end of arc
+   - Multi-line content under your chapter marker is ALL yours
+
+2. EXPAND THE DESCRIPTION: The arc gives brief descriptions. You must expand them into FULL SCENES (500-1500 words) with:
+   - Dialogue between characters
+   - Narrative detail and atmosphere
+   - Smooth transitions into existing chapter content
+   - If it says "RESOLUTION" - write the climactic conclusion of the arc
+
+3. IGNORE OTHER CHAPTERS: Content under "Ch 5:", "Ch 7:", etc. belongs to those chapters, not yours.
+
+EXAMPLE PARSING:
+```
+- Ch 5: First event happens
+        More details about ch 5
+- Ch 6: RESOLUTION - The conclusion
+```
+If you're editing Ch 6, your content is: "RESOLUTION - The conclusion"
+If you're editing Ch 5, your content is: "First event happens / More details about ch 5"
 
 CHAPTER {chapter_num} CONTENT:
 {content}
 
-Now call the insert_content and/or edit_content functions to make the required changes."""
+Now call insert_content() to add your chapter's arc content. Find an appropriate anchor point in the chapter."""
 
         messages_to_send = [
             {"role": "system", "content": system_message},

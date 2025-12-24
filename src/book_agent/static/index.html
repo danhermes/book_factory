@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Agent Editor</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel: File List -->
+        <div class="panel file-panel">
+            <div class="panel-header">
+                <h2>Files</h2>
+                <button class="refresh-btn" onclick="loadFiles()" title="Refresh">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="file-list" id="fileList">
+                <div class="loading">Loading files...</div>
+            </div>
+        </div>
+
+        <!-- Middle Panel: Editor/Preview -->
+        <div class="panel editor-panel">
+            <div class="panel-header">
+                <h2 id="editorTitle">Select a file</h2>
+                <div class="editor-actions">
+                    <button class="close-btn" id="closeBtn" onclick="closeFile()" title="Close file" style="display: none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                    <button class="toggle-btn" id="toggleMode" onclick="toggleEditMode()" disabled>
+                        <span id="modeLabel">Edit</span>
+                    </button>
+                    <button class="save-btn" id="saveBtn" onclick="saveFile()" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                            <polyline points="17 21 17 13 7 13 7 21"/>
+                            <polyline points="7 3 7 8 15 8"/>
+                        </svg>
+                        Save
+                    </button>
+                </div>
+            </div>
+            <div class="editor-container" id="editorContainer">
+                <div class="editor-placeholder">
+                    <p>Select a file from the left panel to view and edit its contents.</p>
+                </div>
+                <div class="markdown-preview" id="markdownPreview" style="display: none;"></div>
+                <textarea class="editor-textarea" id="editorTextarea" style="display: none;" placeholder="File content will appear here..."></textarea>
+            </div>
+        </div>
+
+        <!-- Right Panel: Agent -->
+        <div class="panel agent-panel">
+            <div class="panel-header">
+                <h2>Agent</h2>
+                <button class="clear-btn" onclick="clearChat()" title="Clear chat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="agent-messages" id="agentMessages">
+                <div class="agent-welcome">
+                    <p>Welcome! I'm your writing assistant. I can help you:</p>
+                    <ul>
+                        <li>Review and improve your content</li>
+                        <li>Suggest edits and fixes</li>
+                        <li>Answer questions about your writing</li>
+                        <li>Help with formatting and structure</li>
+                    </ul>
+                    <p>Select a file and ask me anything!</p>
+                </div>
+            </div>
+            <div class="agent-input-container">
+                <textarea
+                    class="agent-input"
+                    id="agentInput"
+                    placeholder="Ask the agent for help with your content..."
+                    rows="3"
+                ></textarea>
+                <button class="submit-btn" id="submitBtn" onclick="sendToAgent()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
